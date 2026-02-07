@@ -26,6 +26,10 @@ deployments/localhost/
 # IDE
 .vscode/
 .idea/
+.cursor/
+.opencode/
+.agents/
+opencode.json
 *.swp
 *.swo
 *~
@@ -43,6 +47,9 @@ yarn-error.log*
 keypair*.json
 *.pem
 *.key
+
+# Playwright
+.playwright-mcp/
 
 # Misc
 *.tsbuildinfo
