@@ -29,6 +29,10 @@ export const menuLinks: HeaderMenuLink[] = [
     href: "/leaderboard",
   },
   {
+    label: "My Duels",
+    href: "/my-duels",
+  },
+  {
     label: "Debug",
     href: "/debug",
     icon: <BugAntIcon className="h-4 w-4" />,

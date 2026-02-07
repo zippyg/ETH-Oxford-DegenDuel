@@ -14,6 +14,7 @@ interface ActiveDuelProps {
   entryPrice?: number;
   onSettle?: (duelId: bigint) => void;
   isSettling?: boolean;
+  bonusTriggered?: boolean;
 }
 
 const PlayerBox = ({
@@ -79,7 +80,7 @@ const PlayerBox = ({
   );
 };
 
-export const ActiveDuel = ({ duel, currentPrice, entryPrice, onSettle, isSettling }: ActiveDuelProps) => {
+export const ActiveDuel = ({ duel, currentPrice, entryPrice, onSettle, isSettling, bonusTriggered }: ActiveDuelProps) => {
   const { address: connectedAddress } = useAccount();
   const chartContainerRef = useRef<HTMLDivElement>(null);
   const chartRef = useRef<any>(null);
@@ -307,6 +308,15 @@ export const ActiveDuel = ({ duel, currentPrice, entryPrice, onSettle, isSettlin
           <div className="flex items-center gap-2">
             <div className="w-2 h-2 rounded-full bg-[#22C55E] animate-pulse" />
             <span className="text-xs font-bold text-[#22C55E] uppercase tracking-wider">Live Duel</span>
+            {bonusTriggered && (
+              <motion.div
+                initial={{ scale: 0, rotate: -10 }}
+                animate={{ scale: 1, rotate: 0 }}
+                className="px-3 py-1 bg-gradient-to-r from-[#F59E0B] to-[#EAB308] rounded-lg text-black font-black text-xs uppercase border-glow-gold"
+              >
+                2x BONUS!
+              </motion.div>
+            )}
           </div>
           <h2 className="text-xl font-bold text-slate-100 mt-1">{feedName}</h2>
         </div>

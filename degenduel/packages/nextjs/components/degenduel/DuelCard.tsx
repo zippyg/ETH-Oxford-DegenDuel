@@ -26,11 +26,15 @@ export const DuelCard = ({ duel, onJoin, index = 0 }: DuelCardProps) => {
   const minutes = Math.floor(timeLeft / (1000 * 60));
   const seconds = Math.floor((timeLeft % (1000 * 60)) / 1000);
 
+  const duelType = Number(duel.duelType || 0); // 0 = PRICE, 1 = DATA
+  const isDataDuel = duelType === 1;
+
   const feedId = duel.feedId as string;
-  const feedName =
-    Object.keys(FEED_IDS).find(key => FEED_IDS[key].toLowerCase() === feedId.toLowerCase()) ||
-    "Unknown";
-  const symbol = feedName.split("/")[0];
+  const feedName = isDataDuel
+    ? "Data Duel"
+    : Object.keys(FEED_IDS).find(key => FEED_IDS[key].toLowerCase() === feedId.toLowerCase()) ||
+      "Unknown";
+  const symbol = isDataDuel ? "DATA" : feedName.split("/")[0];
 
   // Creator chose playerAPrediction = true means ABOVE/UP
   const creatorPrediction = duel.playerAPrediction;
@@ -52,6 +56,19 @@ export const DuelCard = ({ duel, onJoin, index = 0 }: DuelCardProps) => {
         }`}
       />
 
+      {/* PRICE/DATA badge in top-right */}
+      <div className="absolute top-2 right-2 z-10">
+        <div
+          className={`px-2 py-0.5 rounded text-[10px] font-bold uppercase ${
+            isDataDuel
+              ? "bg-[#06B6D4] text-white"
+              : "bg-[#8B5CF6] text-white"
+          }`}
+        >
+          {isDataDuel ? "DATA" : "PRICE"}
+        </div>
+      </div>
+
       <div className="flex items-center justify-between w-full px-5 py-4 pl-6">
         {/* Asset + Direction */}
         <div className="flex items-center gap-3">
@@ -63,14 +80,16 @@ export const DuelCard = ({ duel, onJoin, index = 0 }: DuelCardProps) => {
             <div className="flex items-center gap-1 text-xs">
               {creatorPrediction ? (
                 <span className="flex items-center gap-0.5 text-[#22C55E]">
-                  <ArrowUpIcon className="w-3 h-3" /> UP
+                  <ArrowUpIcon className="w-3 h-3" /> {isDataDuel ? "ABOVE" : "UP"}
                 </span>
               ) : (
                 <span className="flex items-center gap-0.5 text-[#EF4444]">
-                  <ArrowDownIcon className="w-3 h-3" /> DOWN
+                  <ArrowDownIcon className="w-3 h-3" /> {isDataDuel ? "BELOW" : "DOWN"}
                 </span>
               )}
-              <span className="text-slate-500">by creator</span>
+              <span className="text-slate-500">
+                {isDataDuel ? "threshold" : "by creator"}
+              </span>
             </div>
           </div>
         </div>

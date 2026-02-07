@@ -4,18 +4,21 @@ import { useState, useEffect } from "react";
 import { formatEther } from "viem";
 import { useAccount } from "wagmi";
 import { motion } from "framer-motion";
-import { useScaffoldReadContract, useScaffoldWriteContract } from "~~/hooks/scaffold-eth";
+import { useScaffoldReadContract, useScaffoldWriteContract, useScaffoldEventHistory } from "~~/hooks/scaffold-eth";
 import { PriceTicker } from "~~/components/degenduel/PriceTicker";
 import { ActiveDuel } from "~~/components/degenduel/ActiveDuel";
 import { CreateDuel } from "~~/components/degenduel/CreateDuel";
+import { AIHintCard } from "~~/components/degenduel/AIHintCard";
 import { DuelCard } from "~~/components/degenduel/DuelCard";
 import { Leaderboard } from "~~/components/degenduel/Leaderboard";
-import { fireWinConfetti } from "~~/components/degenduel/WinConfetti";
+import { fireWinConfetti, fireBonusConfetti } from "~~/components/degenduel/WinConfetti";
+import { notification } from "~~/utils/scaffold-eth";
 
 const Dashboard = () => {
   useAccount();
   const [activeDuel, setActiveDuel] = useState<any>(null);
   const [isSettling, setIsSettling] = useState(false);
+  const [bonusTriggeredDuels, setBonusTriggeredDuels] = useState<Set<bigint>>(new Set());
 
   const { data: openDuels } = useScaffoldReadContract({
     contractName: "DegenDuel",
@@ -32,6 +35,14 @@ const Dashboard = () => {
   const { data: stats } = useScaffoldReadContract({
     contractName: "DegenDuel",
     functionName: "getProtocolStats",
+    watch: true,
+  });
+
+  // Watch for BonusTriggered events
+  const { data: bonusEvents } = useScaffoldEventHistory({
+    contractName: "DegenDuel",
+    eventName: "BonusTriggered",
+    fromBlock: 0n,
     watch: true,
   });
 
@@ -62,6 +73,25 @@ const Dashboard = () => {
       setActiveDuel(openDuels[0]);
     }
   }, [openDuels, activeDuel]);
+
+  // Handle bonus events
+  useEffect(() => {
+    if (bonusEvents && bonusEvents.length > 0) {
+      bonusEvents.forEach((event: any) => {
+        const duelId = event.args?.duelId;
+        if (duelId && !bonusTriggeredDuels.has(duelId)) {
+          // New bonus event detected
+          setBonusTriggeredDuels(prev => new Set(prev).add(duelId));
+
+          // Fire bonus confetti
+          fireBonusConfetti();
+
+          // Show notification
+          notification.success("2X BONUS TRIGGERED! 🎰 RNG gods smile upon this duel!");
+        }
+      });
+    }
+  }, [bonusEvents]);
 
   const { writeContractAsync } = useScaffoldWriteContract("DegenDuel");
 
@@ -104,7 +134,7 @@ const Dashboard = () => {
 
   const openDuelsList = Array.isArray(openDuels) ? openDuels : [];
   const activeDuelsList = Array.isArray(activeDuels) ? activeDuels : [];
-  console.log("Active duels count:", activeDuelsList.length); // Use activeDuelsList to prevent lint error
+  void activeDuelsList; // referenced in JSX below
 
   return (
     <div className="min-h-screen">
@@ -158,6 +188,7 @@ const Dashboard = () => {
               entryPrice={entryPrice}
               onSettle={handleSettlePriceDuel}
               isSettling={isSettling}
+              bonusTriggered={activeDuel?.id ? bonusTriggeredDuels.has(activeDuel.id) : false}
             />
           </motion.div>
 
@@ -169,6 +200,8 @@ const Dashboard = () => {
             className="lg:col-span-2 space-y-6"
           >
             <CreateDuel />
+
+            <AIHintCard />
 
             {/* Active Duels List (ready to settle) */}
             {activeDuelsList.length > 0 && (

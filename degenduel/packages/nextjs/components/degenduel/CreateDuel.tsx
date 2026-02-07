@@ -15,6 +15,7 @@ const FEED_IDS = {
 } as const;
 
 type FeedName = keyof typeof FEED_IDS;
+type DuelMode = "PRICE" | "DATA";
 
 const ASSET_PILLS = [
   { name: "BTC", feed: "BTC/USD" as FeedName },
@@ -25,11 +26,16 @@ const ASSET_PILLS = [
 ];
 
 export const CreateDuel = () => {
+  const [duelMode, setDuelMode] = useState<DuelMode>("PRICE");
   const [selectedFeed, setSelectedFeed] = useState<FeedName>("BTC/USD");
   const [prediction, setPrediction] = useState<"UP" | "DOWN" | null>(null);
   const [stake, setStake] = useState("");
   const [isCreating, setIsCreating] = useState(false);
   const [isWaiting, setIsWaiting] = useState(false);
+
+  // Data duel specific state
+  const [dataSource, setDataSource] = useState("");
+  const [dataThreshold, setDataThreshold] = useState("");
 
   const { writeContractAsync } = useScaffoldWriteContract("DegenDuel");
 
@@ -60,29 +66,52 @@ export const CreateDuel = () => {
 
       setIsCreating(true);
 
-      // Use current price as threshold (they're betting on direction from now)
-      const thresholdScaled = priceData
-        ? (priceData[0] as bigint)
-        : BigInt(0);
+      if (duelMode === "PRICE") {
+        // Use current price as threshold (they're betting on direction from now)
+        const thresholdScaled = priceData
+          ? (priceData[0] as bigint)
+          : BigInt(0);
 
-      // Deadline 90 seconds from now
-      const deadlineTimestamp = BigInt(Math.floor(Date.now() / 1000) + 90);
+        // Deadline 90 seconds from now
+        const deadlineTimestamp = BigInt(Math.floor(Date.now() / 1000) + 90);
 
-      await writeContractAsync({
-        functionName: "createPriceDuel",
-        args: [
-          FEED_IDS[selectedFeed] as `0x${string}`,
-          thresholdScaled,
-          priceDecimals,
-          deadlineTimestamp,
-          prediction === "UP",
-        ],
-        value: parseEther(stake),
-      });
+        await writeContractAsync({
+          functionName: "createPriceDuel",
+          args: [
+            FEED_IDS[selectedFeed] as `0x${string}`,
+            thresholdScaled,
+            priceDecimals,
+            deadlineTimestamp,
+            prediction === "UP",
+          ],
+          value: parseEther(stake),
+        });
+      } else {
+        // DATA mode
+        const threshold = parseFloat(dataThreshold);
+        if (isNaN(threshold)) {
+          return;
+        }
+
+        // Deadline 300 seconds (5 min) from now for data duels
+        const deadlineTimestamp = BigInt(Math.floor(Date.now() / 1000) + 300);
+
+        await writeContractAsync({
+          functionName: "createDataDuel",
+          args: [
+            BigInt(Math.floor(threshold)),
+            deadlineTimestamp,
+            prediction === "UP", // UP = ABOVE, DOWN = BELOW
+          ],
+          value: parseEther(stake),
+        });
+      }
 
       setIsWaiting(true);
       setStake("");
       setPrediction(null);
+      setDataSource("");
+      setDataThreshold("");
     } catch (error: any) {
       console.error("Error creating duel:", error);
     } finally {
@@ -125,33 +154,97 @@ export const CreateDuel = () => {
       <div className="p-6">
         {/* Header */}
         <h2 className="text-xl font-bold text-gradient mb-1">CREATE A DUEL</h2>
-        <p className="text-xs text-slate-500 mb-5">Pick an asset, predict the direction, stake your FLR</p>
+        <p className="text-xs text-slate-500 mb-5">
+          {duelMode === "PRICE"
+            ? "Pick an asset, predict the direction, stake your FLR"
+            : "Bet on external API data via Flare FDC attestation"}
+        </p>
 
-        {/* Asset selector pills */}
-        <div className="flex gap-2 mb-5 flex-wrap">
-          {ASSET_PILLS.map(asset => (
-            <motion.button
-              key={asset.feed}
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-              onClick={() => setSelectedFeed(asset.feed)}
-              className={`px-4 py-2 rounded-lg font-bold text-sm transition-all ${
-                selectedFeed === asset.feed
-                  ? "bg-[#8B5CF6] text-white border-glow-purple"
-                  : "bg-[rgba(139,92,246,0.1)] text-slate-400 hover:text-white hover:bg-[rgba(139,92,246,0.2)]"
-              }`}
-            >
-              {asset.name}
-            </motion.button>
-          ))}
+        {/* PRICE/DATA mode toggle */}
+        <div className="flex gap-2 mb-5">
+          <motion.button
+            whileHover={{ scale: 1.02 }}
+            whileTap={{ scale: 0.98 }}
+            onClick={() => setDuelMode("PRICE")}
+            className={`flex-1 px-4 py-2 rounded-lg font-bold text-sm transition-all ${
+              duelMode === "PRICE"
+                ? "bg-[#8B5CF6] text-white border-glow-purple"
+                : "bg-[rgba(139,92,246,0.1)] text-slate-400 hover:text-white hover:bg-[rgba(139,92,246,0.2)]"
+            }`}
+          >
+            PRICE
+          </motion.button>
+          <motion.button
+            whileHover={{ scale: 1.02 }}
+            whileTap={{ scale: 0.98 }}
+            onClick={() => setDuelMode("DATA")}
+            className={`flex-1 px-4 py-2 rounded-lg font-bold text-sm transition-all ${
+              duelMode === "DATA"
+                ? "bg-[#06B6D4] text-white border-glow-cyan"
+                : "bg-[rgba(6,182,212,0.1)] text-slate-400 hover:text-white hover:bg-[rgba(6,182,212,0.2)]"
+            }`}
+          >
+            DATA
+          </motion.button>
         </div>
 
-        {/* Current price */}
-        <div className="mb-5 p-3 rounded-lg bg-[rgba(139,92,246,0.05)] border border-[rgba(139,92,246,0.15)]">
-          <div className="text-xs text-slate-500">Current {selectedFeed} Price</div>
-          <div className="font-mono text-xl font-bold text-slate-100 tabular-nums">${currentPrice}</div>
-          <div className="text-xs text-slate-500 mt-0.5">via Flare FTSO v2 -- updates every ~1.8s</div>
-        </div>
+        {duelMode === "PRICE" ? (
+          <>
+            {/* Asset selector pills */}
+            <div className="flex gap-2 mb-5 flex-wrap">
+              {ASSET_PILLS.map(asset => (
+                <motion.button
+                  key={asset.feed}
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
+                  onClick={() => setSelectedFeed(asset.feed)}
+                  className={`px-4 py-2 rounded-lg font-bold text-sm transition-all ${
+                    selectedFeed === asset.feed
+                      ? "bg-[#8B5CF6] text-white border-glow-purple"
+                      : "bg-[rgba(139,92,246,0.1)] text-slate-400 hover:text-white hover:bg-[rgba(139,92,246,0.2)]"
+                  }`}
+                >
+                  {asset.name}
+                </motion.button>
+              ))}
+            </div>
+
+            {/* Current price */}
+            <div className="mb-5 p-3 rounded-lg bg-[rgba(139,92,246,0.05)] border border-[rgba(139,92,246,0.15)]">
+              <div className="text-xs text-slate-500">Current {selectedFeed} Price</div>
+              <div className="font-mono text-xl font-bold text-slate-100 tabular-nums">${currentPrice}</div>
+              <div className="text-xs text-slate-500 mt-0.5">via Flare FTSO v2 -- updates every ~1.8s</div>
+            </div>
+          </>
+        ) : (
+          <>
+            {/* Data source input (cosmetic) */}
+            <div className="mb-4">
+              <label className="text-xs text-slate-500 mb-1.5 block">Data Source (description)</label>
+              <input
+                type="text"
+                placeholder="e.g., BTC Fear & Greed Index, ETH Gas Price"
+                value={dataSource}
+                onChange={e => setDataSource(e.target.value)}
+                className="w-full py-3 px-4 rounded-xl bg-[rgba(8,11,22,0.6)] border border-[rgba(148,163,184,0.1)] text-slate-100 text-sm placeholder:text-slate-600 focus:outline-none focus:border-[#06B6D4] focus:border-glow-cyan transition-all"
+              />
+            </div>
+
+            {/* Data threshold input */}
+            <div className="mb-5 p-3 rounded-lg bg-[rgba(6,182,212,0.05)] border border-[rgba(6,182,212,0.15)]">
+              <label className="text-xs text-slate-500 mb-1.5 block">Threshold Value</label>
+              <input
+                type="number"
+                placeholder="Enter numeric threshold"
+                value={dataThreshold}
+                onChange={e => setDataThreshold(e.target.value)}
+                step="1"
+                className="w-full py-2 px-3 rounded-lg bg-[rgba(8,11,22,0.6)] border border-[rgba(148,163,184,0.1)] text-slate-100 font-mono text-lg placeholder:text-slate-600 focus:outline-none focus:border-[#06B6D4] transition-all"
+              />
+              <div className="text-xs text-slate-500 mt-2">External data will be fetched via FDC attestation</div>
+            </div>
+          </>
+        )}
 
         {/* Direction selector */}
         <div className="flex gap-3 mb-5">
@@ -166,7 +259,7 @@ export const CreateDuel = () => {
             }`}
           >
             <ArrowUpIcon className="w-6 h-6" />
-            UP
+            {duelMode === "PRICE" ? "UP" : "ABOVE"}
           </motion.button>
           <motion.button
             whileHover={{ scale: 1.02 }}
@@ -179,7 +272,7 @@ export const CreateDuel = () => {
             }`}
           >
             <ArrowDownIcon className="w-6 h-6" />
-            DOWN
+            {duelMode === "PRICE" ? "DOWN" : "BELOW"}
           </motion.button>
         </div>
 
@@ -199,7 +292,9 @@ export const CreateDuel = () => {
               FLR
             </div>
           </div>
-          <div className="text-xs text-slate-500 mt-1.5 pl-1">Min stake: 0.01 FLR | Duel settles in 90 seconds</div>
+          <div className="text-xs text-slate-500 mt-1.5 pl-1">
+            Min stake: 0.01 FLR | Duel settles in {duelMode === "PRICE" ? "90 seconds" : "5 minutes"}
+          </div>
         </div>
 
         {/* Challenge button */}
