@@ -1,0 +1,148 @@
+Submissions
+Please create an account on dorahacks.io and join the hackathon. 
+
+Also register and join the ETH Oxford 2026 Discord. 
+WiFi
+Please only connect ONE device to a WiFi network for the duration of the event, and turn off WiFi on all other devices.
+This is to conserve bandwidth and ensure all hackers can use the tools needed to produce the best submission possible.
+There are two WiFi networks available - Eduroam and The Cloud, please only connect to ONE.
+If you can use Eduroam, please connect to that network to allow as much capacity as possible for those who cannot.
+Instructions for joining The Cloud if needed
+Hackathon Rules
+Maximum Team Size of 3
+Can only submit to 1 Main Track.
+Can only submit to a maximum of 2 non-main tracks.
+Schedule
+For room references e.g L1 or C2 see the Map below the schedule.
+Friday
+18:00 - Doors open
+19:00 - Keynote in L1 and L2
+20:15 - Workshops, Flare in L4, Sui in L5
+21:30 - Dinner
+Saturday
+09:00 - Breakfast
+12:00 - Effectful Programming QnA, L6
+13:00 - Lunch, Paella, served at the front of the building.
+14:00 - Flare Technical Workshop, L6
+15:00 - Ledger Workshop, 100+ Wallet Giveaway, L6
+19:00 - Dinner, Pizza, served at the front of the building.
+Sunday
+10:00 - Brunch
+!!!12:00 - Submission Deadline!!!
+14:00 to 16:00 - Selected Projects pitch to Main Track Judges in C1, C2, C3 or C4
+17:00 - Closing Ceremony + Winners Announced, L1
+18:00 - Hackathon Ends
+Venue Map
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Health + Safety
+Please don't move furniture, plug extension leads into each other, or sleep outside of the designated sleeping rooms.
+If there are any spillages, any electrical outlets stop working / spark, any part of the building is damaged or anyone is injured, please alert a member of staff immediately.
+The front doors to the venue lock at midnight, if you need to leave and return then please ensure someone inside the building knows you are leaving so you can be let back in.
+Please do not vape or smoke near the building. The smoking area is next to the main road when you leave the front of the building.
+
+
+
+
+
+
+Track
+Prizes - $10,000 + Sui Merch!
+Getting Started
+Complete the Sui Object Model Workshop
+Learn about Sui’s object model by following the instructions in this repository’s README.
+The first 100 to complete this workshop will receive an exclusive Sui hoodie and can move on to compete for the $10,000 in prizes. 
+Getting testnet SUI
+Once you start the workshop, you will need to fund your account with testnet tokens. Use this dedicated hackathon faucet to get all of the testnet credits you need—use code sui@oxford2026. 
+Capture the Flags!
+The first 20 students who capture the most flags before the hackathon ends each get $500!
+Follow up
+Sui Developer Newsletter
+Join our Developer Newsletter to stay up to date with what is happening and for more opportunities to hack after EthOxford!
+
+---
+
+## SUI CTF COMPLETION STATUS (Updated: 2026-02-07)
+
+### Your Wallet
+Address: 0xb5fd3b667b914bc8c39d42aff4c744f80ad561b826c5262d7e797d7fd8c76783
+SuiScan: https://suiscan.xyz/testnet/account/0xb5fd3b667b914bc8c39d42aff4c744f80ad561b826c5262d7e797d7fd8c76783/portfolio
+
+### CTF Completion: 4/4 FLAGS CAPTURED ✓
+
+1. **Merchant Flag**: 0xeabf905811b81a68f40e54de321077f7ab5c83ae95c9f3e0fdbd139b8193ba5b
+2. **Staking Flag**: 0x0031ade8757300e6ab65a9ffd9aea4409aeeb00a58730fb2e09dc5e259a69256
+3. **Moving Window Flag**: 0x27b404cf27d4e6c2f0deef28f2591d2a92ed6b63b375cf648491a66d726008d6
+4. **Lootbox Flag**: 0x32dbcde82057269f78cfce21032da9643242b1a940a098daf0ea20c35c6ec5fd
+
+### ⚠️ CRITICAL: PACKAGE ID VERIFICATION REQUIRED
+- Your WRITEUP shows: 0x96662054f048469d560c7d5d74b79a44c12f79a8e017e45b1ad85857c6891fdf
+- Form mentions: 0x96662054f048469d560c7d5d74b7e6e017e45b1ad85857c6891fdf
+- **ACTION: Verify correct package ID on SuiScan before submitting!**
+
+### Submission Deadline: Sunday, Feb 8, 2026 - 12:00 (noon)
+**Time remaining: ~24 hours**
+
+### Prize: £500 (Top 20 students with most flags)
+**Your status: 4/4 flags = MAXIMUM possible ✓**
+
+---
+
+## ETH OXFORD 2026 - TIMELINE & SUBMISSION INFO
+
+### Key Dates
+- Friday, Feb 6: Hackathon started (18:00)
+- Saturday, Feb 7: Technical workshops (TODAY)
+- **Sunday, Feb 8, 12:00: SUBMISSION DEADLINE** ⚠️
+- Sunday, Feb 8, 14:00-16:00: Selected projects pitch
+- Sunday, Feb 8, 17:00: Winners announced
+
+### Submission Platforms
+1. **TAIKAI**: Main track submissions (https://taikai.network/en/home-dao/hackathons/ethoxford)
+2. **Mintycode**: Sponsor bounties (https://mintycode.io/hackathon/eth-oxford)
+3. **Sui CTF**: Separate Google Form (current priority)
+
+### Hackathon Rules (from info-dump)
+- Maximum team size: 3
+- Can submit to 1 Main Track only
+- Can submit to max 2 non-main tracks (sponsor bounties)
+
+---
+
+## NEXT ACTIONS (PRIORITY ORDER)
+
+### URGENT: Sui CTF Submission (24 hours remaining)
+1. ✅ Read SUI_CTF_SUBMISSION_GUIDE.md in .claude/agent_logs/
+2. ⚠️ VERIFY package ID on SuiScan (close Chrome first if needed)
+3. Fill out Google Form with exact values
+4. Submit before Sunday 12:00 noon
+5. Screenshot submission for proof
+
+### High Priority: DegenDuel (ETH Oxford Main Track)
+1. Continue frontend development
+2. Prepare demo video/materials
+3. Write submission descriptions for TAIKAI and Mintycode
+4. Submit before Sunday 12:00 noon
+
+### To Investigate: Discord Scraping
+- Log into ETH Oxford Discord
+- Check for submission requirements updates
+- Find Sui CTF Google Form link (if different from what you have)
+- Document any additional requirements
+
+
+

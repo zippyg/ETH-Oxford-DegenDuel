@@ -1,0 +1,233 @@
+"use client";
+
+import { useState } from "react";
+import { parseEther } from "viem";
+import { motion } from "framer-motion";
+import { ArrowUpIcon, ArrowDownIcon } from "@heroicons/react/24/solid";
+import { useScaffoldReadContract, useScaffoldWriteContract } from "~~/hooks/scaffold-eth";
+
+const FEED_IDS = {
+  "FLR/USD": "0x01464c522f55534400000000000000000000000000",
+  "BTC/USD": "0x014254432f55534400000000000000000000000000",
+  "ETH/USD": "0x014554482f55534400000000000000000000000000",
+  "XRP/USD": "0x015852502f55534400000000000000000000000000",
+  "SOL/USD": "0x01534f4c2f55534400000000000000000000000000",
+} as const;
+
+type FeedName = keyof typeof FEED_IDS;
+
+const ASSET_PILLS = [
+  { name: "BTC", feed: "BTC/USD" as FeedName },
+  { name: "ETH", feed: "ETH/USD" as FeedName },
+  { name: "FLR", feed: "FLR/USD" as FeedName },
+  { name: "XRP", feed: "XRP/USD" as FeedName },
+  { name: "SOL", feed: "SOL/USD" as FeedName },
+];
+
+export const CreateDuel = () => {
+  const [selectedFeed, setSelectedFeed] = useState<FeedName>("BTC/USD");
+  const [prediction, setPrediction] = useState<"UP" | "DOWN" | null>(null);
+  const [stake, setStake] = useState("");
+  const [isCreating, setIsCreating] = useState(false);
+  const [isWaiting, setIsWaiting] = useState(false);
+
+  const { writeContractAsync } = useScaffoldWriteContract("DegenDuel");
+
+  const { data: priceData } = useScaffoldReadContract({
+    contractName: "DegenDuel",
+    functionName: "getCurrentPrice",
+    args: [FEED_IDS[selectedFeed] as `0x${string}`],
+    watch: true,
+  });
+
+  const currentPrice =
+    priceData && Array.isArray(priceData) && priceData.length >= 2
+      ? (Number(priceData[0]) / Math.pow(10, Math.abs(Number(priceData[1])))).toFixed(4)
+      : "---";
+
+  const priceDecimals =
+    priceData && Array.isArray(priceData) && priceData.length >= 2 ? Number(priceData[1]) : -5;
+
+  const handleCreate = async () => {
+    try {
+      if (!prediction) {
+        return;
+      }
+      const stakeAmount = parseFloat(stake);
+      if (isNaN(stakeAmount) || stakeAmount < 0.01) {
+        return;
+      }
+
+      setIsCreating(true);
+
+      // Use current price as threshold (they're betting on direction from now)
+      const thresholdScaled = priceData
+        ? (priceData[0] as bigint)
+        : BigInt(0);
+
+      // Deadline 90 seconds from now
+      const deadlineTimestamp = BigInt(Math.floor(Date.now() / 1000) + 90);
+
+      await writeContractAsync({
+        functionName: "createPriceDuel",
+        args: [
+          FEED_IDS[selectedFeed] as `0x${string}`,
+          thresholdScaled,
+          priceDecimals,
+          deadlineTimestamp,
+          prediction === "UP",
+        ],
+        value: parseEther(stake),
+      });
+
+      setIsWaiting(true);
+      setStake("");
+      setPrediction(null);
+    } catch (error: any) {
+      console.error("Error creating duel:", error);
+    } finally {
+      setIsCreating(false);
+    }
+  };
+
+  // Waiting for opponent state
+  if (isWaiting) {
+    return (
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        className="rounded-2xl gradient-border p-6 flex flex-col items-center justify-center min-h-[300px] animate-pulse-glow"
+      >
+        <motion.div
+          animate={{ rotate: 360 }}
+          transition={{ repeat: Infinity, duration: 2, ease: "linear" }}
+          className="w-12 h-12 rounded-full border-2 border-[#8B5CF6] border-t-transparent mb-4"
+        />
+        <h3 className="text-lg font-bold text-gradient mb-2">Duel Created!</h3>
+        <p className="text-slate-400 text-sm text-center">Waiting for an opponent to accept your challenge...</p>
+        <button
+          className="mt-4 btn btn-sm btn-ghost text-slate-500"
+          onClick={() => setIsWaiting(false)}
+        >
+          Create Another
+        </button>
+      </motion.div>
+    );
+  }
+
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.4, delay: 0.1 }}
+      className="rounded-2xl gradient-border overflow-hidden"
+    >
+      <div className="p-6">
+        {/* Header */}
+        <h2 className="text-xl font-bold text-gradient mb-1">CREATE A DUEL</h2>
+        <p className="text-xs text-slate-500 mb-5">Pick an asset, predict the direction, stake your FLR</p>
+
+        {/* Asset selector pills */}
+        <div className="flex gap-2 mb-5 flex-wrap">
+          {ASSET_PILLS.map(asset => (
+            <motion.button
+              key={asset.feed}
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+              onClick={() => setSelectedFeed(asset.feed)}
+              className={`px-4 py-2 rounded-lg font-bold text-sm transition-all ${
+                selectedFeed === asset.feed
+                  ? "bg-[#8B5CF6] text-white border-glow-purple"
+                  : "bg-[rgba(139,92,246,0.1)] text-slate-400 hover:text-white hover:bg-[rgba(139,92,246,0.2)]"
+              }`}
+            >
+              {asset.name}
+            </motion.button>
+          ))}
+        </div>
+
+        {/* Current price */}
+        <div className="mb-5 p-3 rounded-lg bg-[rgba(139,92,246,0.05)] border border-[rgba(139,92,246,0.15)]">
+          <div className="text-xs text-slate-500">Current {selectedFeed} Price</div>
+          <div className="font-mono text-xl font-bold text-slate-100 tabular-nums">${currentPrice}</div>
+          <div className="text-xs text-slate-500 mt-0.5">via Flare FTSO v2 -- updates every ~1.8s</div>
+        </div>
+
+        {/* Direction selector */}
+        <div className="flex gap-3 mb-5">
+          <motion.button
+            whileHover={{ scale: 1.02 }}
+            whileTap={{ scale: 0.98 }}
+            onClick={() => setPrediction("UP")}
+            className={`flex-1 py-4 rounded-xl font-bold text-lg flex items-center justify-center gap-2 transition-all ${
+              prediction === "UP"
+                ? "bg-[#22C55E] text-white border-glow-green shadow-lg"
+                : "bg-[rgba(34,197,94,0.1)] text-[#22C55E]/60 border border-[#22C55E]/20 hover:bg-[rgba(34,197,94,0.15)]"
+            }`}
+          >
+            <ArrowUpIcon className="w-6 h-6" />
+            UP
+          </motion.button>
+          <motion.button
+            whileHover={{ scale: 1.02 }}
+            whileTap={{ scale: 0.98 }}
+            onClick={() => setPrediction("DOWN")}
+            className={`flex-1 py-4 rounded-xl font-bold text-lg flex items-center justify-center gap-2 transition-all ${
+              prediction === "DOWN"
+                ? "bg-[#EF4444] text-white border-glow-red shadow-lg"
+                : "bg-[rgba(239,68,68,0.1)] text-[#EF4444]/60 border border-[#EF4444]/20 hover:bg-[rgba(239,68,68,0.15)]"
+            }`}
+          >
+            <ArrowDownIcon className="w-6 h-6" />
+            DOWN
+          </motion.button>
+        </div>
+
+        {/* Stake input */}
+        <div className="mb-5">
+          <div className="relative">
+            <input
+              type="number"
+              placeholder="0.01"
+              value={stake}
+              onChange={e => setStake(e.target.value)}
+              step="0.01"
+              min="0.01"
+              className="w-full py-3 px-4 pr-16 rounded-xl bg-[rgba(8,11,22,0.6)] border border-[rgba(148,163,184,0.1)] text-slate-100 font-mono text-lg placeholder:text-slate-600 focus:outline-none focus:border-[#8B5CF6] focus:border-glow-purple transition-all"
+            />
+            <div className="absolute right-3 top-1/2 -translate-y-1/2 text-sm font-bold text-[#F59E0B]">
+              FLR
+            </div>
+          </div>
+          <div className="text-xs text-slate-500 mt-1.5 pl-1">Min stake: 0.01 FLR | Duel settles in 90 seconds</div>
+        </div>
+
+        {/* Challenge button */}
+        <motion.button
+          whileHover={{ scale: 1.01 }}
+          whileTap={{ scale: 0.98 }}
+          disabled={isCreating || !prediction || !stake || parseFloat(stake) < 0.01}
+          onClick={handleCreate}
+          className={`w-full py-4 rounded-xl font-bold text-lg transition-all btn-glow ${
+            isCreating || !prediction || !stake || parseFloat(stake) < 0.01
+              ? "bg-slate-800 text-slate-500 cursor-not-allowed"
+              : "bg-gradient-to-r from-[#8B5CF6] to-[#6D28D9] text-white hover:from-[#7C3AED] hover:to-[#5B21B6]"
+          }`}
+        >
+          {isCreating ? (
+            <span className="flex items-center justify-center gap-2">
+              <motion.span
+                animate={{ rotate: 360 }}
+                transition={{ repeat: Infinity, duration: 1, ease: "linear" }}
+                className="w-5 h-5 rounded-full border-2 border-white border-t-transparent inline-block"
+              />
+              Creating...
+            </span>
+          ) : (
+            "CHALLENGE"
+          )}
+        </motion.button>
+      </div>
+    </motion.div>
+  );
+};
