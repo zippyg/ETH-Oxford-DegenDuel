@@ -1,0 +1,177 @@
+Submissions
+Please create an account on dorahacks.io and join the hackathon. 
+
+Also register and join the ETH Oxford 2026 Discord. 
+WiFi
+Please only connect ONE device to a WiFi network for the duration of the event, and turn off WiFi on all other devices.
+This is to conserve bandwidth and ensure all hackers can use the tools needed to produce the best submission possible.
+There are two WiFi networks available - Eduroam and The Cloud, please only connect to ONE.
+If you can use Eduroam, please connect to that network to allow as much capacity as possible for those who cannot.
+Instructions for joining The Cloud if needed
+Hackathon Rules
+Maximum Team Size of 3
+Can only submit to 1 Main Track.
+Can only submit to a maximum of 2 non-main tracks.
+Schedule
+For room references e.g L1 or C2 see the Map below the schedule.
+Friday
+18:00 - Doors open
+19:00 - Keynote in L1 and L2
+20:15 - Workshops, Flare in L4, Sui in L5
+21:30 - Dinner
+Saturday
+09:00 - Breakfast
+12:00 - Effectful Programming QnA, L6
+13:00 - Lunch, Paella, served at the front of the building.
+14:00 - Flare Technical Workshop, L6
+15:00 - Ledger Workshop, 100+ Wallet Giveaway, L6
+19:00 - Dinner, Pizza, served at the front of the building.
+Sunday
+10:00 - Brunch
+!!!12:00 - Submission Deadline!!!
+14:00 to 16:00 - Selected Projects pitch to Main Track Judges in C1, C2, C3 or C4
+17:00 - Closing Ceremony + Winners Announced, L1
+18:00 - Hackathon Ends
+Venue Map
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Health + Safety
+Please don't move furniture, plug extension leads into each other, or sleep outside of the designated sleeping rooms.
+If there are any spillages, any electrical outlets stop working / spark, any part of the building is damaged or anyone is injured, please alert a member of staff immediately.
+The front doors to the venue lock at midnight, if you need to leave and return then please ensure someone inside the building knows you are leaving so you can be let back in.
+Please do not vape or smoke near the building. The smoking area is next to the main road when you leave the front of the building.
+
+
+
+
+
+Participate in the ETH Oxford treasure hunt and win your share of $2000!
+During ETH Oxford you have the chance to earn your share of a total prize pool of $2000 worth of RATE with weRate! 
+
+🎯 How to participate
+
+Download the weRate mobile app via https://get.werate.io/
+Use the invite code OXFORDRATES and immediately claim 1500 RATE
+Earn points by checking in and reviewing any location in Oxford between 5 and 10 february
+Checking in at ETHOxford main event +2 points
+Reviewing ETHOxford main event +5 points
+Checking in at any restaurant, bar, cafe, store, gym, etc… in Oxford +1 point. If you add a review +1 extra point
+Track your score on https://ethoxford.werate.io/
+Every point = 1 raffle ticket. At the end of the period we draw the winners of the $500 USD prize pool and distribute the RATE automatically in our app
+
+Additionally, every action you do will also count in the general weekly and monthly weRate leaderboards, with an additional $1.5k USD up for grabs!
+
+See you in Oxford!
+
+Brecht Van Craen
+Founder weRate
+
+
+Plasma Payments Bounty ($5,000)
+Overview
+Plasma is a L1 blockchain purpose-built for stablecoin payments.
+
+We’re sponsoring a $5,000 bounty for teams building new and practical onchain payment experiences and tools. We’re interested in projects that improve or innovate on how people send, receive, and understand stablecoin payments, with an emphasis on usability and real-world relevance.
+
+Submissions should focus on payments and may optionally align with one of the areas below.
+Focus Areas
+
+Projects may include (but are not limited to):
+Enhancing privacy and confidentiality in onchain payments
+Improvements to the speed and efficiency of stablecoin settlement
+Increasing stablecoin accessibility (i.e. account recovery, new signing options, better discoverability, safety improvements)
+
+Submission Requirements
+Public GitHub repository
+Demo video showing the project in use. Terminal records will be accepted too.
+Short written explanation of the idea and implementationLive or deployed demo is a plus, but not required
+
+Judging Criteria
+Relevance to payments
+Quality of execution
+Clarity of user experience
+Originality of the idea
+
+Sui @ EthOxford Starter Pack
+Prizes - $10,000 + Sui Merch!
+Here you will find track information, a step-by-step guide to get started, and resources for after the hackathon
+https://docs.google.com/document/d/1-c4hbEk2NDAuo6LVJodOQw9Ltsw-oTkU6eOaY2AVthM/edit?tab=t.0#heading=h.6r9gzce4qsc3
+Google Docs
+[External] Sui @EthOxford Starter Pack
+💧Sui @ EthOxford Starter Pack Welcome to the Sui @ EthOxford starter pack! 👋 Here you will find track information, a step-by-step guide to get started, and resources for after the hackathon. Before the hackathon, you can contact the Sui DevRel team by sending a message to DanTheMan8300 on Teleg...
+Image
+
+💰 Bounties and Prizes [$10K in Total]
+MAIN TRACK: Use data protocols on Flare blockchain in an innovative and world changing way!
+Use protocols on Flare blockchain in an innovative and world changing way!
+
+Build dApps utilizing at least one of Flare’s Enshrined Data Protocols:
+
+    FTSO (Flare Time Series Oracle) for price feeds.
+    FDC (Flare Data Connector) for Web3 and Web2 data sources,
+    Flare’s Secure Random Number Generator, or
+    FAssets to build dApps that use FXRP (synthetic XRP on Flare) bringing non-smart-contract XRP into DeFi.
+
+Prizes:
+    1st prize - $5,000
+    2nd prize - $2,000
+    3rd prize - $1,000
+
+Judging criteria:
+    dApps must make use of at least one of Flare's enshrined Data Protocols.
+    dApps must address real-world problems, or cater to specific use cases to be impactful.
+    add Feedback in the README describing your experience with building on Flare.
+
+BONUS TRACK: Most innovative external data source use case or most innovative cross chain application secured by Flare’s protocols
+Show innovation by utilizing real world data in an on chain application (can be combined with Main track or other bounties).
+    $1,000 x2
+
+Full brief, workshops and technical details here - https://flare-network.notion.site/Flare-Hackathon-Guide-ETH-Oxford-2026-2e6d502e6fa680598c39c7103e3c4763
+flare-network on Notion
+Flare Hackathon Guide - ETH Oxford 2026 | Notion
+JOIN OUR WORKSHOPS:
+Flare Hackathon Guide - ETH Oxford 2026 | Notion
+
+# Effectful Programming Core Bounty - $1,500
+
+Build anything (any domain, any UI, any stack). The only thing we care about: effectful programming is the core architectural paradigm of your submission.
+
+Prizes
+
+* 🥇 $1,000 - 1st place
+* 🥈 $500 - 2nd place
+
+## What "effectful programming core" means
+
+Your app’s primary control flow should be expressed in an effect system (or effect-typed abstraction) where side effects are explicit, composable, and controlled.
+
+Effects include (non-exhaustive): I/O, persistence, network calls, time, randomness, concurrency, cancellation, resource acquisition/release, logging/telemetry, errors/retries.
+
+We’re looking for projects where:
+
+* effects are modeled explicitly (not scattered ad-hoc),
+* effectful workflows are composed into pipelines/services,
+* execution happens via a runtime/interpreter at the edges,
+* the design makes reasoning, testing, and failure handling *better*, not worse.
+
+
+
+
+
+
+
+

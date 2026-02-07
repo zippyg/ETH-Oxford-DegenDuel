@@ -1,0 +1,10 @@
+[package]
+name = "ctf"
+edition = "2024.beta"
+published-at = "0x96662054f048469d560c7d5d74b79a44c12f79a8e017e45b1ad85857c6891fdf"
+
+[dependencies]
+usdc = { git = "https://github.com/circlefin/stablecoin-sui.git", subdir = "packages/usdc", rev = "master" }
+
+[addresses]
+ctf = "0x96662054f048469d560c7d5d74b79a44c12f79a8e017e45b1ad85857c6891fdf"
