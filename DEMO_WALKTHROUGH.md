@@ -1,468 +1,798 @@
-# DegenDuel: Definitive Demo Walkthrough
+# DegenDuel — Demo Walkthrough (ETH Oxford 2026)
 
-Everything you need to demo DegenDuel from scratch. One path. Every click.
-
----
-
-## Step 1: Install MetaMask
-
-MetaMask is a browser extension that acts as a crypto wallet. It lets you sign transactions, hold tokens, and interact with decentralized apps (dApps) directly from your browser. Without it, you cannot connect to the blockchain.
-
-1. Open Google Chrome
-2. Go to https://metamask.io/download/
-3. Click **"Install MetaMask for Chrome"**
-4. Click **"Add to Chrome"** in the Chrome Web Store popup
-5. Click **"Add Extension"** to confirm
-6. MetaMask opens automatically. Click **"Create a new wallet"**
-7. Agree to the terms
-8. Set a password (this is local to your browser only). Click **"Create a new wallet"**
-9. MetaMask shows you a 12-word Secret Recovery Phrase. **Write it down on paper** (you will not need this for the demo, but MetaMask requires you to back it up)
-10. Confirm the recovery phrase by clicking the words in order
-11. Click **"Got it"**
-12. MetaMask is now installed. You will see a fox icon in the top-right of Chrome (in the extensions toolbar)
-
-You now have one wallet account in MetaMask called "Account 1". This is a brand-new empty wallet. We will NOT use this account. Instead, we will import the pre-funded deployer wallet.
+**Last Updated:** 2026-02-08
+**Demo Type:** Two-player PvP prediction duel
+**Duration:** ~5 minutes (including 90-second duel countdown)
 
 ---
 
-## Step 2: Add the Coston2 Network to MetaMask
+## QUICK REFERENCE
 
-MetaMask defaults to Ethereum mainnet. DegenDuel runs on Flare's Coston2 testnet (a separate blockchain used for testing). You need to tell MetaMask about this network.
+### URLs
+- **Local App:** http://localhost:3000
+- **Vercel (Production):** https://degenduel-five.vercel.app
+- **Landing Page:** http://localhost:3000 (or https://degenduel-five.vercel.app)
+- **Arena Page:** http://localhost:3000/arena (or https://degenduel-five.vercel.app/arena)
+- **Debug Page:** http://localhost:3000/debug (or https://degenduel-five.vercel.app/debug)
+- **Faucet:** https://faucet.flare.network/
+- **Block Explorer:** https://coston2-explorer.flare.network
 
-1. Click the **MetaMask fox icon** in Chrome's toolbar to open MetaMask
-2. Click the **network dropdown** at the top-left (it says "Ethereum Mainnet")
-3. Click **"Add a custom network"** at the bottom of the dropdown (if you see "Add Network" instead, click that, then "Add a network manually")
-4. Fill in these fields exactly:
+### Network Details (Coston2 Testnet)
+- **Chain ID:** 114
+- **RPC URL:** https://coston2-api.flare.network/ext/C/rpc
+- **Currency Symbol:** C2FLR
+- **Block Explorer:** https://coston2-explorer.flare.network
 
-| Field | Value |
-|-------|-------|
-| Network name | `Coston2` |
-| New RPC URL | `https://coston2-api.flare.network/ext/C/rpc` |
-| Chain ID | `114` |
-| Currency symbol | `C2FLR` |
-| Block explorer URL | `https://coston2-explorer.flare.network` |
+### Contract
+- **DegenDuel Address:** `0x835574875C1CB9003c1638E799f3d7c504808960`
+- **Min Stake:** 0.01 FLR
+- **Demo Stake:** 0.5 FLR (for visibility)
+- **Duel Duration:** 90 seconds
+- **Protocol Fee:** 1% on winnings
+- **RNG Bonus:** 10% chance of 2x payout
 
-5. Click **"Save"**
-6. MetaMask switches to the Coston2 network. The top of MetaMask now says "Coston2" and your balance shows `0 C2FLR`
+### Player A (Deployer Wallet)
+- **Address:** `0x332a479FA9E548CFb90e7aF8504534e37E27E764`
+- **Private Key:** `0x91e6c551b499551eb5e0fb15b9db1557652db31fa830cce401c3572d2500699f`
+- **Balance:** ~98 C2FLR
 
----
-
-## Step 3: Import the Deployer Wallet (Player A)
-
-The smart contract was deployed from a wallet that already has ~99 C2FLR (testnet tokens with no real value). This is the wallet you will use as Player A.
-
-1. Click the **MetaMask fox icon** to open MetaMask
-2. Click the **account icon** (colored circle) at the top-right of the MetaMask popup
-3. Click **"Add account or hardware wallet"**
-4. Click **"Import account"**
-5. Make sure "Private Key" is selected in the dropdown
-6. Paste this private key:
-
-```
-0x91e6c551b499551eb5e0fb15b9db1557652db31fa830cce401c3572d2500699f
-```
-
-7. Click **"Import"**
-8. MetaMask creates a new account (likely called "Account 2"). The address displayed should be:
-
-```
-0x332a479FA9E548CFb90e7aF8504534e37E27E764
-```
-
-9. Your balance should show approximately **99 C2FLR** (the exact amount depends on prior usage)
-
-This is your **Player A** wallet. It is pre-funded and ready to use. Rename it now for clarity:
-
-10. Click the **three dots** next to the account name
-11. Click **"Account details"**
-12. Click the **pencil icon** next to the name
-13. Type **"Player A"** and press Enter
+### Player B (Second Wallet)
+- **Generate new wallet in MetaMask**
+- **Fund from faucet:** https://faucet.flare.network/
 
 ---
 
-## Step 4: Create Player B's Wallet
+## PRE-DEMO SETUP
 
-You need a second wallet for the opponent. MetaMask lets you have multiple accounts in the same extension.
+### IMPORTANT: Browser Profile Setup
 
-1. Click the **MetaMask fox icon** to open MetaMask
-2. Click the **account icon** (colored circle) at the top-right
-3. Click **"Add account or hardware wallet"**
-4. Click **"Create a new account"**
-5. Name it **"Player B"**
-6. Click **"Create"**
-7. MetaMask switches to the new "Player B" account. Copy this address (click the address to copy it). The balance is `0 C2FLR`.
+You MUST use two separate Chrome profiles (not just two tabs). MetaMask is profile-specific.
 
-You now need to fund Player B.
+#### Step 1: Create Two Chrome Profiles
 
----
+- [ ] Open Chrome
+- [ ] Click your profile icon (top right)
+- [ ] Click "Add"
+- [ ] Create "Profile 1 - Player A"
+- [ ] Repeat to create "Profile 2 - Player B"
+- [ ] You should now have two Chrome windows, each with a different profile
 
-## Step 5: Fund Player B from the Faucet
+### Part A: Setting Up Profile 1 (Player A)
 
-A faucet is a website that gives out free testnet tokens. The Coston2 faucet gives 100 C2FLR per wallet per 24 hours.
+**Chrome Profile:** Profile 1 - Player A
 
-1. Go to https://faucet.flare.network/coston2
-2. Paste **Player B's address** (the one you copied in Step 4) into the input field
-3. Complete the CAPTCHA if prompted
-4. Click **"Request C2FLR"**
-5. Wait 5-10 seconds. The page will confirm the transfer
-6. Go back to MetaMask and check Player B's balance. It should now show **100 C2FLR**
+#### Install MetaMask
 
-If the faucet is down or rate-limited, you can send C2FLR from Player A to Player B directly:
-1. Switch to the "Player A" account in MetaMask
-2. Click **"Send"**
-3. Paste Player B's address
-4. Enter **5** as the amount
-5. Click **"Next"** then **"Confirm"**
-6. Wait ~3 seconds for the transaction to confirm
-7. Switch to "Player B" in MetaMask. Balance should show **5 C2FLR**
+- [ ] Open Chrome Profile 1
+- [ ] Go to: https://metamask.io/download/
+- [ ] Click "Install MetaMask for Chrome"
+- [ ] Click "Add to Chrome" → "Add extension"
+- [ ] MetaMask welcome page opens automatically
 
----
+#### Create Initial Wallet (Required Before Import)
 
-## Step 6: Deploy to Vercel
+- [ ] Click "Create a new wallet"
+- [ ] Click "I agree" to terms
+- [ ] Create a password: `demo1234` (type it twice)
+- [ ] Click "Create a new wallet"
+- [ ] **Skip the seed phrase backup** — click "Remind me later" (this is just a temporary shell wallet)
+- [ ] Click through any remaining setup prompts
+- [ ] MetaMask dashboard opens (you'll see "Account 1" with 0 ETH)
 
-Vercel is a hosting platform that deploys your Next.js frontend to a public URL. This gives you a real URL like `degenduel.vercel.app` instead of `localhost:3000`.
+#### Import the Deployer Private Key (Player A's Actual Wallet)
 
-### 6a. Install the Vercel CLI (one-time)
+- [ ] Click the **account circle** icon in the top-right of MetaMask
+- [ ] Click **"Import account"** (or **"Add account or hardware wallet"** → **"Import account"**)
+- [ ] Select type: **"Private Key"** (should be default)
+- [ ] Paste this private key exactly:
+  ```
+  0x91e6c551b499551eb5e0fb15b9db1557652db31fa830cce401c3572d2500699f
+  ```
+- [ ] Click **"Import"**
+- [ ] You now see **"Account 2"** (or "Imported") — this is the deployer wallet
+- [ ] Verify the address starts with: **0x332a...**
+- [ ] **Make sure Account 2 is selected** (click on it if needed — it should show a checkmark)
 
-Open your terminal:
+#### Add Coston2 Network to MetaMask (Profile 1)
 
-```bash
-cd /Users/zain/Documents/ETH_Oxford_Hack/degenduel/packages/nextjs
-```
+- [ ] Click the network dropdown at the top (shows "Ethereum Mainnet")
+- [ ] Scroll down and click "Add network"
+- [ ] Click "Add a network manually"
+- [ ] Fill in the form:
+  - **Network Name:** `Coston2`
+  - **New RPC URL:** `https://coston2-api.flare.network/ext/C/rpc`
+  - **Chain ID:** `114`
+  - **Currency Symbol:** `C2FLR`
+  - **Block Explorer URL:** `https://coston2-explorer.flare.network`
+- [ ] Click "Save"
+- [ ] Click "Switch to Coston2"
+- [ ] Verify the network dropdown now shows "Coston2"
+- [ ] Verify the account address shows: `0x332a479FA9E548CFb90e7aF8504534e37E27E764`
+- [ ] Verify balance shows ~98 C2FLR
 
-If you have never logged into Vercel before:
+#### Verify Player A Wallet
 
-```bash
-yarn vercel:login
-```
-
-This opens a browser window. Sign in with GitHub (or email). Once authenticated, the terminal says "Congratulations! You are now logged in."
-
-### 6b. Deploy
-
-```bash
-yarn vercel
-```
-
-Vercel asks a series of questions. Answer them exactly like this:
-
-```
-? Set up and deploy "~/Documents/ETH_Oxford_Hack/degenduel/packages/nextjs"? [Y/n]
-→ Y
-
-? Which scope do you want to deploy to?
-→ (Select your Vercel account — there is only one option)
-
-? Link to existing project? [y/N]
-→ N
-
-? What's your project's name?
-→ degenduel
-
-? In which directory is your code located?
-→ ./ (just press Enter, it defaults to the current directory)
-
-? Want to modify these settings? [y/N]
-→ N
-```
-
-Vercel builds and deploys the app. This takes 1-3 minutes. When it finishes, it prints a URL like:
-
-```
-✅ Production: https://degenduel.vercel.app
-```
-
-Copy this URL. This is your live demo URL.
-
-### 6c. Set Environment Variables
-
-The AI Hint feature needs an API key. Set it on Vercel:
-
-1. Go to https://vercel.com/dashboard
-2. Click on the **"degenduel"** project
-3. Click **"Settings"** (top navigation)
-4. Click **"Environment Variables"** (left sidebar)
-5. Add this variable:
-
-| Key | Value | Environment |
-|-----|-------|-------------|
-| `NEXT_PUBLIC_FLOCK_API_KEY` | `sk-artpyU8obEVnMpU4p_wgqg` | Production, Preview, Development |
-
-6. Click **"Save"**
-
-### 6d. Redeploy with the Environment Variable
-
-The environment variable only takes effect on the next deployment. Redeploy:
-
-```bash
-yarn vercel --prod
-```
-
-Wait for it to finish. Your live app now has the AI Hint feature working.
+- [ ] Click the MetaMask extension icon (jigsaw puzzle icon → MetaMask fox)
+- [ ] Verify the network dropdown shows **"Coston2"** (if not, click it and select Coston2)
+- [ ] Verify the selected account is **Account 2 (Imported)** — address starts with `0x332a...`
+- [ ] Verify balance shows **~98 C2FLR** (may take a moment to load)
+- [ ] If balance shows 0, you may still have Account 1 selected — switch to Account 2
+- [ ] **Leave this Chrome window open (Player A)**
 
 ---
 
-## Step 7: Open the App
+### Part B: Setting Up Profile 2 (Player B)
 
-1. Open Chrome
-2. Go to your Vercel URL (e.g., `https://degenduel.vercel.app`)
-3. You see the **landing page**: a full-screen hero section with "PREDICT. DUEL. WIN."
-4. Scroll down to see "How It Works" (three steps) and "Powered By" (tech logos)
-5. There is no header on the landing page — this is intentional
+**Chrome Profile:** Profile 2 - Player B
 
----
+#### Install MetaMask
 
-## Step 8: Connect Player A's Wallet
+- [ ] Open Chrome Profile 2
+- [ ] Go to: https://metamask.io/download/
+- [ ] Click "Install MetaMask for Chrome"
+- [ ] Click "Add to Chrome" → "Add extension"
+- [ ] MetaMask welcome page opens automatically
+- [ ] Click **"Create a new wallet"**
+- [ ] Click "I agree" to terms
+- [ ] Create a password: `demo1234` (type it twice)
+- [ ] Click "Create a new wallet"
+- [ ] **Skip the seed phrase backup** — click "Remind me later" (this is a testnet-only wallet)
+- [ ] Click through any remaining setup prompts
+- [ ] MetaMask opens with **Account 1** and 0 ETH — this IS Player B's wallet (no import needed)
 
-1. Click the **"Launch App"** button on the landing page
-2. The browser navigates to `/arena`. The header appears with nav links. The price ticker scrolls across the top showing live prices (FLR, BTC, ETH, XRP, SOL)
-3. Click **"Connect Wallet"** in the top-right corner of the header
-4. A wallet selector popup appears. Click **"MetaMask"**
-5. MetaMask opens. Make sure the **"Player A"** account is selected (the one with ~99 C2FLR)
-6. Click **"Next"** then **"Connect"**
-7. MetaMask may ask you to switch networks. If it says "This site wants you to switch to Coston2", click **"Switch network"**
-8. The top-right of the app now shows your wallet address and C2FLR balance
+#### Add Coston2 Network to MetaMask (Profile 2)
 
-You are now connected as Player A.
+- [ ] Click the network dropdown at the top (shows "Ethereum Mainnet")
+- [ ] Scroll down and click "Add network"
+- [ ] Click "Add a network manually"
+- [ ] Fill in the form:
+  - **Network Name:** `Coston2`
+  - **New RPC URL:** `https://coston2-api.flare.network/ext/C/rpc`
+  - **Chain ID:** `114`
+  - **Currency Symbol:** `C2FLR`
+  - **Block Explorer URL:** `https://coston2-explorer.flare.network`
+- [ ] Click "Save"
+- [ ] Click "Switch to Coston2"
+- [ ] Verify the network dropdown now shows "Coston2"
+- [ ] Verify balance shows 0 C2FLR
 
----
+#### Fund Player B from Faucet
 
-## Step 9: Create a Duel (Player A)
-
-1. On the Arena dashboard, look at the right side panel — this is the **Create Duel** form
-2. The mode is already set to **PRICE** (this uses Flare's FTSO v2 oracle)
-3. Click an asset. Choose **FLR** (Flare's native token — its price changes most frequently on testnet)
-4. The current live price appears below the asset buttons (e.g., "$0.0096")
-5. Click **UP** — you are predicting the price will be higher than the current price in 90 seconds
-6. In the stake input, type **0.1** (this means 0.1 C2FLR)
-7. Click **"CHALLENGE"**
-8. MetaMask pops up showing the transaction:
-   - **To:** `0x8355...0960` (the DegenDuel contract)
-   - **Amount:** `0.1 C2FLR`
-   - **Estimated gas:** ~0.001 C2FLR
-9. Click **"Confirm"** in MetaMask
-10. Wait 2-3 seconds. A green notification appears: **"Duel created!"**
-11. The duel appears in the **"Open Duels"** section below the form
-
-What just happened on-chain:
-- Your browser called `DegenDuel.createPriceDuel()` on the smart contract
-- The contract recorded your prediction, the current price snapshot, and the 90-second deadline
-- Your 0.1 C2FLR stake is now locked inside the smart contract (not in anyone's wallet)
-- The duel status is "OPEN" — waiting for an opponent
-
----
-
-## Step 10: Switch to Player B and Join the Duel
-
-1. Click the **MetaMask fox icon** in Chrome
-2. Click the **account icon** (colored circle) at the top-right
-3. Click **"Player B"** to switch accounts
-4. The app automatically detects the account change. The wallet address in the header updates to Player B's address
-5. The Open Duels section shows the duel you just created. It shows:
-   - The asset (FLR/USD)
-   - The stake (0.1 FLR)
-   - Player A's prediction direction (UP)
-   - A "BET DOWN" button (Player B automatically takes the opposite side)
-6. Click **"BET DOWN"** (or whichever accept button appears)
-7. MetaMask pops up. The amount is **0.1 C2FLR** (matching Player A's stake)
-8. Click **"Confirm"** in MetaMask
-9. Wait 2-3 seconds. A green notification appears: **"Duel joined!"**
-10. The duel moves from "Open Duels" to **"Active Duels"** with a countdown timer (90 seconds)
-
-What just happened on-chain:
-- Player B called `DegenDuel.joinDuel(duelId)` with 0.1 C2FLR
-- The contract locked Player B's stake alongside Player A's
-- The total pot is now 0.2 C2FLR, held by the contract
-- The duel status changed from OPEN to ACTIVE
-- The 90-second countdown is now live
+- [ ] Click the MetaMask extension icon
+- [ ] Click on your account address (top center) to copy it
+- [ ] You should see "Copied!" notification
+- [ ] Open a new tab: https://faucet.flare.network/
+- [ ] Select "Coston2" from the network dropdown
+- [ ] Paste your Player B address in the address field
+- [ ] Click "Request C2FLR"
+- [ ] Wait for confirmation (usually 10-30 seconds)
+- [ ] Go back to MetaMask
+- [ ] Verify balance now shows ~100 C2FLR
+- [ ] **Leave this Chrome window open (Player B)**
 
 ---
 
-## Step 11: Wait for the Deadline
+### Part C: Start the Dev Server (Localhost Demo)
 
-1. Watch the countdown timer on the active duel card. It counts down from ~90 seconds
-2. You cannot settle the duel until the deadline passes
-3. While waiting, observe:
-   - The **Price Ticker** keeps updating (prices come from FTSO v2, Flare's decentralized oracle)
-   - The **AI Hint** card shows a confidence score from FLock's decentralized AI (this is a real AI inference, not hardcoded)
-4. When the countdown reaches 0, the duel card shows **"Ready to settle"**
+**Terminal Window (Cmd+Space → type "Terminal" → Enter)**
 
----
-
-## Step 12: Settle the Duel
-
-1. Click on the active duel to open its detail page (`/duel/[id]`)
-2. The **"SETTLE DUEL"** button appears (it only shows after the deadline has passed)
-3. Click **"SETTLE DUEL"**
-4. MetaMask pops up. This transaction costs a small gas fee (~0.001 C2FLR). Click **"Confirm"**
-5. Wait 2-3 seconds. The page updates:
-   - The status changes to **"SETTLED"**
-   - The winner is displayed with their address
-   - The payout amount is shown (approximately 0.198 C2FLR — the full pot minus a 1% protocol fee)
-   - If you won, confetti explodes on the screen and it says **"YOU WON!"**
-   - If you lost, it says **"YOU LOST"**
-
-What just happened on-chain:
-1. The contract called `TestFtsoV2Interface.getFeedById(feedId)` — this reads the current FLR/USD price from Flare's FTSO v2 oracle (a FREE view call, no gas for the oracle itself)
-2. The contract compared the current price to the threshold (the price snapshot from when the duel was created)
-3. If the price went UP and Player A predicted UP, Player A wins. If it went DOWN, Player B wins
-4. The contract called `RandomNumberV2Interface.getRandomNumber()` — Flare's on-chain random number generator. If the random number triggers the 10% bonus, the winner gets the full pot with zero protocol fee
-5. The contract transferred the winnings to the winner's wallet
-6. The contract updated the leaderboard stats (wins count, total earnings)
+- [ ] Open a new terminal window
+- [ ] Kill any existing dev server on port 3000:
+  ```bash
+  lsof -ti:3000 | xargs kill -9 2>/dev/null; echo "Port 3000 cleared"
+  ```
+- [ ] Navigate to the project:
+  ```bash
+  cd /Users/zain/Documents/ETH_Oxford_Hack/degenduel/packages/nextjs
+  ```
+- [ ] Start the dev server:
+  ```bash
+  yarn dev
+  ```
+- [ ] Wait for the message: **"Ready in Xs"** and **"http://localhost:3000"**
+- [ ] **Leave this terminal running — do NOT close it**
+- [ ] If you see errors about `.next/` cache, stop the server (Ctrl+C), then:
+  ```bash
+  rm -rf .next && yarn dev
+  ```
 
 ---
 
-## Step 13: Verify the Results
+## THE DEMO
 
-### In the App
+### Part 1: Landing Page (Show to Judges)
 
-1. Click **"My Duels"** in the header navigation
-2. You see your duel history with results (win/loss, payout amount)
-3. Click **"Leaderboard"** in the header
-4. You see the rankings — players sorted by total wins and earnings
+**Chrome Profile:** Either profile (doesn't matter yet)
+**URL:** http://localhost:3000
 
-### On the Block Explorer
+- [ ] Open http://localhost:3000 in Chrome
+- [ ] **Point out to judges:** Clean landing page, no header
+- [ ] **Point out:** Hero section with "Launch App" button
+- [ ] **Scroll down to show:**
+  - [ ] "How It Works" section (3 steps)
+  - [ ] "Tech Showcase" with logos (Flare, ETH Oxford, Effect-TS, FLock, Scaffold-ETH)
+  - [ ] Footer: "Built on Flare | ETH Oxford 2026"
+- [ ] **Do NOT click anything yet**
 
-1. Go to https://coston2-explorer.flare.network/address/0x835574875C1CB9003c1638E799f3d7c504808960
-2. This shows the DegenDuel contract and all its transactions
-3. You can see every `createPriceDuel`, `joinDuel`, and `settlePriceDuel` call
-4. Click on any transaction hash to see the full details: gas used, input data, events emitted
-
----
-
-## Step 14: Run the Automated E2E Test (Optional)
-
-If you want to prove the entire flow works end-to-end with a single command (useful for judges who want to see it run without manual wallet switching):
-
-```bash
-cd /Users/zain/Documents/ETH_Oxford_Hack/degenduel/packages/hardhat
-npx hardhat run scripts/e2e-price-duel.ts --network coston2
-```
-
-This script does everything automatically:
-1. Uses the deployer wallet as Player A
-2. Creates a random temporary wallet for Player B
-3. Sends 0.3 C2FLR from Player A to Player B
-4. Reads the current FLR/USD price from FTSO v2
-5. Creates a price duel (0.1 C2FLR stake, UP prediction)
-6. Player B joins the duel (takes the opposite side)
-7. Waits 90 seconds for the deadline to pass
-8. Settles the duel by reading the FTSO v2 price again
-9. Prints the winner and payout
-
-The entire flow takes about 2 minutes (mostly waiting for the 90-second deadline). The output looks like this:
-
-```
-╔══════════════════════════════════════════════╗
-║  DegenDuel E2E Test: Full Price Duel Flow    ║
-╚══════════════════════════════════════════════╝
-
-[1/6] Funding Player B...
-  ✓ Player B funded: 0.3 C2FLR
-
-[2/6] Reading current FLR/USD price via FTSO v2...
-  ✓ FLR/USD = $0.009602
-
-[3/6] Creating price duel...
-  ✓ Duel #1 created
-
-[4/6] Player B joining duel...
-  ✓ Player B joined
-  ✓ Duel is now ACTIVE. Total pot: 0.2 C2FLR
-
-[5/6] Waiting for deadline...
-  ⏳ 89s remaining...
-  ✓ Deadline passed!
-
-[6/6] Settling duel via FTSO v2...
-  ✓ DUEL SETTLED!
-  Winner: Player A (deployer)
-  Payout: 0.198 C2FLR
-
-╔══════════════════════════════════════════════╗
-║  ✓ E2E TEST COMPLETE — ALL PROTOCOLS USED   ║
-║  FTSO v2: Price read + settlement            ║
-║  Secure RNG: Bonus chance check              ║
-║  Contract: Full lifecycle proven              ║
-╚══════════════════════════════════════════════╝
-```
+**Talking Points:**
+> "DegenDuel is a PvP prediction game on Flare's Coston2 testnet. Players duel by predicting price movements. We use all three Flare native protocols: FTSO v2 for price feeds, FDC for external data attestation, and Secure RNG for randomized bonuses. Let me show you a live duel."
 
 ---
 
-## Quick Reference
+### Part 2: Player A Creates a Duel
 
-| Item | Value |
-|------|-------|
-| Vercel URL | Your deployed URL (e.g., `https://degenduel.vercel.app`) |
-| Landing page | `/` |
-| App dashboard | `/arena` |
-| Network | Coston2 (Flare Testnet) |
-| Chain ID | `114` |
-| RPC URL | `https://coston2-api.flare.network/ext/C/rpc` |
-| Currency | C2FLR (testnet, no real value) |
-| Contract | `0x835574875C1CB9003c1638E799f3d7c504808960` |
-| Player A wallet | `0x332a479FA9E548CFb90e7aF8504534e37E27E764` |
-| Player A private key | `0x91e6c551b499551eb5e0fb15b9db1557652db31fa830cce401c3572d2500699f` |
-| Faucet | https://faucet.flare.network/coston2 |
-| Block explorer | https://coston2-explorer.flare.network |
-| FLock API key | `sk-artpyU8obEVnMpU4p_wgqg` |
+**Chrome Profile:** Profile 1 - Player A
+**URL:** http://localhost:3000/arena
+
+#### Navigate to Arena
+
+- [ ] In Player A's browser (Profile 1), click "Launch App" button
+- [ ] You are now at http://localhost:3000/arena
+- [ ] **Point out to judges:**
+  - [ ] Header with navigation: "Duels | Create | Leaderboard | My Duels | Debug"
+  - [ ] Price ticker marquee scrolling at the top (live FTSO v2 feeds)
+  - [ ] Left panel: "Live Duel" (empty for now)
+  - [ ] Right panel: "CREATE A DUEL" form
+  - [ ] Bottom left: Leaderboard (shows past results)
+  - [ ] Bottom right: "LIVE PRICES" card (5 assets updating in real-time)
+
+#### Connect MetaMask (Player A)
+
+- [ ] Look at the top-right corner
+- [ ] You may see a burner wallet address (starts with `0x...`) or "Connect Wallet" button
+- [ ] **If you see a burner address:**
+  - [ ] Click on the address/balance area (top right)
+  - [ ] A dropdown appears
+  - [ ] Click "Disconnect" at the bottom of the dropdown
+  - [ ] The button now shows "Connect Wallet"
+- [ ] Click "Connect Wallet" button (top right)
+- [ ] RainbowKit modal appears with wallet options
+- [ ] Click "MetaMask"
+- [ ] MetaMask popup opens (asks to connect)
+- [ ] Verify you see Player A's address: `0x332a479FA9E548CFb90e7aF8504534e37E27E764`
+- [ ] Verify network is "Coston2"
+- [ ] Click "Next"
+- [ ] Click "Connect"
+- [ ] The MetaMask popup closes
+- [ ] The top-right corner now shows Player A's address: `0x332a...E764`
+- [ ] Verify balance shows ~98 C2FLR
+
+**Talking Points:**
+> "I'm connecting Player A's wallet via MetaMask. This is a real Coston2 testnet wallet with actual C2FLR. The app uses Scaffold-ETH 2's RainbowKit integration for wallet connections."
+
+#### Create a Price Duel
+
+- [ ] In the "CREATE A DUEL" form, verify "PRICE" mode is selected (toggle at top)
+- [ ] **Point out to judges:** "PRICE mode uses FTSO v2 feeds, DATA mode uses FDC attestations"
+- [ ] Click one of the asset pills: **FLR**
+- [ ] The pill turns green (selected)
+- [ ] Below the pills, you see "Current Price: $0.0095" (or similar, updates every ~90s)
+- [ ] **Point out to judges:** "This price comes from FTSO v2, Flare's decentralized oracle network"
+- [ ] Click the "UP" button (predicts price will go up)
+- [ ] The "UP" button turns neon green (selected)
+- [ ] In the stake input field, clear any default value and type: `0.5`
+- [ ] **Point out to judges:** "Minimum stake is 0.01 FLR, we're using 0.5 for demo visibility"
+- [ ] Click the "CHALLENGE" button
+- [ ] MetaMask popup appears
+- [ ] **Point out to judges:** "MetaMask is asking Player A to sign the transaction and stake 0.5 C2FLR"
+- [ ] In the MetaMask popup:
+  - [ ] Verify "Amount: 0.5 C2FLR"
+  - [ ] Verify "To: 0x8355...8960" (DegenDuel contract)
+  - [ ] Verify network: "Coston2"
+- [ ] Click "Confirm" in MetaMask
+- [ ] Wait for the transaction to confirm (5-10 seconds)
+- [ ] A success toast appears: "Duel created! Waiting for an opponent..."
+- [ ] The "CREATE A DUEL" form resets
+- [ ] **Note the duel ID** in the toast or from the "Open Duels" section below the form (e.g., "Duel #5")
+- [ ] **Write down the duel ID:** `Duel #____`
+
+**What You Should See After Creation:**
+
+- [ ] The "Live Duel" panel on the left now shows:
+  - [ ] "Duel #5 (or your duel ID)"
+  - [ ] "Status: WAITING FOR OPPONENT"
+  - [ ] A TradingView chart for FLR
+  - [ ] Your prediction: "Player A: UP"
+  - [ ] Stake: "0.5 FLR"
+  - [ ] "Waiting for Player B..."
+- [ ] The "Open Duels" section below the create form shows a card:
+  - [ ] "Duel #5"
+  - [ ] "Asset: FLR"
+  - [ ] "Player A: UP"
+  - [ ] "Stake: 0.5 FLR"
+  - [ ] A "BET DOWN" button (opposite of Player A's prediction)
+
+**Talking Points:**
+> "Player A has created a duel predicting FLR price will go UP. The contract has locked their 0.5 C2FLR stake. Now we need Player B to join with the opposite prediction. The duel lasts 90 seconds from when Player B joins."
 
 ---
 
-## What Each Flare Protocol Does
+### Part 3: Player B Joins the Duel
 
-### FTSO v2 (Flare Time Series Oracle)
-- **What it is:** A decentralized price oracle run by 100+ independent validators. Each validator independently fetches prices from exchanges and submits them. The protocol aggregates these into a single trusted price.
-- **Where DegenDuel uses it:** Every price display in the price ticker, and every price duel settlement. When a duel settles, the contract reads the oracle price and compares it to the threshold.
-- **Cost:** FREE to read on Coston2 (view function, no gas for the oracle itself).
-- **Speed:** Prices update every ~1.8 seconds (every Coston2 block).
+**Chrome Profile:** Profile 2 - Player B
+**URL:** http://localhost:3000/arena
 
-### Secure RNG (Random Number Generator)
-- **What it is:** Flare's on-chain verifiable random number. It is generated by the validator network and is provably fair — no one can predict or manipulate it.
-- **Where DegenDuel uses it:** At settlement, there is a 10% chance the winner gets a "bonus" (the full pot with zero protocol fee instead of the normal 1% fee). The random number determines whether this bonus triggers.
-- **Cost:** FREE view call.
+#### Navigate to Arena
 
-### FDC Web2Json (Flare Data Connector)
-- **What it is:** A protocol that lets smart contracts verify data from any Web2 API. 100+ validators independently call the API, reach consensus on the response, and produce a cryptographic proof. The smart contract can then verify this proof on-chain.
-- **Where DegenDuel uses it:** The "DATA" mode duels (betting on external API data, not just prices). The attestation pipeline takes 3-8 minutes.
-- **Note:** DATA mode is implemented but not the focus of the demo. PRICE mode is faster and more visual.
+- [ ] Switch to Player B's Chrome window (Profile 2)
+- [ ] Open http://localhost:3000/arena
+- [ ] You are now at the arena page
+- [ ] **Point out to judges:** "Player B is opening the same app in a different browser"
 
-### FLock AI (Decentralized AI)
-- **What it is:** A decentralized AI inference network. Instead of calling OpenAI (centralized), DegenDuel calls FLock's API, which runs open-source models (Qwen 3 30B) on a decentralized network.
-- **Where DegenDuel uses it:** The "AI HINT" card on the arena dashboard. It gives a confidence score and rationale for the current market conditions.
-- **Why FLock instead of OpenAI:** FLock is a bounty track sponsor at ETH Oxford 2026. Using decentralized AI aligns with the crypto-native thesis and qualifies for the FLock bounty prize.
+#### Connect MetaMask (Player B)
+
+- [ ] Look at the top-right corner
+- [ ] You may see a burner wallet address or "Connect Wallet" button
+- [ ] **If you see a burner address:**
+  - [ ] Click on the address/balance area (top right)
+  - [ ] A dropdown appears
+  - [ ] Click "Disconnect"
+  - [ ] The button now shows "Connect Wallet"
+- [ ] Click "Connect Wallet" button (top right)
+- [ ] RainbowKit modal appears
+- [ ] Click "MetaMask"
+- [ ] MetaMask popup opens
+- [ ] Verify you see Player B's address (different from Player A)
+- [ ] Verify network is "Coston2"
+- [ ] Click "Next"
+- [ ] Click "Connect"
+- [ ] The MetaMask popup closes
+- [ ] The top-right corner now shows Player B's address
+- [ ] Verify balance shows ~100 C2FLR
+
+**Talking Points:**
+> "Player B is connecting with a completely different wallet. They got C2FLR from Flare's testnet faucet."
+
+#### Join Player A's Duel
+
+- [ ] Scroll down to the "Open Duels" section (below the "CREATE A DUEL" form)
+- [ ] **Point out to judges:** "Here are all open duels waiting for opponents"
+- [ ] Find the duel created by Player A (Duel #5 or your noted ID)
+- [ ] Verify the duel card shows:
+  - [ ] "Duel #5"
+  - [ ] "Asset: FLR"
+  - [ ] "Player A: UP"
+  - [ ] "Stake: 0.5 FLR"
+  - [ ] A "BET DOWN" button (the opposite prediction)
+- [ ] **Point out to judges:** "Player B must take the opposite side. If A bet UP, B must bet DOWN."
+- [ ] Click the "BET DOWN" button
+- [ ] MetaMask popup appears
+- [ ] **Point out to judges:** "MetaMask is asking Player B to match the stake: 0.5 C2FLR"
+- [ ] In the MetaMask popup:
+  - [ ] Verify "Amount: 0.5 C2FLR"
+  - [ ] Verify "To: 0x8355...8960" (DegenDuel contract)
+  - [ ] Verify network: "Coston2"
+- [ ] Click "Confirm" in MetaMask
+- [ ] Wait for the transaction to confirm (5-10 seconds)
+- [ ] A success toast appears: "Joined duel! Battle begins!"
+- [ ] The "Open Duels" section updates (the duel disappears or status changes to "ACTIVE")
+
+**What You Should See After Joining (Player B's View):**
+
+- [ ] The "Live Duel" panel on the left now shows:
+  - [ ] "Duel #5"
+  - [ ] "Status: ACTIVE"
+  - [ ] Countdown timer: "1:30" (90 seconds)
+  - [ ] A TradingView chart for FLR
+  - [ ] "Player A: UP | Player B: DOWN"
+  - [ ] "Total Pot: 1.0 FLR"
+  - [ ] Start Price: "$0.0095" (recorded when B joined)
+
+**Switch to Player A's Window:**
+
+- [ ] Switch to Player A's Chrome window (Profile 1)
+- [ ] **Point out to judges:** "Player A's view updates automatically"
+- [ ] Verify the "Live Duel" panel shows the same information:
+  - [ ] "Status: ACTIVE"
+  - [ ] Countdown timer ticking down
+  - [ ] "Player A: UP | Player B: DOWN"
+  - [ ] "Total Pot: 1.0 FLR"
+  - [ ] Start Price
+
+**Talking Points:**
+> "The duel is now ACTIVE. Both players have staked 0.5 FLR for a total pot of 1.0 FLR. The contract recorded the starting price from FTSO v2 when Player B joined. In 90 seconds, we'll read the ending price and determine the winner. The contract also generates a random number via Flare's Secure RNG—there's a 10% chance the winner gets a 2x bonus payout."
 
 ---
 
-## Troubleshooting
+### Part 4: Watch the Battle
 
-### MetaMask says "Insufficient funds for gas"
-Your wallet does not have enough C2FLR. Go to https://faucet.flare.network/coston2 and request tokens. If the faucet is rate-limited, switch to the Player A (deployer) account which has ~99 C2FLR.
+**Chrome Profile:** Both profiles (switch between them to show judges)
 
-### MetaMask says "Wrong network"
-Click the network dropdown in MetaMask and select "Coston2". If Coston2 is not listed, you skipped Step 2 — go back and add the network.
+#### Countdown Timer
 
-### The app says "Connect your wallet"
-Click the "Connect Wallet" button in the header. If MetaMask does not pop up, click the MetaMask fox icon in Chrome's toolbar first to make sure it is unlocked.
+- [ ] Watch the countdown timer in the "Live Duel" panel
+- [ ] **Point out to judges:** "The timer counts down from 90 seconds"
+- [ ] **Point out the TradingView chart:** "This is a live chart showing FLR price action"
+- [ ] **Switch between Player A and Player B windows to show:**
+  - [ ] Both see the same countdown
+  - [ ] Both see the same start price
+  - [ ] Both see their predictions highlighted
 
-### Prices show "---" or the price ticker is empty
-You are not connected to Coston2. Check MetaMask — the network should say "Coston2" at the top. If the RPC is down (rare), wait a minute and refresh.
+#### Price Ticker
 
-### AI Hint shows "configure your FLock API key"
-The environment variable `NEXT_PUBLIC_FLOCK_API_KEY` is not set. For local development, check that `degenduel/packages/nextjs/.env.local` contains `NEXT_PUBLIC_FLOCK_API_KEY=sk-artpyU8obEVnMpU4p_wgqg`. For Vercel, check that the environment variable is set in the Vercel dashboard (Step 6c). After adding it, redeploy.
+- [ ] **Point out the marquee ticker at the top:**
+  - [ ] "These prices update every ~1.8 seconds from FTSO v2"
+  - [ ] "FTSO reads are FREE on Coston2—no gas costs"
 
-### The duel does not appear after creation
-Wait 3-5 seconds. The app polls the blockchain every 3 seconds (`pollingInterval: 3000` in scaffold.config.ts). If it still does not appear, refresh the page.
+#### AI Hint (Optional Demo)
 
-### "Transaction reverted" error
-The duel parameters may be invalid (e.g., stake too low, deadline already passed). Check the browser console (F12 → Console tab) for the full error message. The minimum stake is 0.01 C2FLR.
+- [ ] In Player A's window, scroll down to the "AI HINT" accordion (if visible)
+- [ ] Click to expand
+- [ ] **Point out to judges:** "We integrated FLock's AI agent to provide hints on price predictions. This is a decentralized AI bounty submission."
+- [ ] (Skip this if you're short on time)
 
-### Vercel build fails
-Run `npx next build` locally first to check for errors. The most common issue is missing environment variables — make sure `NEXT_PUBLIC_FLOCK_API_KEY` is set in Vercel's environment variables.
+#### Wait for Timer to End
 
-### I want to run locally instead of Vercel
-```bash
-cd /Users/zain/Documents/ETH_Oxford_Hack/degenduel/packages/nextjs
-yarn dev
-```
-The app runs at http://localhost:3000. Everything works the same as on Vercel.
+- [ ] Wait until the countdown reaches "0:00"
+- [ ] The "Live Duel" panel status changes to "ENDED"
+- [ ] **Point out to judges:** "The duel has ended. Now we need to settle it on-chain to determine the winner."
+
+**Talking Points:**
+> "The 90-second duel period has ended. The contract will now read the final price from FTSO v2 and compare it to the start price. If the price went UP, Player A wins. If it went DOWN, Player B wins. Let's settle the duel and see the results."
+
+---
+
+### Part 5: Settlement and Results
+
+**Chrome Profile:** Either profile (you can use Player A or Player B to settle)
+**URL:** http://localhost:3000/debug
+
+#### Navigate to Debug Page
+
+- [ ] In one of the browser windows (either Player A or Player B), click "Debug" in the header navigation
+- [ ] You are now at http://localhost:3000/debug
+- [ ] **Point out to judges:** "Scaffold-ETH 2 auto-generates a debug UI for all contract functions"
+
+#### Locate the settlePriceDuel Function
+
+- [ ] Scroll down the debug page to find "DegenDuel" contract section
+- [ ] Look for the "settlePriceDuel" function (usually under "Write" functions)
+- [ ] **Point out to judges:** "This function reads the final price from FTSO v2 and determines the winner"
+
+#### Call settlePriceDuel
+
+- [ ] In the "settlePriceDuel" form:
+  - [ ] **Field:** `_duelId` (uint256)
+  - [ ] **Type the duel ID you noted earlier:** e.g., `5`
+  - [ ] (If you didn't note it, the duel ID was shown in the "Live Duel" panel, e.g., "Duel #5")
+- [ ] Click "Send" or "Execute" button (depends on Scaffold-ETH 2 UI)
+- [ ] MetaMask popup appears
+- [ ] **Point out to judges:** "Anyone can settle a duel after it ends. Settlement costs a small amount of gas."
+- [ ] In the MetaMask popup:
+  - [ ] Verify "To: 0x8355...8960" (DegenDuel contract)
+  - [ ] Verify "Function: settlePriceDuel"
+  - [ ] Verify network: "Coston2"
+- [ ] Click "Confirm" in MetaMask
+- [ ] Wait for the transaction to confirm (5-10 seconds)
+- [ ] A success toast appears: "Duel settled!" or similar
+
+#### Alternative: Settle from Hardhat Console
+
+If the debug page doesn't work or you prefer the CLI:
+
+- [ ] Open a new terminal
+- [ ] Navigate to hardhat directory:
+  ```bash
+  cd /Users/zain/Documents/ETH_Oxford_Hack/degenduel/packages/hardhat
+  ```
+- [ ] Start Hardhat console:
+  ```bash
+  npx hardhat console --network coston2
+  ```
+- [ ] Wait for the console prompt: `>`
+- [ ] Run the following commands:
+  ```javascript
+  const duel = await ethers.getContractAt("DegenDuel", "0x835574875C1CB9003c1638E799f3d7c504808960")
+  await (await duel.settlePriceDuel(5)).wait()
+  ```
+  (Replace `5` with your duel ID)
+- [ ] Wait for "Transaction mined" confirmation
+- [ ] Exit the console: `.exit`
+
+#### View Results
+
+- [ ] Switch back to the arena page: http://localhost:3000/arena
+- [ ] The "Live Duel" panel now shows:
+  - [ ] "Status: SETTLED"
+  - [ ] "Winner: Player A" (or "Player B")
+  - [ ] "Final Price: $0.0096" (or whatever the ending price was)
+  - [ ] "Payout: 0.99 FLR" (99% of pot, 1% protocol fee)
+  - [ ] **If RNG bonus triggered:** "RNG BONUS! 2x Payout: 1.98 FLR"
+
+#### Check Leaderboard
+
+- [ ] Scroll down to the "Leaderboard" section (bottom left)
+- [ ] **Point out to judges:** "The leaderboard updates automatically with wins, losses, and total earnings"
+- [ ] Find Player A and Player B in the leaderboard:
+  - [ ] Winner shows: Wins +1, Earnings +0.99 FLR (or +1.98 if RNG bonus)
+  - [ ] Loser shows: Losses +1, Earnings unchanged
+
+#### Check Wallet Balances
+
+- [ ] Click the MetaMask extension icon (in the winner's browser)
+- [ ] Verify balance increased:
+  - [ ] Player A started with ~98 C2FLR
+  - [ ] Player B started with ~100 C2FLR
+  - [ ] Winner's balance should be ~0.99 FLR higher (minus gas)
+  - [ ] Loser's balance should be ~0.5 FLR lower (minus gas)
+
+**Talking Points:**
+> "Player [A/B] won! The contract read the final price from FTSO v2, compared it to the start price, and determined the winner. The winner received 99% of the total pot (1% goes to protocol fees). [If RNG bonus:] The RNG also triggered a 2x bonus, so the winner got double the payout! This shows all three Flare protocols working together: FTSO v2 for prices, FDC for data attestation (in DATA mode), and Secure RNG for randomized bonuses."
+
+---
+
+## TALKING POINTS (Summary)
+
+### Opening (Landing Page)
+
+> "DegenDuel is a PvP prediction game on Flare's Coston2 testnet. Players duel by predicting price movements or external data outcomes. We use all three Flare native protocols: FTSO v2 for decentralized price feeds, FDC for external data attestation, and Secure RNG for randomized bonuses."
+
+### During Duel Creation (Player A)
+
+> "Player A is creating a duel by predicting FLR price will go UP. The current price comes from FTSO v2, Flare's decentralized oracle network. Player A stakes 0.5 C2FLR on this prediction. The contract locks the stake and waits for an opponent."
+
+### During Duel Join (Player B)
+
+> "Player B is joining the duel with the opposite prediction: DOWN. They must match the stake, so they're also staking 0.5 C2FLR. When Player B joins, the contract records the starting price from FTSO v2 and starts a 90-second countdown."
+
+### During Battle
+
+> "The duel is now ACTIVE. Both players have staked 0.5 FLR for a total pot of 1.0 FLR. The contract recorded the starting price when Player B joined. In 90 seconds, we'll read the ending price and determine the winner. The contract also generates a random number via Flare's Secure RNG—there's a 10% chance the winner gets a 2x bonus payout."
+
+### During Settlement
+
+> "The duel has ended. Settlement reads the final price from FTSO v2 and compares it to the start price. If the price went UP, Player A wins. If it went DOWN, Player B wins. FTSO reads are FREE on Coston2—no gas costs for price queries. Settlement costs a small amount of gas, but anyone can trigger it."
+
+### After Settlement
+
+> "Player [A/B] won! The contract determined the winner based on FTSO v2 price data. The winner received 99% of the total pot (1% goes to protocol fees). [If RNG bonus:] The RNG also triggered a 2x bonus, doubling the payout! This demonstrates all three Flare protocols working together in a real-world application."
+
+### Tech Stack
+
+> "We built this on Scaffold-ETH 2 with Hardhat and Next.js. The frontend uses Effect-TS for type-safe async state management and DaisyUI for the dark neon theme. We integrated FLock's decentralized AI agent for prediction hints. Everything is open-source and deployed on Flare's Coston2 testnet."
+
+---
+
+## TROUBLESHOOTING
+
+### MetaMask Not Showing Coston2 Network
+
+**Issue:** You added Coston2 to MetaMask, but it's not appearing in the network dropdown.
+
+**Fix:**
+- [ ] Make sure you saved the network after adding it
+- [ ] Try clicking "Add network" again and verify the Chain ID is exactly `114` (no extra spaces)
+- [ ] If it still doesn't work, try adding via Chainlist: https://chainlist.org/?search=coston2
+
+### MetaMask Not Connecting to App
+
+**Issue:** You click "Connect Wallet" but nothing happens or MetaMask doesn't open.
+
+**Fix:**
+- [ ] Make sure MetaMask extension is installed and unlocked
+- [ ] Refresh the page: http://localhost:3000/arena
+- [ ] Try disconnecting the burner wallet first (click address dropdown → Disconnect)
+- [ ] Clear browser cache and reload
+
+### Burner Wallet Won't Disconnect
+
+**Issue:** You click "Disconnect" but the burner wallet reconnects immediately.
+
+**Fix:**
+- [ ] Refresh the page after disconnecting
+- [ ] Check `/packages/nextjs/scaffold.config.ts` — make sure `onlyLocalBurnerWallet: false`
+- [ ] If it's set to `true`, change it to `false`, save, and restart the dev server
+
+### Player B's Duel Doesn't Appear in Open Duels
+
+**Issue:** Player A created a duel, but Player B doesn't see it in the "Open Duels" section.
+
+**Fix:**
+- [ ] Refresh Player B's browser
+- [ ] Make sure Player A's transaction actually confirmed (check MetaMask activity)
+- [ ] Check the console for errors (F12 → Console tab)
+- [ ] Verify both browsers are connected to Coston2 network
+- [ ] Wait 30 seconds and refresh again (block indexing delay)
+
+### MetaMask Transaction Fails (Insufficient Funds)
+
+**Issue:** MetaMask says "Insufficient funds" when trying to create or join a duel.
+
+**Fix:**
+- [ ] Check your wallet balance in MetaMask (top center)
+- [ ] Make sure you have at least 0.6 C2FLR (0.5 stake + gas)
+- [ ] If balance is low, go to https://faucet.flare.network/ and request more C2FLR
+- [ ] Wait for faucet transaction to confirm (check MetaMask activity)
+
+### Countdown Timer Not Starting
+
+**Issue:** Player B joined, but the countdown doesn't start or shows "NaN" or "0:00".
+
+**Fix:**
+- [ ] Refresh both browsers
+- [ ] Check the "Live Duel" panel for actual status (may be a UI bug)
+- [ ] Open the debug page and read the duel data manually (call `getDuel(uint256)` with your duel ID)
+- [ ] If the duel status is "ACTIVE" on-chain but UI doesn't update, it's a frontend caching issue—refresh
+
+### Settlement Transaction Fails
+
+**Issue:** You call `settlePriceDuel` but the transaction reverts or fails.
+
+**Fix:**
+- [ ] Make sure the duel has actually ended (wait 90 seconds after Player B joined)
+- [ ] Make sure the duel hasn't already been settled (check status on debug page)
+- [ ] Verify you're using the correct duel ID (not an old duel or wrong number)
+- [ ] Check the console for error messages (F12 → Console tab)
+- [ ] Try settling from the Hardhat console instead of the debug page
+
+### Hardhat Console Won't Connect
+
+**Issue:** `npx hardhat console --network coston2` fails or hangs.
+
+**Fix:**
+- [ ] Make sure you're in the correct directory: `/Users/zain/Documents/ETH_Oxford_Hack/degenduel/packages/hardhat`
+- [ ] Check `hardhat.config.ts` — verify Coston2 network is configured with correct RPC URL
+- [ ] Try pinging the RPC: `curl https://coston2-api.flare.network/ext/C/rpc`
+- [ ] If it times out, the RPC may be down—wait and try again
+
+### FTSO Prices Not Updating
+
+**Issue:** The "LIVE PRICES" card or current price display shows old data or doesn't update.
+
+**Fix:**
+- [ ] FTSO feeds update every ~90 seconds on Coston2—this is normal
+- [ ] Refresh the page to force a new fetch
+- [ ] Check the console for errors (F12 → Console tab)
+- [ ] Verify the Effect-TS layer is running (no errors about failed subscriptions)
+
+### TradingView Chart Not Loading
+
+**Issue:** The chart in the "Live Duel" panel is blank or shows an error.
+
+**Fix:**
+- [ ] TradingView widgets require internet access—make sure you're online
+- [ ] Refresh the page
+- [ ] Check browser console for CORS errors or blocked scripts
+- [ ] If the chart still doesn't load, it's a UI-only issue—the duel logic still works on-chain
+
+### Leaderboard Not Updating After Settlement
+
+**Issue:** The duel settled, but the leaderboard still shows old data.
+
+**Fix:**
+- [ ] Refresh the page
+- [ ] The leaderboard queries on-chain events—there may be a delay (wait 30 seconds)
+- [ ] Check the debug page to verify the duel was actually settled (call `getDuel(uint256)`)
+- [ ] If the duel is settled on-chain, it's a frontend caching issue—hard refresh (Cmd+Shift+R)
+
+### Wrong Network in MetaMask
+
+**Issue:** MetaMask is connected to the wrong network (e.g., Ethereum Mainnet).
+
+**Fix:**
+- [ ] Click the network dropdown in MetaMask (top center)
+- [ ] Select "Coston2"
+- [ ] If Coston2 isn't in the list, add it manually (see Pre-Demo Setup)
+- [ ] Refresh the app after switching networks
+
+### Transaction Pending Forever
+
+**Issue:** MetaMask shows "Pending" for a long time, transaction never confirms.
+
+**Fix:**
+- [ ] Coston2 block times are ~2-5 seconds—if it's pending for >30 seconds, something is wrong
+- [ ] Check the transaction hash on the block explorer: https://coston2-explorer.flare.network
+- [ ] If the transaction isn't there, it may not have been broadcast—try canceling and resubmitting
+- [ ] If the transaction shows "Failed" on the explorer, check the error message
+
+### Can't Find Duel ID
+
+**Issue:** You created a duel but forgot to note the ID, and now you can't settle it.
+
+**Fix:**
+- [ ] Check the "Open Duels" or "My Duels" section—the duel ID should be displayed
+- [ ] Check the "Live Duel" panel—it shows "Duel #X" at the top
+- [ ] Check MetaMask transaction history—find the "createPriceDuel" transaction and view it on the block explorer
+- [ ] On the block explorer, look at the "Logs" tab—the `DuelCreated` event contains the duel ID
+- [ ] In Hardhat console, call `nextDuelId()` to get the next ID, then subtract 1 to get the last created duel
+
+### Player B Tries to Join Their Own Duel
+
+**Issue:** Transaction fails with "Cannot join own duel" error.
+
+**Fix:**
+- [ ] You're using the same wallet for both players — Player A and Player B MUST be different wallets
+- [ ] Make sure you're in the correct Chrome profile: Profile 1 = Player A, Profile 2 = Player B
+- [ ] Check MetaMask — verify the address shown is different from the duel creator's address
+
+### RNG Bonus Not Triggering (Expected in Demo)
+
+**Issue:** You wanted to show the RNG bonus in the demo, but it didn't trigger.
+
+**Fix:**
+- [ ] The RNG bonus has a 10% chance—it's random!
+- [ ] If you MUST show it in the demo, you can create multiple duels until it triggers
+- [ ] OR modify the contract to increase the bonus chance (requires redeployment)
+- [ ] OR just explain: "There's a 10% chance of a 2x bonus. In this case, it didn't trigger, but the winner still gets 99% of the pot."
+
+---
+
+## FINAL CHECKLIST (Before Demo)
+
+### Pre-Demo (Do This 1 Hour Before)
+
+- [ ] Verify dev server is running: http://localhost:3000
+- [ ] Verify both Chrome profiles are set up and MetaMask is installed
+- [ ] Verify Player A wallet has C2FLR (~98 FLR)
+- [ ] Verify Player B wallet has C2FLR (~100 FLR)
+- [ ] Verify both wallets are connected to Coston2 network
+- [ ] Test create a duel with Player A (use 0.01 FLR to save funds)
+- [ ] Test join with Player B
+- [ ] Test settlement
+- [ ] Verify leaderboard updates
+
+### During Demo (Follow This Order)
+
+1. [ ] Show landing page (30 seconds)
+2. [ ] Navigate to arena, connect Player A (30 seconds)
+3. [ ] Create duel with Player A (1 minute)
+4. [ ] Switch to Player B, connect, join duel (1 minute)
+5. [ ] Talk about architecture while countdown runs (90 seconds)
+6. [ ] Settle duel and show results (1 minute)
+7. [ ] Show leaderboard and wallet balances (30 seconds)
+
+**Total Time:** ~5 minutes
+
+---
+
+## DEMO SCRIPT (Word-for-Word)
+
+### Opening (30 seconds)
+
+> "Hi, I'm Zain, and this is DegenDuel—a PvP prediction game on Flare. Players duel by predicting price movements. We use all three Flare native protocols: FTSO v2 for decentralized price feeds, FDC for external data attestation, and Secure RNG for randomized bonuses. Let me show you a live duel between two players."
+
+### Landing Page (30 seconds)
+
+> "This is the landing page. Clean UI, tech showcase at the bottom. Let me click 'Launch App' to go to the arena."
+
+### Player A Connect (30 seconds)
+
+> "I'm connecting Player A via MetaMask. This is a real Coston2 testnet wallet with actual C2FLR. Scaffold-ETH 2 uses RainbowKit for wallet connections. [Wait for MetaMask popup] There we go, Player A is connected."
+
+### Create Duel (1 minute)
+
+> "Player A is creating a duel. First, I'll select the asset—let's go with FLR. The current price is $0.0095, pulled from FTSO v2, Flare's decentralized oracle. Player A predicts the price will go UP. I'll stake 0.5 C2FLR on this prediction. [Click CHALLENGE] MetaMask asks for confirmation. [Confirm] The transaction is broadcasting... [Wait for toast] Done! The duel is created and waiting for an opponent."
+
+### Player B Join (1 minute)
+
+> "Now let me switch to Player B's browser—a completely different wallet, funded from Flare's testnet faucet. Player B connects via MetaMask. [Wait for connection] Now Player B sees the open duel created by Player A. Player B must take the opposite side—Player A bet UP, so Player B bets DOWN. [Click BET DOWN] MetaMask asks Player B to match the stake: 0.5 C2FLR. [Confirm] Transaction broadcasting... [Wait for toast] Done! The duel is now ACTIVE."
+
+### Countdown (90 seconds)
+
+> "The duel lasts 90 seconds. Both players staked 0.5 FLR for a total pot of 1.0 FLR. When Player B joined, the contract recorded the starting price from FTSO v2. When the countdown ends, we'll read the final price and determine the winner. The contract also uses Flare's Secure RNG to generate a random number—there's a 10% chance the winner gets a 2x bonus payout.
+>
+> While we wait, let me talk about the architecture. We built this on Scaffold-ETH 2 with Hardhat and Next.js. The frontend uses Effect-TS for type-safe async state management—this lets us compose FTSO reads, FDC attestations, and RNG calls as pure, testable effects. The UI is styled with DaisyUI in a dark neon theme. We also integrated FLock's decentralized AI agent for prediction hints—that's a separate bounty submission.
+>
+> For the Flare integration: FTSO v2 feeds update every ~90 seconds and are FREE to read on Coston2—no gas costs. FDC lets us attest external API data on-chain, like weather or sports scores. Secure RNG gives us verifiable randomness for the bonus payout. This demo shows FTSO v2 and RNG. In the full app, users can also duel on DATA mode using FDC to fetch and verify external APIs.
+>
+> [Countdown hits 0:00] Alright, the duel has ended. Let's settle it."
+
+### Settlement (1 minute)
+
+> "I'm navigating to the debug page. Scaffold-ETH 2 auto-generates a UI for all contract functions. Here's `settlePriceDuel`—I'll enter the duel ID and click Send. [MetaMask popup] Confirming... [Wait for toast] Done! The contract just read the final price from FTSO v2, compared it to the start price, and determined the winner."
+
+### Results (30 seconds)
+
+> "Back on the arena page... Player [A/B] won! The winner received 99% of the pot—0.99 FLR. The 1% protocol fee goes to the contract owner. [If RNG:] And look at this—the RNG bonus triggered! The winner got a 2x payout: 1.98 FLR instead of 0.99. The leaderboard updates automatically—Player [A/B] now has one more win and 1.98 FLR in total earnings. Player [A/B]'s MetaMask balance also went up.
+>
+> That's DegenDuel—three Flare protocols, one game, fully functional on Coston2 testnet. Thank you!"
+
+---
+
+## END OF DEMO WALKTHROUGH
+
+**Document Version:** 1.0
+**Last Updated:** 2026-02-08
+**Contact:** Zain (ETH Oxford 2026)
+
+**Good luck with the demo! 🎮⚡**

@@ -34,42 +34,43 @@ function serializePriceData(price: PriceData) {
 }
 
 export async function GET() {
+  const feedIds = Object.values(FEED_IDS);
+
   // Define the Effect program
   const program = Effect.gen(function* () {
-    // Access the FtsoService from the Effect context
     const ftsoService = yield* FtsoService;
-
-    // Read multiple price feeds concurrently using Effect orchestration
-    const feedIds = Object.values(FEED_IDS);
-    const prices = yield* ftsoService.getMultiplePrices(feedIds);
-
-    return prices;
+    return yield* ftsoService.getMultiplePrices(feedIds);
   });
 
   try {
     // Run the Effect program with the composed layer
     const prices = await Effect.runPromise(program.pipe(Effect.provide(MainLayer)));
 
-    // Serialize and return the results
+    const partial = prices.length < feedIds.length;
+
+    // Always return 200 — partial results are fine
     return NextResponse.json({
       success: true,
+      partial,
       timestamp: Date.now(),
       prices: prices.map(serializePriceData),
       meta: {
         effectRuntime: "Effect.runPromise",
-        feedCount: prices.length,
+        successCount: prices.length,
+        failedCount: feedIds.length - prices.length,
+        totalFeeds: feedIds.length,
         chain: "Coston2 Testnet (Chain ID 114)",
       },
     });
   } catch (error) {
-    // Handle Effect errors
+    // Only 500 if the Effect runtime itself crashes
     return NextResponse.json(
       {
         success: false,
         error: error instanceof Error ? error.message : String(error),
         meta: {
           effectRuntime: "Effect.runPromise",
-          failedStep: "FtsoService.getMultiplePrices",
+          failedStep: "runtime crash",
         },
       },
       { status: 500 },

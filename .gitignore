@@ -50,6 +50,7 @@ keypair*.json
 
 # Playwright
 .playwright-mcp/
+.playwright/
 
 # Misc
 *.tsbuildinfo

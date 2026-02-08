@@ -13,6 +13,8 @@ interface ActiveDuelProps {
   currentPrice?: number;
   entryPrice?: number;
   onSettle?: (duelId: bigint) => void;
+  onCancel?: (duelId: bigint) => void;
+  onDismiss?: () => void;
   isSettling?: boolean;
   bonusTriggered?: boolean;
 }
@@ -80,7 +82,7 @@ const PlayerBox = ({
   );
 };
 
-export const ActiveDuel = ({ duel, currentPrice, entryPrice, onSettle, isSettling, bonusTriggered }: ActiveDuelProps) => {
+export const ActiveDuel = ({ duel, currentPrice, entryPrice, onSettle, onCancel, onDismiss, isSettling, bonusTriggered }: ActiveDuelProps) => {
   const { address: connectedAddress } = useAccount();
   const chartContainerRef = useRef<HTMLDivElement>(null);
   const chartRef = useRef<any>(null);
@@ -405,39 +407,106 @@ export const ActiveDuel = ({ duel, currentPrice, entryPrice, onSettle, isSettlin
         )}
       </div>
 
-      {/* Settlement section */}
-      {isSettled ? (
-        <div className="px-6 py-4 border-t border-[rgba(148,163,184,0.08)] bg-[rgba(245,158,11,0.1)]">
-          <div className="flex items-center justify-center gap-2">
-            <svg className="w-5 h-5 text-[#F59E0B]" fill="currentColor" viewBox="0 0 20 20">
-              <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
-            </svg>
-            <span className="text-sm font-bold text-[#F59E0B]">DUEL SETTLED</span>
-          </div>
-        </div>
-      ) : isPastDeadline && hasBothPlayers && onSettle ? (
-        <div className="px-6 py-4 border-t border-[rgba(148,163,184,0.08)]">
-          <motion.button
-            whileHover={{ scale: 1.02 }}
-            whileTap={{ scale: 0.98 }}
-            onClick={() => onSettle(duel.id)}
-            disabled={isSettling}
-            className="w-full btn border-0 bg-gradient-to-r from-[#E62058] to-[#6C93EC] hover:from-[#C41B4C] hover:to-[#5A7FD4] text-white font-bold uppercase tracking-wider btn-glow disabled:opacity-50 disabled:cursor-not-allowed"
-          >
-            {isSettling ? (
-              <span className="flex items-center justify-center gap-2">
-                <svg className="animate-spin h-5 w-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                  <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
-                  <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-                </svg>
-                Settling...
-              </span>
-            ) : (
-              "SETTLE DUEL"
-            )}
-          </motion.button>
-        </div>
-      ) : null}
+      {/* Status / Action section — covers every duel lifecycle state */}
+      {(() => {
+        const duelStatus = Number(duel.status);
+        const isOpen = duelStatus === 0;
+        const isActive = duelStatus === 1;
+        const isCancelled = duelStatus === 3;
+        const isExpired = duelStatus === 4;
+
+        // SETTLED / CANCELLED / EXPIRED — terminal states
+        if (isSettled || isCancelled || isExpired) {
+          const label = isSettled ? "DUEL SETTLED" : isCancelled ? "DUEL CANCELLED" : "DUEL EXPIRED";
+          const color = isSettled ? "#F59E0B" : "#94A3B8";
+          return (
+            <div className="px-6 py-4 border-t border-[rgba(148,163,184,0.08)]" style={{ background: `rgba(${isSettled ? "245,158,11" : "148,163,184"},0.1)` }}>
+              <div className="flex items-center justify-between">
+                <div className="flex items-center gap-2">
+                  <svg className="w-5 h-5" style={{ color }} fill="currentColor" viewBox="0 0 20 20">
+                    <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
+                  </svg>
+                  <span className="text-sm font-bold" style={{ color }}>{label}</span>
+                </div>
+                {onDismiss && (
+                  <button
+                    onClick={onDismiss}
+                    className="text-xs font-semibold text-slate-400 hover:text-slate-200 transition-colors px-3 py-1 rounded-lg hover:bg-[rgba(148,163,184,0.1)]"
+                  >
+                    Dismiss
+                  </button>
+                )}
+              </div>
+            </div>
+          );
+        }
+
+        // OPEN + expired + no Player B — creator can reclaim stake
+        if (isOpen && isPastDeadline && !hasBothPlayers) {
+          return (
+            <div className="px-6 py-4 border-t border-[rgba(148,163,184,0.08)] bg-[rgba(239,68,68,0.08)]">
+              <div className="text-center mb-3">
+                <span className="text-sm font-bold text-[#EF4444]">Duel expired — no opponent joined</span>
+              </div>
+              {onCancel && (
+                <motion.button
+                  whileHover={{ scale: 1.02 }}
+                  whileTap={{ scale: 0.98 }}
+                  onClick={() => onCancel(duel.id)}
+                  className="w-full btn border-0 bg-[#EF4444] hover:bg-[#DC2626] text-white font-bold uppercase tracking-wider"
+                >
+                  CANCEL &amp; RECLAIM STAKE
+                </motion.button>
+              )}
+            </div>
+          );
+        }
+
+        // ACTIVE + past deadline + both players — settle
+        if (isActive && isPastDeadline && hasBothPlayers && onSettle) {
+          return (
+            <div className="px-6 py-4 border-t border-[rgba(148,163,184,0.08)]">
+              <motion.button
+                whileHover={{ scale: 1.02 }}
+                whileTap={{ scale: 0.98 }}
+                onClick={() => onSettle(duel.id)}
+                disabled={isSettling}
+                className="w-full btn border-0 bg-gradient-to-r from-[#E62058] to-[#6C93EC] hover:from-[#C41B4C] hover:to-[#5A7FD4] text-white font-bold uppercase tracking-wider btn-glow disabled:opacity-50 disabled:cursor-not-allowed"
+              >
+                {isSettling ? (
+                  <span className="flex items-center justify-center gap-2">
+                    <svg className="animate-spin h-5 w-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                      <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                      <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                    </svg>
+                    Settling...
+                  </span>
+                ) : (
+                  "SETTLE DUEL"
+                )}
+              </motion.button>
+            </div>
+          );
+        }
+
+        // OPEN + not expired + no Player B — waiting with cancel option
+        if (isOpen && !isPastDeadline && !hasBothPlayers && onCancel) {
+          return (
+            <div className="px-6 py-3 border-t border-[rgba(148,163,184,0.08)]">
+              <div className="flex items-center justify-center">
+                <button
+                  onClick={() => onCancel(duel.id)}
+                  className="text-xs text-slate-500 hover:text-[#EF4444] transition-colors font-mono"
+                >
+                  Cancel Duel
+                </button>
+              </div>
+            </div>
+          );
+        }
+
+        return null;
+      })()}
     </motion.div>
   );
 };

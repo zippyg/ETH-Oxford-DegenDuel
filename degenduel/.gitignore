@@ -32,3 +32,4 @@ packages/nextjs/remotion/out/
 # env files
 .env
 .env.local
+.vercel

@@ -15,6 +15,11 @@ import { EffectPrices } from "~~/components/degenduel/EffectPrices";
 import { fireWinConfetti, fireBonusConfetti } from "~~/components/degenduel/WinConfetti";
 import { notification } from "~~/utils/scaffold-eth";
 
+// Check if a duel's deadline has passed (client-side check)
+const isDuelExpired = (duel: any): boolean => {
+  return Math.floor(Date.now() / 1000) >= Number(duel.deadline);
+};
+
 const Dashboard = () => {
   useAccount();
   const [activeDuel, setActiveDuel] = useState<any>(null);
@@ -37,6 +42,16 @@ const Dashboard = () => {
     contractName: "DegenDuel",
     functionName: "getProtocolStats",
     watch: true,
+  });
+
+  // Direct read for the currently selected duel — keeps it fresh as it transitions states
+  const selectedDuelId = activeDuel?.id as bigint | undefined;
+  const { data: freshDuelData } = useScaffoldReadContract({
+    contractName: "DegenDuel",
+    functionName: "getDuel",
+    args: [selectedDuelId ?? 0n],
+    watch: true,
+    query: { enabled: selectedDuelId != null },
   });
 
   // Watch for BonusTriggered events
@@ -68,12 +83,25 @@ const Dashboard = () => {
       Math.pow(10, Math.abs(Number(activeDuel.priceDecimals)))
     : undefined;
 
-  // Auto-select the first open duel as active (for demo purposes)
+  // Auto-select the first non-expired open duel as active
   useEffect(() => {
     if (!activeDuel && openDuels && Array.isArray(openDuels) && openDuels.length > 0) {
-      setActiveDuel(openDuels[0]);
+      const validDuel = openDuels.find((d: any) => !isDuelExpired(d));
+      if (validDuel) setActiveDuel(validDuel);
     }
   }, [openDuels, activeDuel]);
+
+  // Keep activeDuel in sync with latest on-chain data (detects opponent joining + settlement)
+  useEffect(() => {
+    if (!activeDuel?.id || !freshDuelData) return;
+
+    const playerBChanged = freshDuelData.playerB !== activeDuel.playerB;
+    const statusChanged = Number(freshDuelData.status) !== Number(activeDuel.status);
+
+    if (playerBChanged || statusChanged) {
+      setActiveDuel(freshDuelData);
+    }
+  }, [freshDuelData]);
 
   // Handle bonus events
   useEffect(() => {
@@ -129,11 +157,35 @@ const Dashboard = () => {
     }
   };
 
+  const handleCancelDuel = async (duelId: bigint) => {
+    try {
+      await writeContractAsync({
+        functionName: "cancelDuel",
+        args: [duelId],
+      });
+      notification.success("Duel cancelled — stake refunded!");
+      // Clear active duel if it was the one cancelled
+      if (activeDuel?.id === duelId) {
+        setActiveDuel(null);
+      }
+    } catch (error) {
+      console.error("Error cancelling duel:", error);
+      notification.error("Failed to cancel duel");
+    }
+  };
+
+  const handleDismissActiveDuel = () => {
+    setActiveDuel(null);
+  };
+
   const totalDuels = stats ? Number(stats[0]) : 0;
   const settledDuels = stats ? Number(stats[1]) : 0;
   const volume = stats ? formatEther(stats[2]) : "0";
 
-  const openDuelsList = Array.isArray(openDuels) ? openDuels : [];
+  // Filter out expired duels from the open list — they can't be joined anyway
+  const openDuelsList = (Array.isArray(openDuels) ? openDuels : []).filter(
+    (d: any) => !isDuelExpired(d),
+  );
   const activeDuelsList = Array.isArray(activeDuels) ? activeDuels : [];
 
   return (
@@ -187,6 +239,8 @@ const Dashboard = () => {
               currentPrice={currentPrice}
               entryPrice={entryPrice}
               onSettle={handleSettlePriceDuel}
+              onCancel={handleCancelDuel}
+              onDismiss={handleDismissActiveDuel}
               isSettling={isSettling}
               bonusTriggered={activeDuel?.id ? bonusTriggeredDuels.has(activeDuel.id) : false}
             />

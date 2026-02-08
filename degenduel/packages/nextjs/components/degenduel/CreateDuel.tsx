@@ -34,6 +34,7 @@ export const CreateDuel = () => {
   const [isCreating, setIsCreating] = useState(false);
   const [isWaiting, setIsWaiting] = useState(false);
   const [createdDuelId, setCreatedDuelId] = useState<bigint | null>(null);
+  const [duelExpired, setDuelExpired] = useState(false);
 
   // Data duel specific state
   const [dataSource, setDataSource] = useState("");
@@ -58,6 +59,7 @@ export const CreateDuel = () => {
   });
 
   // When the duel becomes ACTIVE (status 1 = someone joined), show success and auto-reset
+  // Also detect if duel expired (deadline passed with no opponent)
   useEffect(() => {
     if (!isWaiting || !createdDuelData) return;
     const duelStatus = Number((createdDuelData as any).status ?? (createdDuelData as any)[2]);
@@ -70,7 +72,47 @@ export const CreateDuel = () => {
       }, 3000);
       return () => clearTimeout(timeout);
     }
+
+    // Check if deadline has passed while still OPEN (no opponent)
+    if (duelStatus === 0) {
+      const deadline = Number((createdDuelData as any).deadline);
+      if (deadline > 0 && Math.floor(Date.now() / 1000) >= deadline) {
+        setDuelExpired(true);
+      }
+    }
   }, [isWaiting, createdDuelData]);
+
+  // Periodic check for expiry while waiting (in case createdDuelData doesn't change)
+  useEffect(() => {
+    if (!isWaiting || duelExpired || !createdDuelData) return;
+    const deadline = Number((createdDuelData as any).deadline);
+    if (deadline <= 0) return;
+
+    const check = () => {
+      if (Math.floor(Date.now() / 1000) >= deadline) {
+        setDuelExpired(true);
+      }
+    };
+    const interval = setInterval(check, 1000);
+    return () => clearInterval(interval);
+  }, [isWaiting, duelExpired, createdDuelData]);
+
+  const handleCancelCreatedDuel = async () => {
+    if (createdDuelId === null) return;
+    try {
+      await writeContractAsync({
+        functionName: "cancelDuel",
+        args: [createdDuelId],
+      });
+      notification.success("Duel cancelled — stake refunded!");
+      setIsWaiting(false);
+      setCreatedDuelId(null);
+      setDuelExpired(false);
+    } catch (error) {
+      console.error("Error cancelling duel:", error);
+      notification.error("Failed to cancel duel");
+    }
+  };
 
   const { data: priceData } = useScaffoldReadContract({
     contractName: "DegenDuel",
@@ -177,7 +219,7 @@ export const CreateDuel = () => {
     : 0;
   const isDuelActive = isWaiting && createdDuelStatus === 1;
 
-  // Waiting for opponent state
+  // Waiting for opponent state — 3 sub-states: active, expired, waiting
   if (isWaiting) {
     return (
       <motion.div
@@ -201,6 +243,33 @@ export const CreateDuel = () => {
             <p className="text-slate-400 text-sm text-center">Opponent has joined -- the battle is on!</p>
             <p className="text-slate-500 text-xs mt-2">Returning to create form...</p>
           </>
+        ) : duelExpired ? (
+          <>
+            <div className="w-12 h-12 rounded-full bg-[rgba(239,68,68,0.15)] flex items-center justify-center mb-4">
+              <svg className="w-7 h-7 text-[#EF4444]" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                <path strokeLinecap="round" strokeLinejoin="round" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+              </svg>
+            </div>
+            <h3 className="text-lg font-bold text-[#EF4444] mb-2">Duel Expired</h3>
+            <p className="text-slate-400 text-sm text-center mb-1">No opponent joined before the deadline.</p>
+            {createdDuelId !== null && (
+              <p className="text-slate-500 text-xs font-mono mb-4">Duel #{Number(createdDuelId)}</p>
+            )}
+            <motion.button
+              whileHover={{ scale: 1.02 }}
+              whileTap={{ scale: 0.98 }}
+              onClick={handleCancelCreatedDuel}
+              className="w-full btn border-0 bg-[#EF4444] hover:bg-[#DC2626] text-white font-bold uppercase tracking-wider"
+            >
+              CANCEL &amp; RECLAIM STAKE
+            </motion.button>
+            <button
+              className="mt-3 btn btn-sm btn-ghost text-slate-500"
+              onClick={() => { setIsWaiting(false); setCreatedDuelId(null); setDuelExpired(false); }}
+            >
+              Create Another
+            </button>
+          </>
         ) : (
           <>
             <motion.div
@@ -215,12 +284,14 @@ export const CreateDuel = () => {
             )}
           </>
         )}
-        <button
-          className="mt-4 btn btn-sm btn-ghost text-slate-500"
-          onClick={() => { setIsWaiting(false); setCreatedDuelId(null); }}
-        >
-          Create Another
-        </button>
+        {!duelExpired && (
+          <button
+            className="mt-4 btn btn-sm btn-ghost text-slate-500"
+            onClick={() => { setIsWaiting(false); setCreatedDuelId(null); setDuelExpired(false); }}
+          >
+            Create Another
+          </button>
+        )}
       </motion.div>
     );
   }

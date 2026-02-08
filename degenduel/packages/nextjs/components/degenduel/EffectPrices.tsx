@@ -16,9 +16,13 @@ interface PricesResponse {
   success: boolean;
   timestamp: number;
   prices: PriceItem[];
+  partial?: boolean;
   meta: {
     effectRuntime: string;
-    feedCount: number;
+    feedCount?: number;
+    successCount?: number;
+    failedCount?: number;
+    totalFeeds?: number;
     chain: string;
   };
 }
@@ -219,7 +223,10 @@ export const EffectPrices = () => {
                 <span className="block sm:inline mt-1 sm:mt-0">{data.meta.chain}</span>
               </div>
               <div className="text-xs font-mono text-slate-500">
-                {data.meta.feedCount} feeds
+                {data.meta.successCount ?? data.meta.feedCount ?? data.prices.length} feeds
+                {data.partial && (
+                  <span className="ml-1 text-[#F59E0B]">(partial)</span>
+                )}
               </div>
             </div>
           </div>

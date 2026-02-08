@@ -1,4 +1,4 @@
-import { Context, Effect, Layer, Schedule, Stream } from "effect";
+import { Context, Either, Effect, Layer, Schedule, Stream } from "effect";
 import { FtsoError } from "./errors";
 import { ConfigService } from "./config";
 
@@ -12,8 +12,8 @@ export interface PriceData {
 
 export interface IFtsoService {
   readonly getCurrentPrice: (feedId: string) => Effect.Effect<PriceData, FtsoError>;
-  readonly getMultiplePrices: (feedIds: string[]) => Effect.Effect<PriceData[], FtsoError>;
-  readonly streamPrices: (feedIds: string[], intervalMs: number) => Stream.Stream<PriceData[], FtsoError>;
+  readonly getMultiplePrices: (feedIds: string[]) => Effect.Effect<PriceData[], never>;
+  readonly streamPrices: (feedIds: string[], intervalMs: number) => Stream.Stream<PriceData[], never>;
 }
 
 export class FtsoService extends Context.Tag("FtsoService")<
@@ -61,10 +61,27 @@ export const FtsoServiceLive = Layer.effect(
         Effect.tap((price) => Effect.logInfo(`FTSO price read: ${feedId} = ${price.formatted}`)),
       );
 
-    const getMultiplePrices = (feedIds: string[]): Effect.Effect<PriceData[], FtsoError> =>
-      Effect.all(feedIds.map(getCurrentPrice), { concurrency: "unbounded" });
+    const getMultiplePrices = (feedIds: string[]): Effect.Effect<PriceData[], never> =>
+      Effect.gen(function* () {
+        // Use Effect.either per feed so one failure doesn't kill the batch
+        const results = yield* Effect.all(
+          feedIds.map((id) => Effect.either(getCurrentPrice(id))),
+          { concurrency: "unbounded" },
+        );
 
-    const streamPrices = (feedIds: string[], intervalMs: number): Stream.Stream<PriceData[], FtsoError> =>
+        const successes: PriceData[] = [];
+        for (const result of results) {
+          if (Either.isRight(result)) {
+            successes.push(result.right);
+          } else {
+            yield* Effect.logWarning(`FTSO feed failed (partial ok): ${result.left.message}`);
+          }
+        }
+
+        return successes;
+      });
+
+    const streamPrices = (feedIds: string[], intervalMs: number): Stream.Stream<PriceData[], never> =>
       Stream.repeatEffect(getMultiplePrices(feedIds)).pipe(
         Stream.schedule(Schedule.spaced(`${intervalMs} millis`)),
       );

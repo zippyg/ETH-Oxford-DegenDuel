@@ -165,9 +165,8 @@ Winner takes the pot. No manual arbitration. No trust required.
 
 **7. GitHub Repository URL**
 ```
-https://github.com/YOUR_USERNAME/degenduel
+https://github.com/zippyg/ETH-Oxford-DegenDuel
 ```
-(Replace with your actual repo URL)
 
 **8. Demo Video URL**
 ```
@@ -177,9 +176,8 @@ https://www.youtube.com/watch?v=PLACEHOLDER
 
 **9. Live Demo URL** (optional)
 ```
-https://degenduel.vercel.app
+https://degenduel-zains-projects-5be3a7a8.vercel.app
 ```
-(Or leave blank if not deployed yet)
 
 **10. Deployed Contract Address**
 ```
@@ -196,7 +194,7 @@ Flare Coston2 Testnet (Chain ID: 114)
 #### **Section D: Tracks**
 
 **12. Main Track** (select ONE)
-- ✅ **Prediction Markets + DeFi** ← SELECT THIS
+- ✅ **Decentralised Gaming and Social Media** ← SELECT THIS
 
 **13. Sponsor Tracks** (select up to 2)
 - ✅ **Flare** ← SELECT THIS
@@ -337,7 +335,7 @@ Before clicking "Submit BUIDL", verify:
 - [ ] Demo video URL is correct and plays (YouTube unlisted)
 - [ ] Contract address: `0x835574875C1CB9003c1638E799f3d7c504808960`
 - [ ] Network: Flare Coston2 (Chain ID: 114)
-- [ ] Main track selected: "Prediction Markets + DeFi"
+- [ ] Main track selected: "Decentralised Gaming and Social Media"
 - [ ] Sponsor tracks selected: "Flare" + "Rabot"
 - [ ] Team members added (1-3 people)
 - [ ] Contact email is valid

@@ -25,6 +25,7 @@ export const DuelCard = ({ duel, onJoin, index = 0 }: DuelCardProps) => {
   const timeLeft = Math.max(0, deadline - now);
   const minutes = Math.floor(timeLeft / (1000 * 60));
   const seconds = Math.floor((timeLeft % (1000 * 60)) / 1000);
+  const isExpired = now >= deadline;
 
   const duelType = Number(duel.duelType || 0); // 0 = PRICE, 1 = DATA
   const isDataDuel = duelType === 1;
@@ -109,30 +110,36 @@ export const DuelCard = ({ duel, onJoin, index = 0 }: DuelCardProps) => {
           <Address address={duel.playerA} size="xs" />
         </div>
 
-        {/* Accept button */}
-        <motion.button
-          whileHover={{ scale: 1.05 }}
-          whileTap={{ scale: 0.95 }}
-          className={`btn btn-sm border-0 font-bold text-white ${
-            accepterSide === "UP"
-              ? "bg-[#10B981] hover:bg-[#059669] btn-glow btn-glow-green"
-              : "bg-[#EF4444] hover:bg-[#DC2626] btn-glow btn-glow-red"
-          }`}
-          onClick={(e) => {
-            e.stopPropagation();
-            onJoin(duel.id);
-          }}
-        >
-          {accepterSide === "UP" ? (
-            <span className="flex items-center gap-1">
-              <ArrowUpIcon className="w-3.5 h-3.5" /> BET UP
-            </span>
-          ) : (
-            <span className="flex items-center gap-1">
-              <ArrowDownIcon className="w-3.5 h-3.5" /> BET DOWN
-            </span>
-          )}
-        </motion.button>
+        {/* Accept button or EXPIRED badge */}
+        {isExpired ? (
+          <span className="btn btn-sm border-0 font-bold text-slate-500 bg-slate-800 cursor-not-allowed">
+            EXPIRED
+          </span>
+        ) : (
+          <motion.button
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
+            className={`btn btn-sm border-0 font-bold text-white ${
+              accepterSide === "UP"
+                ? "bg-[#10B981] hover:bg-[#059669] btn-glow btn-glow-green"
+                : "bg-[#EF4444] hover:bg-[#DC2626] btn-glow btn-glow-red"
+            }`}
+            onClick={(e) => {
+              e.stopPropagation();
+              onJoin(duel.id);
+            }}
+          >
+            {accepterSide === "UP" ? (
+              <span className="flex items-center gap-1">
+                <ArrowUpIcon className="w-3.5 h-3.5" /> BET UP
+              </span>
+            ) : (
+              <span className="flex items-center gap-1">
+                <ArrowDownIcon className="w-3.5 h-3.5" /> BET DOWN
+              </span>
+            )}
+          </motion.button>
+        )}
       </div>
     </motion.div>
   );
