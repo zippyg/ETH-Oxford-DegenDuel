@@ -60,7 +60,7 @@ const CreatePage = () => {
                 3
               </div>
               <div className="text-xs text-slate-400">
-                <strong className="text-slate-300">Settle:</strong> After 90 seconds, Flare FTSO reads the price. Winner takes the pot (minus 2% protocol fee).
+                <strong className="text-slate-300">Settle:</strong> After 90 seconds, Flare FTSO reads the price. Winner takes the pot (minus 1% protocol fee).
               </div>
             </div>
           </div>

@@ -18,13 +18,13 @@ Two players enter a duel by staking equal amounts. They make opposing prediction
 
 ---
 
-## 🎥 Demo Video
+## 🎥 Demo
 
-[![DegenDuel Demo](https://img.youtube.com/vi/PLACEHOLDER/maxresdefault.jpg)](https://www.youtube.com/watch?v=PLACEHOLDER)
+[![DegenDuel Promo](https://img.youtube.com/vi/PLACEHOLDER/maxresdefault.jpg)](https://www.youtube.com/watch?v=PLACEHOLDER)
 
-**📺 Watch the 3-minute demo:** [youtube.com/watch?v=PLACEHOLDER](https://www.youtube.com/watch?v=PLACEHOLDER)
+**📺 [Watch the demo video](https://www.youtube.com/watch?v=PLACEHOLDER)** | **🎬 [Promo reel (45s Remotion video)](https://www.youtube.com/watch?v=PLACEHOLDER)**
 
-<!-- Replace PLACEHOLDER with your actual YouTube video ID -->
+<!-- Replace PLACEHOLDER with your actual YouTube video IDs after uploading -->
 
 ---
 
@@ -114,13 +114,17 @@ Two players enter a duel by staking equal amounts. They make opposing prediction
 
 ---
 
-## 🔥 Building on Flare: Developer Experience
+## 🔥 Built on Flare
 
 ### **Project Overview**
 
-DegenDuel uses **all three** of Flare's enshrined data protocols in production to enable trustless settlement of arbitrary real-world predictions. This is the only blockchain where such a game is possible.
+- **Network:** Flare Coston2 Testnet (Chain ID: 114)
+- **Integrations:** FTSO v2 (price feeds), FDC Web2Json (external API attestation), Secure RNG (randomness)
+- **Demo:** [Live App](https://degenduel-zains-projects-5be3a7a8.vercel.app) | [Demo Video](https://www.youtube.com/watch?v=PLACEHOLDER)
+- **Setup:** See [Quick Start](#-quick-start) below
+- **Deployed Contract:** [`0x835574875C1CB9003c1638E799f3d7c504808960`](https://coston2-explorer.flare.network/address/0x835574875C1CB9003c1638E799f3d7c504808960)
 
-**Deployed Contract:** [`0x835574875C1CB9003c1638E799f3d7c504808960`](https://coston2-explorer.flare.network/address/0x835574875C1CB9003c1638E799f3d7c504808960) (Coston2)
+DegenDuel uses **all three** of Flare's enshrined data protocols in production to enable trustless settlement of arbitrary real-world predictions. This is the only blockchain where such a game is possible.
 
 ---
 
@@ -476,28 +480,71 @@ Winner receives:
 
 ### **Project Resources**
 - **Repository:** [github.com/zippyg/ETH-Oxford-DegenDuel](https://github.com/zippyg/ETH-Oxford-DegenDuel)
-- **Demo Video:** [youtube.com/watch?v=PLACEHOLDER](https://www.youtube.com/watch?v=PLACEHOLDER)
-- **Live Demo:** [degenduel.vercel.app](https://degenduel.vercel.app) *(if deployed)*
+- **Live App:** [degenduel-zains-projects-5be3a7a8.vercel.app](https://degenduel-zains-projects-5be3a7a8.vercel.app)
+- **Demo Video:** Available in submission
 
 ---
 
-## 📸 Screenshots
+## ⚡ Effect-TS Runtime Integration
 
-### **Homepage**
-<!-- ![DegenDuel Homepage](docs/images/homepage.png) -->
-*[Placeholder for homepage screenshot]*
+DegenDuel demonstrates production server-side Effect-TS execution via a custom Next.js API route.
 
-### **Create Duel**
-<!-- ![Create Duel Interface](docs/images/create-duel.png) -->
-*[Placeholder for create duel screenshot]*
+### **Server-Side Effect Orchestration**
 
-### **Active Duel**
-<!-- ![Active Duel View](docs/images/active-duel.png) -->
-*[Placeholder for active duel screenshot]*
+The `/api/ftso-prices` route uses `Effect.runPromise()` to execute the FtsoService server-side, proving Effect-TS is **not just a frontend abstraction** but runs in production on the server.
 
-### **Leaderboard**
-<!-- ![Leaderboard](docs/images/leaderboard.png) -->
-*[Placeholder for leaderboard screenshot]*
+**Key Effect-TS patterns demonstrated:**
+- **Layer composition:** `ConfigServiceLive` + `FtsoServiceLive` dependency injection
+- **Effect.gen:** Sequential async operations with type-safe error handling
+- **Effect.runPromise:** Server-side runtime execution of Effect programs
+- **Concurrent operations:** `Effect.all` to read multiple FTSO feeds in parallel
+- **Retry strategies:** Exponential backoff with 3 retries on RPC failures
+
+**API Route:** [`packages/nextjs/app/api/ftso-prices/route.ts`](packages/nextjs/app/api/ftso-prices/route.ts)
+
+### **How to Test**
+
+```bash
+# Start the Next.js dev server
+cd packages/nextjs
+yarn dev
+
+# In another terminal, call the API route
+curl http://localhost:3000/api/ftso-prices
+```
+
+**Expected Response:**
+```json
+{
+  "success": true,
+  "timestamp": 1738961234567,
+  "prices": [
+    {
+      "feedId": "0x01464c522f55534400000000000000000000000000",
+      "value": "123456789",
+      "decimals": 5,
+      "timestamp": 1738961230,
+      "formatted": 1234.56789
+    },
+    // ... BTC/USD, ETH/USD, XRP/USD, SOL/USD
+  ],
+  "meta": {
+    "effectRuntime": "Effect.runPromise",
+    "feedCount": 5,
+    "chain": "Coston2 Testnet (Chain ID 114)"
+  }
+}
+```
+
+### **Why Server-Side?**
+
+Effect-TS excels at orchestrating complex async workflows with:
+- Type-safe error handling (12 distinct error types in DegenDuel)
+- Composable retry/timeout policies
+- Resource management (automatic cleanup)
+- Structured concurrency (cancellation-safe)
+
+The FDC attestation pipeline (5-step workflow with 3-8 minute async wait) is where Effect-TS truly shines.
 
 ---
 
@@ -515,10 +562,6 @@ yarn test
 
 ---
 
-## 🤝 Contributing
-
-This project was built for ETH Oxford 2026. Contributions, issues, and feature requests are welcome!
-
 ---
 
 ## 📄 License
@@ -530,7 +573,7 @@ This project is licensed under the **MIT License** - see the [LICENSE](LICENSE) 
 ## 🏆 Built For
 
 **ETH Oxford 2026 Hackathon**
-- **Main Track:** Prediction Markets + DeFi
+- **Main Track:** Decentralised Gaming and Social Media
 - **Sponsor Tracks:** Flare Network, Rabot (Effectful Programming)
 
 ---
@@ -559,6 +602,6 @@ Built by **Zain** at ETH Oxford 2026
 
 Built with 💜 on [Flare Network](https://flare.network)
 
-[🌐 Website](https://degenduel.vercel.app) • [📺 Demo](https://youtube.com/watch?v=PLACEHOLDER) • [📖 Docs](https://dev.flare.network) • [💬 Discord](https://discord.gg/UxVG7ZtfuJ)
+[📖 Flare Docs](https://dev.flare.network) • [💬 Flare Discord](https://discord.gg/UxVG7ZtfuJ)
 
 </div>

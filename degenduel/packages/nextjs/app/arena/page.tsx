@@ -11,6 +11,7 @@ import { CreateDuel } from "~~/components/degenduel/CreateDuel";
 import { AIHintCard } from "~~/components/degenduel/AIHintCard";
 import { DuelCard } from "~~/components/degenduel/DuelCard";
 import { Leaderboard } from "~~/components/degenduel/Leaderboard";
+import { EffectPrices } from "~~/components/degenduel/EffectPrices";
 import { fireWinConfetti, fireBonusConfetti } from "~~/components/degenduel/WinConfetti";
 import { notification } from "~~/utils/scaffold-eth";
 
@@ -134,7 +135,6 @@ const Dashboard = () => {
 
   const openDuelsList = Array.isArray(openDuels) ? openDuels : [];
   const activeDuelsList = Array.isArray(activeDuels) ? activeDuels : [];
-  void activeDuelsList; // referenced in JSX below
 
   return (
     <>
@@ -155,7 +155,7 @@ const Dashboard = () => {
               Live Arena
             </span>
           </div>
-          <div className="flex gap-6 text-xs">
+          <div className="flex gap-4 text-xs">
             <div>
               <span className="text-slate-500">Duels </span>
               <span className="font-mono text-[#E62058] tabular-nums">{totalDuels}</span>
@@ -290,56 +290,10 @@ const Dashboard = () => {
           </motion.div>
         </div>
 
-        {/* Below the fold: Leaderboard + Settlement Log */}
+        {/* Below the fold: Leaderboard + Live Effect-TS Prices */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mt-8">
           <Leaderboard />
-
-          {/* Settlement / Protocol Info */}
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.4 }}
-            className="rounded-2xl card-glass-dense overflow-hidden"
-          >
-            <div className="px-6 py-4 border-b border-[rgba(148,163,184,0.08)]">
-              <h2 className="text-lg font-bold text-slate-100">Powered by Flare</h2>
-            </div>
-            <div className="p-6 space-y-4">
-              <div className="flex items-start gap-3">
-                <div className="w-10 h-10 rounded-lg bg-[rgba(230,32,88,0.15)] flex items-center justify-center shrink-0">
-                  <span className="text-lg font-bold text-[#E62058]">F</span>
-                </div>
-                <div>
-                  <div className="text-sm font-semibold text-slate-200">FTSO v2 Price Feeds</div>
-                  <div className="text-xs text-slate-500">
-                    Real-time decentralized price data. Updates every ~1.8s block time. Free to read on Coston2.
-                  </div>
-                </div>
-              </div>
-              <div className="flex items-start gap-3">
-                <div className="w-10 h-10 rounded-lg bg-[rgba(108,147,236,0.15)] flex items-center justify-center shrink-0">
-                  <span className="text-lg font-bold text-[#6C93EC]">D</span>
-                </div>
-                <div>
-                  <div className="text-sm font-semibold text-slate-200">FDC Web2Json Attestation</div>
-                  <div className="text-xs text-slate-500">
-                    Cross-chain data attestation. External API data verified by 100+ validators for data duels.
-                  </div>
-                </div>
-              </div>
-              <div className="flex items-start gap-3">
-                <div className="w-10 h-10 rounded-lg bg-[rgba(16,185,129,0.15)] flex items-center justify-center shrink-0">
-                  <span className="text-lg font-bold text-[#10B981]">R</span>
-                </div>
-                <div>
-                  <div className="text-sm font-semibold text-slate-200">Secure Random Number</div>
-                  <div className="text-xs text-slate-500">
-                    Verifiable on-chain randomness for fair tiebreaking and random duel matching.
-                  </div>
-                </div>
-              </div>
-            </div>
-          </motion.div>
+          <EffectPrices />
         </div>
       </div>
     </>

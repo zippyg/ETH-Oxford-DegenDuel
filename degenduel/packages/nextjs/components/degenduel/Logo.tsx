@@ -1,5 +1,7 @@
 "use client";
 
+import Image from "next/image";
+
 export const Logo = ({ size = 40 }: { size?: number }) => {
   return (
     <svg
@@ -45,5 +47,17 @@ export const Logo = ({ size = 40 }: { size?: number }) => {
       {/* Center dot at crossing point */}
       <circle cx="24" cy="24" r="3" fill="url(#logo-gradient)" />
     </svg>
+  );
+};
+
+export const LogoImage = ({ size = 40 }: { size?: number }) => {
+  return (
+    <Image
+      src="/logo-degenduel.jpg"
+      alt="DegenDuel"
+      width={size}
+      height={size}
+      className="rounded-md"
+    />
   );
 };

@@ -4,6 +4,7 @@ import "@scaffold-ui/components/styles.css";
 import { Inter, JetBrains_Mono } from "next/font/google";
 import { ScaffoldEthAppWithProviders } from "~~/components/ScaffoldEthAppWithProviders";
 import { ThemeProvider } from "~~/components/ThemeProvider";
+import { ErrorBoundary } from "~~/components/ErrorBoundary";
 import "~~/styles/globals.css";
 import { getMetadata } from "~~/utils/scaffold-eth/getMetadata";
 
@@ -29,7 +30,9 @@ const ScaffoldEthApp = ({ children }: { children: React.ReactNode }) => {
     <html suppressHydrationWarning className={`${inter.variable} ${jetbrainsMono.variable}`}>
       <body className={inter.className}>
         <ThemeProvider enableSystem>
-          <ScaffoldEthAppWithProviders>{children}</ScaffoldEthAppWithProviders>
+          <ErrorBoundary>
+            <ScaffoldEthAppWithProviders>{children}</ScaffoldEthAppWithProviders>
+          </ErrorBoundary>
         </ThemeProvider>
       </body>
     </html>

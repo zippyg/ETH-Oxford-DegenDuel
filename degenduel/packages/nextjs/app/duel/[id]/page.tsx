@@ -38,8 +38,22 @@ const DuelDetailPage = () => {
   const { address: userAddress } = useAccount();
   const [currentPrice, setCurrentPrice] = useState<string | null>(null);
   const [isSettling, setIsSettling] = useState(false);
+  const [duelId, setDuelId] = useState<bigint | undefined>(undefined);
+  const [invalidId, setInvalidId] = useState(false);
 
-  const duelId = id ? BigInt(id as string) : undefined;
+  useEffect(() => {
+    if (!id) {
+      setInvalidId(true);
+      return;
+    }
+    try {
+      const parsed = BigInt(id as string);
+      setDuelId(parsed);
+    } catch {
+      console.error("Invalid duel ID:", id);
+      setInvalidId(true);
+    }
+  }, [id]);
 
   const { data: duel, refetch: refetchDuel } = useScaffoldReadContract({
     contractName: "DegenDuel",
@@ -65,6 +79,23 @@ const DuelDetailPage = () => {
       setCurrentPrice(price);
     }
   }, [priceData]);
+
+  if (invalidId) {
+    return (
+      <div className="min-h-screen">
+        <PriceTicker />
+        <div className="max-w-4xl mx-auto px-4 sm:px-6 py-10">
+          <div className="text-center">
+            <h2 className="text-2xl font-bold text-[#E62058] mb-4">Invalid Duel ID</h2>
+            <p className="text-slate-400 mb-6">The duel ID &quot;{id}&quot; is not valid.</p>
+            <a href="/arena" className="btn-primary px-6 py-3 rounded-xl">
+              Back to Arena
+            </a>
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   if (!duel) {
     return (

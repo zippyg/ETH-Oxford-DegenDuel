@@ -134,7 +134,11 @@ export const Leaderboard = ({ fullPage = false }: { fullPage?: boolean }) => {
   const settledDuels = stats ? Number(stats[1]) : 0;
   const volume = stats ? formatEther(stats[2]) : "0";
 
-  const isLoading = settledLoading || createdLoading || joinedLoading;
+  // Only show loading if we have no data yet (prevents perpetual spinner)
+  const hasAnyData = (settledEvents && settledEvents.length > 0) ||
+                      (createdEvents && createdEvents.length > 0) ||
+                      (joinedEvents && joinedEvents.length > 0);
+  const isLoading = (settledLoading || createdLoading || joinedLoading) && !hasAnyData;
 
   // Build leaderboard from events
   const entries: LeaderboardEntry[] = useMemo(() => {

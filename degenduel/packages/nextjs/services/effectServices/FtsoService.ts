@@ -77,7 +77,7 @@ export const FtsoServiceLive = Layer.effect(
 function encodeFunctionCall(fn: string, feedId: string): string {
   // getCurrentPrice selector: keccak256("getCurrentPrice(bytes21)") = first 4 bytes
   // For simplicity, we'll use the known selector
-  const selector = "0x4846eef3"; // getCurrentPrice(bytes21)
+  const selector = "0xa908f021"; // getCurrentPrice(bytes21)
   const paddedFeedId = feedId.slice(2).padEnd(64, "0");
   return selector + paddedFeedId;
 }
@@ -86,8 +86,9 @@ function encodeFunctionCall(fn: string, feedId: string): string {
 function decodePriceResult(feedId: string, hexData: string): PriceData {
   const data = hexData.slice(2);
   const value = BigInt("0x" + data.slice(0, 64));
-  const decimalsRaw = parseInt(data.slice(64, 128), 16);
-  const decimals = decimalsRaw > 127 ? decimalsRaw - 256 : decimalsRaw; // int8
+  // int8 is sign-extended to 32 bytes in ABI — read last byte only
+  const lastByte = parseInt(data.slice(126, 128), 16);
+  const decimals = lastByte > 127 ? lastByte - 256 : lastByte; // int8 sign handling
   const timestamp = Number(BigInt("0x" + data.slice(128, 192)));
   const formatted = Number(value) * Math.pow(10, -decimals);
   return { feedId, value, decimals, timestamp, formatted };
