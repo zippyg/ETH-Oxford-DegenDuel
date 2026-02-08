@@ -30,7 +30,7 @@ export const CreateDuel = () => {
   const [duelMode, setDuelMode] = useState<DuelMode>("PRICE");
   const [selectedFeed, setSelectedFeed] = useState<FeedName>("BTC/USD");
   const [prediction, setPrediction] = useState<"UP" | "DOWN" | null>(null);
-  const [stake, setStake] = useState("");
+  const [stake, setStake] = useState("0.01");
   const [isCreating, setIsCreating] = useState(false);
   const [isWaiting, setIsWaiting] = useState(false);
   const [createdDuelId, setCreatedDuelId] = useState<bigint | null>(null);
@@ -190,7 +190,7 @@ export const CreateDuel = () => {
         setCreatedDuelId(duelIdToTrack);
       }
       setIsWaiting(true);
-      setStake("");
+      setStake("0.01");
       setPrediction(null);
       setDataSource("");
       setDataThreshold("");
