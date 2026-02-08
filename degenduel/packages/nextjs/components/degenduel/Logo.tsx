@@ -12,16 +12,16 @@ export const Logo = ({ size = 40 }: { size?: number }) => {
     >
       <defs>
         <linearGradient id="logo-gradient" x1="0%" y1="0%" x2="100%" y2="100%">
-          <stop offset="0%" stopColor="#8B5CF6" />
-          <stop offset="100%" stopColor="#06B6D4" />
+          <stop offset="0%" stopColor="#E62058" />
+          <stop offset="100%" stopColor="#6C93EC" />
         </linearGradient>
         <linearGradient id="logo-green" x1="0%" y1="100%" x2="100%" y2="0%">
-          <stop offset="0%" stopColor="#22C55E" />
-          <stop offset="100%" stopColor="#06B6D4" />
+          <stop offset="0%" stopColor="#10B981" />
+          <stop offset="100%" stopColor="#6C93EC" />
         </linearGradient>
         <linearGradient id="logo-red" x1="0%" y1="0%" x2="100%" y2="100%">
           <stop offset="0%" stopColor="#EF4444" />
-          <stop offset="100%" stopColor="#8B5CF6" />
+          <stop offset="100%" stopColor="#E62058" />
         </linearGradient>
       </defs>
       {/* Upward price line (green/cyan) */}

@@ -21,8 +21,8 @@ const FEED_NAMES: Record<string, string> = {
 };
 
 const STATUS_CONFIG = {
-  0: { label: "OPEN", color: "#8B5CF6", bg: "rgba(139,92,246,0.1)" },
-  1: { label: "ACTIVE", color: "#06B6D4", bg: "rgba(6,182,212,0.1)" },
+  0: { label: "OPEN", color: "#E62058", bg: "rgba(230,32,88,0.1)" },
+  1: { label: "ACTIVE", color: "#6C93EC", bg: "rgba(108,147,236,0.1)" },
   2: { label: "SETTLED", color: "#F59E0B", bg: "rgba(245,158,11,0.1)" },
   3: { label: "CANCELLED", color: "#EF4444", bg: "rgba(239,68,68,0.1)" },
   4: { label: "EXPIRED", color: "#475569", bg: "rgba(71,85,105,0.1)" },
@@ -165,18 +165,20 @@ const DuelDetailPage = () => {
           className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6"
         >
           {/* Player A */}
-          <div className="rounded-2xl card-glass-dense p-6">
+          <div className="rounded-2xl card-glass-dense p-6 overflow-hidden">
             <div className="flex items-center justify-between mb-4">
               <div className="text-slate-400 text-xs uppercase">Player A</div>
               {isSettled && winner && winner.toLowerCase() === duel.playerA.toLowerCase() && (
-                <CheckCircleIcon className="w-5 h-5 text-[#22C55E]" />
+                <CheckCircleIcon className="w-5 h-5 text-[#10B981]" />
               )}
             </div>
-            <Address address={duel.playerA} format="long" />
+            <div className="overflow-hidden">
+              <Address address={duel.playerA} format="long" />
+            </div>
             <div className="mt-4 flex items-center justify-between">
               <div className="flex items-center gap-2">
                 {duel.playerAPrediction ? (
-                  <ArrowTrendingUpIcon className="w-5 h-5 text-[#22C55E]" />
+                  <ArrowTrendingUpIcon className="w-5 h-5 text-[#10B981]" />
                 ) : (
                   <ArrowTrendingDownIcon className="w-5 h-5 text-[#EF4444]" />
                 )}
@@ -189,20 +191,22 @@ const DuelDetailPage = () => {
           </div>
 
           {/* Player B */}
-          <div className="rounded-2xl card-glass-dense p-6">
+          <div className="rounded-2xl card-glass-dense p-6 overflow-hidden">
             <div className="flex items-center justify-between mb-4">
               <div className="text-slate-400 text-xs uppercase">Player B</div>
               {isSettled && winner && duel.playerB && winner.toLowerCase() === duel.playerB.toLowerCase() && (
-                <CheckCircleIcon className="w-5 h-5 text-[#22C55E]" />
+                <CheckCircleIcon className="w-5 h-5 text-[#10B981]" />
               )}
             </div>
             {duel.playerB && duel.playerB !== "0x0000000000000000000000000000000000000000" ? (
               <>
-                <Address address={duel.playerB} format="long" />
+                <div className="overflow-hidden">
+                  <Address address={duel.playerB} format="long" />
+                </div>
                 <div className="mt-4 flex items-center justify-between">
                   <div className="flex items-center gap-2">
                     {!duel.playerAPrediction ? (
-                      <ArrowTrendingUpIcon className="w-5 h-5 text-[#22C55E]" />
+                      <ArrowTrendingUpIcon className="w-5 h-5 text-[#10B981]" />
                     ) : (
                       <ArrowTrendingDownIcon className="w-5 h-5 text-[#EF4444]" />
                     )}
@@ -282,17 +286,19 @@ const DuelDetailPage = () => {
               <>
                 <div className="mb-4">
                   <div className="text-slate-400 text-sm uppercase mb-2">Winner</div>
-                  <Address address={winner} format="long" />
+                  <div className="overflow-hidden">
+                    <Address address={winner} format="long" />
+                  </div>
                 </div>
                 <div className="mb-4">
                   <div className="text-slate-400 text-sm uppercase mb-2">Payout</div>
-                  <div className="text-3xl font-black font-mono tabular-nums text-[#22C55E]">
+                  <div className="text-3xl font-black font-mono tabular-nums text-[#10B981]">
                     {payout} FLR
                   </div>
                 </div>
                 {isUserWinner && (
-                  <div className="px-6 py-3 rounded-xl bg-[rgba(34,197,94,0.1)] inline-block">
-                    <span className="text-[#22C55E] font-black text-xl">YOU WON!</span>
+                  <div className="px-6 py-3 rounded-xl bg-[rgba(16,185,129,0.1)] inline-block">
+                    <span className="text-[#10B981] font-black text-xl">YOU WON!</span>
                   </div>
                 )}
                 {isUserInDuel && !isUserWinner && (

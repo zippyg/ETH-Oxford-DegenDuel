@@ -73,7 +73,7 @@ export const AIHintCard = () => {
   }, []);
 
   const getConfidenceColor = (confidence: number) => {
-    if (confidence >= 60) return "#22C55E"; // Green
+    if (confidence >= 60) return "#10B981"; // Green
     if (confidence >= 40) return "#F59E0B"; // Yellow
     return "#EF4444"; // Red
   };
@@ -94,7 +94,7 @@ export const AIHintCard = () => {
       {/* Header - Always Visible */}
       <motion.button
         onClick={() => setIsExpanded(!isExpanded)}
-        className="w-full px-6 py-4 flex items-center justify-between hover:bg-[rgba(139,92,246,0.05)] transition-all"
+        className="w-full px-6 py-4 flex items-center justify-between hover:bg-[rgba(230,32,88,0.05)] transition-all"
         whileHover={{ scale: 1.005 }}
         whileTap={{ scale: 0.995 }}
       >
@@ -102,7 +102,7 @@ export const AIHintCard = () => {
           <motion.div
             animate={{ rotate: isExpanded ? 180 : 0 }}
             transition={{ duration: 0.3 }}
-            className="text-[#8B5CF6]"
+            className="text-[#E62058]"
           >
             <SparklesIcon className="w-5 h-5" />
           </motion.div>
@@ -136,12 +136,12 @@ export const AIHintCard = () => {
                   <motion.div
                     animate={{ opacity: [0.3, 0.7, 0.3] }}
                     transition={{ repeat: Infinity, duration: 1.5 }}
-                    className="h-20 rounded-lg bg-[rgba(139,92,246,0.1)]"
+                    className="h-20 rounded-lg bg-[rgba(230,32,88,0.1)]"
                   />
                   <motion.div
                     animate={{ opacity: [0.3, 0.7, 0.3] }}
                     transition={{ repeat: Infinity, duration: 1.5, delay: 0.2 }}
-                    className="h-12 rounded-lg bg-[rgba(139,92,246,0.1)]"
+                    className="h-12 rounded-lg bg-[rgba(230,32,88,0.1)]"
                   />
                 </div>
               ) : hint ? (
@@ -186,7 +186,7 @@ export const AIHintCard = () => {
                   </div>
 
                   {/* Rationale */}
-                  <div className="p-3 rounded-lg bg-[rgba(139,92,246,0.05)] border border-[rgba(139,92,246,0.15)]">
+                  <div className="p-3 rounded-lg bg-[rgba(230,32,88,0.05)] border border-[rgba(230,32,88,0.15)]">
                     <div className="text-xs text-slate-500 mb-1.5">AI Rationale</div>
                     <p className="text-sm text-slate-200 leading-relaxed">{hint.rationale}</p>
                   </div>
@@ -196,7 +196,7 @@ export const AIHintCard = () => {
                     whileHover={{ scale: 1.02 }}
                     whileTap={{ scale: 0.98 }}
                     onClick={fetchHint}
-                    className="w-full py-2.5 rounded-lg bg-gradient-to-r from-[#8B5CF6] to-[#6D28D9] text-white font-bold text-sm uppercase tracking-wider hover:from-[#7C3AED] hover:to-[#5B21B6] transition-all btn-glow"
+                    className="w-full py-2.5 rounded-lg bg-gradient-to-r from-[#E62058] to-[#A01540] text-white font-bold text-sm uppercase tracking-wider hover:from-[#C41B4C] hover:to-[#8A1237] transition-all btn-glow"
                   >
                     Get New Hint
                   </motion.button>

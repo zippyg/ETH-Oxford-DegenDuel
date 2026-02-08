@@ -53,9 +53,9 @@ export const HeaderMenuLinks = () => {
               passHref
               className={`${
                 isActive
-                  ? "text-[#8B5CF6] bg-[rgba(139,92,246,0.1)]"
+                  ? "text-[#E62058] bg-[rgba(230,32,88,0.1)]"
                   : "text-slate-400 hover:text-slate-200"
-              } hover:bg-[rgba(139,92,246,0.08)] py-2 px-3 text-sm rounded-lg gap-2 grid grid-flow-col font-medium transition-all`}
+              } hover:bg-[rgba(230,32,88,0.08)] py-2 px-3 text-sm rounded-lg gap-2 grid grid-flow-col font-medium transition-all`}
             >
               {icon}
               <span>{label}</span>
@@ -80,7 +80,7 @@ export const Header = () => {
   });
 
   return (
-    <div className="sticky lg:static top-0 navbar min-h-0 shrink-0 justify-between z-20 px-0 sm:px-2 bg-[rgba(8,11,22,0.8)] backdrop-blur-xl border-b border-[rgba(148,163,184,0.06)] shadow-[0_4px_30px_rgba(139,92,246,0.08)]">
+    <div className="sticky lg:static top-0 navbar min-h-0 shrink-0 justify-between z-20 px-0 sm:px-2 bg-[rgba(5,5,6,0.8)] backdrop-blur-xl border-b border-[rgba(148,163,184,0.06)] shadow-[0_4px_30px_rgba(230,32,88,0.08)]">
       <div className="navbar-start w-auto lg:w-1/2">
         {/* Mobile menu */}
         <details className="dropdown" ref={burgerMenuRef}>

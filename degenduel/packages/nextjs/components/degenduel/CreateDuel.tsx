@@ -130,7 +130,7 @@ export const CreateDuel = () => {
         <motion.div
           animate={{ rotate: 360 }}
           transition={{ repeat: Infinity, duration: 2, ease: "linear" }}
-          className="w-12 h-12 rounded-full border-2 border-[#8B5CF6] border-t-transparent mb-4"
+          className="w-12 h-12 rounded-full border-2 border-[#E62058] border-t-transparent mb-4"
         />
         <h3 className="text-lg font-bold text-gradient mb-2">Duel Created!</h3>
         <p className="text-slate-400 text-sm text-center">Waiting for an opponent to accept your challenge...</p>
@@ -168,8 +168,8 @@ export const CreateDuel = () => {
             onClick={() => setDuelMode("PRICE")}
             className={`flex-1 px-4 py-2 rounded-lg font-bold text-sm transition-all ${
               duelMode === "PRICE"
-                ? "bg-[#8B5CF6] text-white border-glow-purple"
-                : "bg-[rgba(139,92,246,0.1)] text-slate-400 hover:text-white hover:bg-[rgba(139,92,246,0.2)]"
+                ? "bg-[#E62058] text-white border-glow-purple"
+                : "bg-[rgba(230,32,88,0.1)] text-slate-400 hover:text-white hover:bg-[rgba(230,32,88,0.2)]"
             }`}
           >
             PRICE
@@ -180,8 +180,8 @@ export const CreateDuel = () => {
             onClick={() => setDuelMode("DATA")}
             className={`flex-1 px-4 py-2 rounded-lg font-bold text-sm transition-all ${
               duelMode === "DATA"
-                ? "bg-[#06B6D4] text-white border-glow-cyan"
-                : "bg-[rgba(6,182,212,0.1)] text-slate-400 hover:text-white hover:bg-[rgba(6,182,212,0.2)]"
+                ? "bg-[#6C93EC] text-white border-glow-cyan"
+                : "bg-[rgba(108,147,236,0.1)] text-slate-400 hover:text-white hover:bg-[rgba(108,147,236,0.2)]"
             }`}
           >
             DATA
@@ -200,8 +200,8 @@ export const CreateDuel = () => {
                   onClick={() => setSelectedFeed(asset.feed)}
                   className={`px-4 py-2 rounded-lg font-bold text-sm transition-all ${
                     selectedFeed === asset.feed
-                      ? "bg-[#8B5CF6] text-white border-glow-purple"
-                      : "bg-[rgba(139,92,246,0.1)] text-slate-400 hover:text-white hover:bg-[rgba(139,92,246,0.2)]"
+                      ? "bg-[#E62058] text-white border-glow-purple"
+                      : "bg-[rgba(230,32,88,0.1)] text-slate-400 hover:text-white hover:bg-[rgba(230,32,88,0.2)]"
                   }`}
                 >
                   {asset.name}
@@ -210,7 +210,7 @@ export const CreateDuel = () => {
             </div>
 
             {/* Current price */}
-            <div className="mb-5 p-3 rounded-lg bg-[rgba(139,92,246,0.05)] border border-[rgba(139,92,246,0.15)]">
+            <div className="mb-5 p-3 rounded-lg bg-[rgba(230,32,88,0.05)] border border-[rgba(230,32,88,0.15)]">
               <div className="text-xs text-slate-500">Current {selectedFeed} Price</div>
               <div className="font-mono text-xl font-bold text-slate-100 tabular-nums">${currentPrice}</div>
               <div className="text-xs text-slate-500 mt-0.5">via Flare FTSO v2 -- updates every ~1.8s</div>
@@ -226,12 +226,12 @@ export const CreateDuel = () => {
                 placeholder="e.g., BTC Fear & Greed Index, ETH Gas Price"
                 value={dataSource}
                 onChange={e => setDataSource(e.target.value)}
-                className="w-full py-3 px-4 rounded-xl bg-[rgba(8,11,22,0.6)] border border-[rgba(148,163,184,0.1)] text-slate-100 text-sm placeholder:text-slate-600 focus:outline-none focus:border-[#06B6D4] focus:border-glow-cyan transition-all"
+                className="w-full py-3 px-4 rounded-xl bg-[rgba(5,5,6,0.6)] border border-[rgba(148,163,184,0.1)] text-slate-100 text-sm placeholder:text-slate-600 focus:outline-none focus:border-[#6C93EC] focus:border-glow-cyan transition-all"
               />
             </div>
 
             {/* Data threshold input */}
-            <div className="mb-5 p-3 rounded-lg bg-[rgba(6,182,212,0.05)] border border-[rgba(6,182,212,0.15)]">
+            <div className="mb-5 p-3 rounded-lg bg-[rgba(108,147,236,0.05)] border border-[rgba(108,147,236,0.15)]">
               <label className="text-xs text-slate-500 mb-1.5 block">Threshold Value</label>
               <input
                 type="number"
@@ -239,7 +239,7 @@ export const CreateDuel = () => {
                 value={dataThreshold}
                 onChange={e => setDataThreshold(e.target.value)}
                 step="1"
-                className="w-full py-2 px-3 rounded-lg bg-[rgba(8,11,22,0.6)] border border-[rgba(148,163,184,0.1)] text-slate-100 font-mono text-lg placeholder:text-slate-600 focus:outline-none focus:border-[#06B6D4] transition-all"
+                className="w-full py-2 px-3 rounded-lg bg-[rgba(5,5,6,0.6)] border border-[rgba(148,163,184,0.1)] text-slate-100 font-mono text-lg placeholder:text-slate-600 focus:outline-none focus:border-[#6C93EC] transition-all"
               />
               <div className="text-xs text-slate-500 mt-2">External data will be fetched via FDC attestation</div>
             </div>
@@ -254,8 +254,8 @@ export const CreateDuel = () => {
             onClick={() => setPrediction("UP")}
             className={`flex-1 py-4 rounded-xl font-bold text-lg flex items-center justify-center gap-2 transition-all ${
               prediction === "UP"
-                ? "bg-[#22C55E] text-white border-glow-green shadow-lg"
-                : "bg-[rgba(34,197,94,0.1)] text-[#22C55E]/60 border border-[#22C55E]/20 hover:bg-[rgba(34,197,94,0.15)]"
+                ? "bg-[#10B981] text-white border-glow-green shadow-lg"
+                : "bg-[rgba(16,185,129,0.1)] text-[#10B981]/60 border border-[#10B981]/20 hover:bg-[rgba(16,185,129,0.15)]"
             }`}
           >
             <ArrowUpIcon className="w-6 h-6" />
@@ -286,7 +286,7 @@ export const CreateDuel = () => {
               onChange={e => setStake(e.target.value)}
               step="0.01"
               min="0.01"
-              className="w-full py-3 px-4 pr-16 rounded-xl bg-[rgba(8,11,22,0.6)] border border-[rgba(148,163,184,0.1)] text-slate-100 font-mono text-lg placeholder:text-slate-600 focus:outline-none focus:border-[#8B5CF6] focus:border-glow-purple transition-all"
+              className="w-full py-3 px-4 pr-16 rounded-xl bg-[rgba(5,5,6,0.6)] border border-[rgba(148,163,184,0.1)] text-slate-100 font-mono text-lg placeholder:text-slate-600 focus:outline-none focus:border-[#E62058] focus:border-glow-purple transition-all"
             />
             <div className="absolute right-3 top-1/2 -translate-y-1/2 text-sm font-bold text-[#F59E0B]">
               FLR
@@ -306,7 +306,7 @@ export const CreateDuel = () => {
           className={`w-full py-4 rounded-xl font-bold text-lg transition-all btn-glow ${
             isCreating || !prediction || !stake || parseFloat(stake) < 0.01
               ? "bg-slate-800 text-slate-500 cursor-not-allowed"
-              : "bg-gradient-to-r from-[#8B5CF6] to-[#6D28D9] text-white hover:from-[#7C3AED] hover:to-[#5B21B6]"
+              : "bg-gradient-to-r from-[#E62058] to-[#A01540] text-white hover:from-[#C41B4C] hover:to-[#8A1237]"
           }`}
         >
           {isCreating ? (

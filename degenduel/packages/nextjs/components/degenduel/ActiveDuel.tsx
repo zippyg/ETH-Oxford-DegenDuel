@@ -37,13 +37,13 @@ const PlayerBox = ({
       className={`relative flex-1 rounded-xl p-4 card-glass transition-all duration-500 ${
         isWinning
           ? prediction
-            ? "border-glow-green border border-[#22C55E]/30"
+            ? "border-glow-green border border-[#10B981]/30"
             : "border-glow-red border border-[#EF4444]/30"
           : "border border-[rgba(148,163,184,0.08)]"
       }`}
     >
       {isUser && (
-        <div className="absolute -top-2 left-3 px-2 py-0.5 bg-[#8B5CF6] rounded text-[10px] font-bold text-white">
+        <div className="absolute -top-2 left-3 px-2 py-0.5 bg-[#E62058] rounded text-[10px] font-bold text-white">
           YOU
         </div>
       )}
@@ -54,13 +54,13 @@ const PlayerBox = ({
       )}
       <div className="text-xs text-slate-500 mb-1">{label}</div>
       <div className="flex items-center justify-between">
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-2 overflow-hidden min-w-0">
           <Address address={address} size="xs" />
         </div>
         <div className="flex items-center gap-2">
           <div
             className={`flex items-center gap-1 text-sm font-bold ${
-              prediction ? "text-[#22C55E]" : "text-[#EF4444]"
+              prediction ? "text-[#10B981]" : "text-[#EF4444]"
             }`}
           >
             {prediction ? (
@@ -146,8 +146,8 @@ export const ActiveDuel = ({ duel, currentPrice, entryPrice, onSettle, isSettlin
           horzLines: { color: "rgba(148, 163, 184, 0.05)" },
         },
         crosshair: {
-          vertLine: { color: "rgba(139, 92, 246, 0.3)" },
-          horzLine: { color: "rgba(139, 92, 246, 0.3)" },
+          vertLine: { color: "rgba(230, 32, 88, 0.3)" },
+          horzLine: { color: "rgba(230, 32, 88, 0.3)" },
         },
         timeScale: {
           borderColor: "rgba(148, 163, 184, 0.1)",
@@ -165,9 +165,9 @@ export const ActiveDuel = ({ duel, currentPrice, entryPrice, onSettle, isSettlin
       const isBullWinning = currentPrice && entryPrice ? currentPrice >= entryPrice : true;
 
       series = chart.addAreaSeries({
-        topColor: isBullWinning ? "rgba(34, 197, 94, 0.4)" : "rgba(239, 68, 68, 0.4)",
-        bottomColor: isBullWinning ? "rgba(34, 197, 94, 0.0)" : "rgba(239, 68, 68, 0.0)",
-        lineColor: isBullWinning ? "#22C55E" : "#EF4444",
+        topColor: isBullWinning ? "rgba(16, 185, 129, 0.4)" : "rgba(239, 68, 68, 0.4)",
+        bottomColor: isBullWinning ? "rgba(16, 185, 129, 0.0)" : "rgba(239, 68, 68, 0.0)",
+        lineColor: isBullWinning ? "#10B981" : "#EF4444",
         lineWidth: 2,
       });
 
@@ -179,7 +179,7 @@ export const ActiveDuel = ({ duel, currentPrice, entryPrice, onSettle, isSettlin
       if (entryPrice) {
         entryLineRef.current = series.createPriceLine({
           price: entryPrice,
-          color: "#8B5CF6",
+          color: "#E62058",
           lineWidth: 1,
           lineStyle: LineStyle.Dashed,
           axisLabelVisible: true,
@@ -222,9 +222,9 @@ export const ActiveDuel = ({ duel, currentPrice, entryPrice, onSettle, isSettlin
       // Update chart colors based on who's winning
       const isBullWinning = currentPrice && entryPrice ? currentPrice >= entryPrice : true;
       seriesRef.current.applyOptions({
-        topColor: isBullWinning ? "rgba(34, 197, 94, 0.4)" : "rgba(239, 68, 68, 0.4)",
-        bottomColor: isBullWinning ? "rgba(34, 197, 94, 0.0)" : "rgba(239, 68, 68, 0.0)",
-        lineColor: isBullWinning ? "#22C55E" : "#EF4444",
+        topColor: isBullWinning ? "rgba(16, 185, 129, 0.4)" : "rgba(239, 68, 68, 0.4)",
+        bottomColor: isBullWinning ? "rgba(16, 185, 129, 0.0)" : "rgba(239, 68, 68, 0.0)",
+        lineColor: isBullWinning ? "#10B981" : "#EF4444",
       });
     }
   }, [priceHistory, currentPrice, entryPrice]);
@@ -245,8 +245,8 @@ export const ActiveDuel = ({ duel, currentPrice, entryPrice, onSettle, isSettlin
           <svg width="80" height="80" viewBox="0 0 48 48" fill="none">
             <defs>
               <linearGradient id="empty-grad" x1="0%" y1="0%" x2="100%" y2="100%">
-                <stop offset="0%" stopColor="#8B5CF6" />
-                <stop offset="100%" stopColor="#06B6D4" />
+                <stop offset="0%" stopColor="#E62058" />
+                <stop offset="100%" stopColor="#6C93EC" />
               </linearGradient>
             </defs>
             <path d="M 6 36 L 16 28 L 22 32 L 30 18 L 42 8" stroke="url(#empty-grad)" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" fill="none" opacity="0.5" />
@@ -258,7 +258,7 @@ export const ActiveDuel = ({ duel, currentPrice, entryPrice, onSettle, isSettlin
         <motion.div
           animate={{ opacity: [0.3, 0.7, 0.3] }}
           transition={{ repeat: Infinity, duration: 2 }}
-          className="mt-4 text-sm text-[#8B5CF6] font-mono"
+          className="mt-4 text-sm text-[#E62058] font-mono"
         >
           Waiting for battle...
         </motion.div>
@@ -306,8 +306,8 @@ export const ActiveDuel = ({ duel, currentPrice, entryPrice, onSettle, isSettlin
       <div className="flex items-center justify-between px-6 py-4 border-b border-[rgba(148,163,184,0.08)]">
         <div>
           <div className="flex items-center gap-2">
-            <div className="w-2 h-2 rounded-full bg-[#22C55E] animate-pulse" />
-            <span className="text-xs font-bold text-[#22C55E] uppercase tracking-wider">Live Duel</span>
+            <div className="w-2 h-2 rounded-full bg-[#10B981] animate-pulse" />
+            <span className="text-xs font-bold text-[#10B981] uppercase tracking-wider">Live Duel</span>
             {bonusTriggered && (
               <motion.div
                 initial={{ scale: 0, rotate: -10 }}
@@ -352,8 +352,8 @@ export const ActiveDuel = ({ duel, currentPrice, entryPrice, onSettle, isSettlin
             label="Player B (Challenger)"
           />
         ) : (
-          <div className="flex-1 rounded-xl border border-dashed border-[#8B5CF6]/30 p-4 flex items-center justify-center animate-pulse-glow">
-            <span className="text-sm text-[#8B5CF6] font-mono">Waiting for challenger...</span>
+          <div className="flex-1 rounded-xl border border-dashed border-[#E62058]/30 p-4 flex items-center justify-center animate-pulse-glow">
+            <span className="text-sm text-[#E62058] font-mono">Waiting for challenger...</span>
           </div>
         )}
       </div>
@@ -365,7 +365,7 @@ export const ActiveDuel = ({ duel, currentPrice, entryPrice, onSettle, isSettlin
           <div
             className={`font-mono text-lg font-bold tabular-nums ${
               priceFlash === "green"
-                ? "text-[#22C55E] text-glow-green"
+                ? "text-[#10B981] text-glow-green"
                 : priceFlash === "red"
                 ? "text-[#EF4444] text-glow-red"
                 : "text-slate-100"
@@ -384,7 +384,7 @@ export const ActiveDuel = ({ duel, currentPrice, entryPrice, onSettle, isSettlin
           <span className="text-xs text-slate-500">Change</span>
           <div
             className={`font-mono text-lg font-bold tabular-nums ${
-              priceChange >= 0 ? "text-[#22C55E]" : "text-[#EF4444]"
+              priceChange >= 0 ? "text-[#10B981]" : "text-[#EF4444]"
             }`}
           >
             {priceChange >= 0 ? "+" : ""}
@@ -396,7 +396,7 @@ export const ActiveDuel = ({ duel, currentPrice, entryPrice, onSettle, isSettlin
             <span className="text-xs text-slate-500">Favoring</span>
             <div
               className={`text-sm font-bold ${
-                playerAWinning ? "text-[#8B5CF6]" : "text-[#06B6D4]"
+                playerAWinning ? "text-[#E62058]" : "text-[#6C93EC]"
               }`}
             >
               {playerAWinning ? "Player A" : "Player B"}
@@ -422,7 +422,7 @@ export const ActiveDuel = ({ duel, currentPrice, entryPrice, onSettle, isSettlin
             whileTap={{ scale: 0.98 }}
             onClick={() => onSettle(duel.id)}
             disabled={isSettling}
-            className="w-full btn border-0 bg-gradient-to-r from-[#8B5CF6] to-[#06B6D4] hover:from-[#7C3AED] hover:to-[#0891B2] text-white font-bold uppercase tracking-wider btn-glow disabled:opacity-50 disabled:cursor-not-allowed"
+            className="w-full btn border-0 bg-gradient-to-r from-[#E62058] to-[#6C93EC] hover:from-[#C41B4C] hover:to-[#5A7FD4] text-white font-bold uppercase tracking-wider btn-glow disabled:opacity-50 disabled:cursor-not-allowed"
           >
             {isSettling ? (
               <span className="flex items-center justify-center gap-2">

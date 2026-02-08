@@ -8,7 +8,7 @@ export const fireWinConfetti = () => {
     particleCount: 80,
     spread: 70,
     origin: { x: 0.3, y: 0.6 },
-    colors: ["#8B5CF6", "#F59E0B", "#22C55E", "#06B6D4"],
+    colors: ["#E62058", "#F59E0B", "#10B981", "#6C93EC"],
     zIndex: 9999,
   });
   setTimeout(() => {
@@ -16,7 +16,7 @@ export const fireWinConfetti = () => {
       particleCount: 80,
       spread: 70,
       origin: { x: 0.7, y: 0.6 },
-      colors: ["#8B5CF6", "#F59E0B", "#22C55E", "#06B6D4"],
+      colors: ["#E62058", "#F59E0B", "#10B981", "#6C93EC"],
       zIndex: 9999,
     });
   }, 150);

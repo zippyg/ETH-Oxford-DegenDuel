@@ -30,27 +30,27 @@ export const Footer = () => {
             {/* Left: Brand */}
             <div className="flex items-center gap-2 text-sm text-slate-500">
               <span>Built on</span>
-              <span className="font-bold text-[#8B5CF6]">Flare</span>
+              <span className="font-bold text-[#E62058]">Flare</span>
               <span className="text-slate-700">|</span>
               <span>ETH Oxford 2026</span>
             </div>
 
             {/* Center: Protocol badges */}
             <div className="flex items-center gap-3">
-              <div className="px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider bg-[rgba(139,92,246,0.1)] text-[#8B5CF6] border border-[#8B5CF6]/20">
+              <div className="px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider bg-[rgba(230,32,88,0.1)] text-[#E62058] border border-[#E62058]/20">
                 FTSO v2
               </div>
-              <div className="px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider bg-[rgba(6,182,212,0.1)] text-[#06B6D4] border border-[#06B6D4]/20">
+              <div className="px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider bg-[rgba(108,147,236,0.1)] text-[#6C93EC] border border-[#6C93EC]/20">
                 FDC
               </div>
-              <div className="px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider bg-[rgba(34,197,94,0.1)] text-[#22C55E] border border-[#22C55E]/20">
+              <div className="px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider bg-[rgba(16,185,129,0.1)] text-[#10B981] border border-[#10B981]/20">
                 RNG
               </div>
             </div>
 
-            {/* Right: Tagline */}
-            <div className="text-xs text-slate-600 font-mono">
-              Predict. Duel. Win.
+            {/* Right: Credit */}
+            <div className="text-xs text-slate-500 font-mono">
+              Developed by <span className="text-[#E8E8E8] font-bold">Zain Mughal</span>
             </div>
           </div>
         </div>

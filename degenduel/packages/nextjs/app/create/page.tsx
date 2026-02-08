@@ -40,7 +40,7 @@ const CreatePage = () => {
           <h3 className="text-sm font-bold text-slate-300 mb-3">How it works</h3>
           <div className="space-y-3">
             <div className="flex gap-3 items-start">
-              <div className="w-6 h-6 rounded-full bg-[rgba(139,92,246,0.2)] flex items-center justify-center shrink-0 text-xs font-bold text-[#8B5CF6]">
+              <div className="w-6 h-6 rounded-full bg-[rgba(230,32,88,0.2)] flex items-center justify-center shrink-0 text-xs font-bold text-[#E62058]">
                 1
               </div>
               <div className="text-xs text-slate-400">
@@ -48,7 +48,7 @@ const CreatePage = () => {
               </div>
             </div>
             <div className="flex gap-3 items-start">
-              <div className="w-6 h-6 rounded-full bg-[rgba(6,182,212,0.2)] flex items-center justify-center shrink-0 text-xs font-bold text-[#06B6D4]">
+              <div className="w-6 h-6 rounded-full bg-[rgba(108,147,236,0.2)] flex items-center justify-center shrink-0 text-xs font-bold text-[#6C93EC]">
                 2
               </div>
               <div className="text-xs text-slate-400">
@@ -56,7 +56,7 @@ const CreatePage = () => {
               </div>
             </div>
             <div className="flex gap-3 items-start">
-              <div className="w-6 h-6 rounded-full bg-[rgba(34,197,94,0.2)] flex items-center justify-center shrink-0 text-xs font-bold text-[#22C55E]">
+              <div className="w-6 h-6 rounded-full bg-[rgba(16,185,129,0.2)] flex items-center justify-center shrink-0 text-xs font-bold text-[#10B981]">
                 3
               </div>
               <div className="text-xs text-slate-400">

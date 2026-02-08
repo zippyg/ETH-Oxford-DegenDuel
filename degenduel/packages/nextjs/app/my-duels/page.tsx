@@ -17,8 +17,8 @@ const FEED_NAMES: Record<string, string> = {
 };
 
 const STATUS_CONFIG = {
-  0: { label: "OPEN", color: "#8B5CF6", bg: "rgba(139,92,246,0.1)" },
-  1: { label: "ACTIVE", color: "#06B6D4", bg: "rgba(6,182,212,0.1)" },
+  0: { label: "OPEN", color: "#E62058", bg: "rgba(230,32,88,0.1)" },
+  1: { label: "ACTIVE", color: "#6C93EC", bg: "rgba(108,147,236,0.1)" },
   2: { label: "SETTLED", color: "#F59E0B", bg: "rgba(245,158,11,0.1)" },
   3: { label: "CANCELLED", color: "#EF4444", bg: "rgba(239,68,68,0.1)" },
   4: { label: "EXPIRED", color: "#475569", bg: "rgba(71,85,105,0.1)" },
@@ -71,7 +71,7 @@ const DuelCard = ({ duel, userAddress }: { duel: Duel; userAddress: string }) =>
         animate={{ opacity: 1, y: 0 }}
         whileHover={{ scale: 1.02 }}
         transition={{ duration: 0.3 }}
-        className="rounded-2xl card-glass-dense p-6 cursor-pointer hover:shadow-[0_0_30px_rgba(139,92,246,0.15)] transition-shadow"
+        className="rounded-2xl card-glass-dense p-6 cursor-pointer hover:shadow-[0_0_30px_rgba(230,32,88,0.15)] transition-shadow"
       >
         <div className="flex items-start justify-between mb-4">
           <div>
@@ -89,8 +89,8 @@ const DuelCard = ({ duel, userAddress }: { duel: Duel; userAddress: string }) =>
           <div
             className="px-2 py-1 rounded text-xs font-bold uppercase"
             style={{
-              color: duelType === 0 ? "#8B5CF6" : "#06B6D4",
-              backgroundColor: duelType === 0 ? "rgba(139,92,246,0.1)" : "rgba(6,182,212,0.1)",
+              color: duelType === 0 ? "#E62058" : "#6C93EC",
+              backgroundColor: duelType === 0 ? "rgba(230,32,88,0.1)" : "rgba(108,147,236,0.1)",
             }}
           >
             {DUEL_TYPE_LABELS[duelType as keyof typeof DUEL_TYPE_LABELS]}
@@ -106,7 +106,7 @@ const DuelCard = ({ duel, userAddress }: { duel: Duel; userAddress: string }) =>
             <div className="text-slate-500 text-xs uppercase mb-1">Your Prediction</div>
             <div className="flex items-center gap-2">
               {userPrediction ? (
-                <ArrowTrendingUpIcon className="w-4 h-4 text-[#22C55E]" />
+                <ArrowTrendingUpIcon className="w-4 h-4 text-[#10B981]" />
               ) : (
                 <ArrowTrendingDownIcon className="w-4 h-4 text-[#EF4444]" />
               )}
@@ -119,8 +119,8 @@ const DuelCard = ({ duel, userAddress }: { duel: Duel; userAddress: string }) =>
           <div className="pt-4 border-t border-[rgba(148,163,184,0.1)]">
             {isUserWinner ? (
               <div className="flex items-center justify-between">
-                <span className="text-[#22C55E] font-bold">YOU WON!</span>
-                <span className="font-mono tabular-nums text-[#22C55E] font-bold">
+                <span className="text-[#10B981] font-bold">YOU WON!</span>
+                <span className="font-mono tabular-nums text-[#10B981] font-bold">
                   +{(parseFloat(stake) * 2).toFixed(4)} FLR
                 </span>
               </div>
@@ -187,9 +187,9 @@ const MyDuelsPage = () => {
           className="text-center mb-8"
         >
           <div className="flex items-center justify-center gap-3 mb-2">
-            <TrophyIcon className="w-8 h-8 text-[#8B5CF6]" />
+            <TrophyIcon className="w-8 h-8 text-[#E62058]" />
             <h1 className="text-4xl font-black text-gradient text-glow">MY DUELS</h1>
-            <TrophyIcon className="w-8 h-8 text-[#8B5CF6]" />
+            <TrophyIcon className="w-8 h-8 text-[#E62058]" />
           </div>
           <p className="text-slate-500 text-sm">
             Track your duel history and performance
@@ -209,7 +209,7 @@ const MyDuelsPage = () => {
           </div>
           <div className="rounded-2xl card-glass-dense p-6 text-center">
             <div className="text-slate-500 text-xs uppercase mb-2">Wins</div>
-            <div className="text-3xl font-black text-[#22C55E]">{wins}</div>
+            <div className="text-3xl font-black text-[#10B981]">{wins}</div>
           </div>
           <div className="rounded-2xl card-glass-dense p-6 text-center">
             <div className="text-slate-500 text-xs uppercase mb-2">Total Earnings</div>

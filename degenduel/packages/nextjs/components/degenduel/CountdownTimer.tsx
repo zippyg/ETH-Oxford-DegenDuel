@@ -32,7 +32,7 @@ export const CountdownTimer = ({ deadline, size = 100, totalDuration = 90 }: Cou
   const isCritical = timeLeft <= 5;
   const isExpired = timeLeft === 0;
 
-  const ringColor = isExpired ? "#475569" : isUrgent ? "#EF4444" : "#8B5CF6";
+  const ringColor = isExpired ? "#475569" : isUrgent ? "#EF4444" : "#E62058";
 
   const formatTime = (seconds: number) => {
     if (seconds <= 0) return "0s";

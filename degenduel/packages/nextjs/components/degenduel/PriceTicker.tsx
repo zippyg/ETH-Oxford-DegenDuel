@@ -47,7 +47,7 @@ const PriceItem = ({
 
   return (
     <div className="flex items-center gap-2 whitespace-nowrap px-4">
-      <span className="text-[#8B5CF6] font-bold text-sm">{ASSET_SYMBOLS[symbol] || symbol}</span>
+      <span className="text-[#E62058] font-bold text-sm">{ASSET_SYMBOLS[symbol] || symbol}</span>
       <span className={`font-mono text-sm tabular-nums text-slate-200 ${flashClass}`}>
         ${price}
       </span>
@@ -98,7 +98,7 @@ export const PriceTicker = () => {
   ));
 
   return (
-    <div className="w-full overflow-hidden border-b border-[rgba(148,163,184,0.08)] bg-[rgba(8,11,22,0.6)] backdrop-blur-sm">
+    <div className="w-full overflow-hidden border-b border-[rgba(148,163,184,0.08)] bg-[rgba(5,5,6,0.6)] backdrop-blur-sm">
       <div className="flex animate-marquee py-2">
         {/* Duplicate items for seamless scroll */}
         <div className="flex shrink-0 items-center gap-2">

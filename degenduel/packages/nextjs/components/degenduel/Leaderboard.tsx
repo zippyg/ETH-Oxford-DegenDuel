@@ -42,10 +42,10 @@ const LeaderboardRow = ({
       transition={{ delay: index * 0.05 }}
       className={`flex items-center gap-3 p-3 rounded-xl transition-all hover-lift ${
         isUser
-          ? "border border-[#8B5CF6]/30 border-glow-purple bg-[rgba(139,92,246,0.05)]"
+          ? "border border-[#E62058]/30 border-glow-purple bg-[rgba(230,32,88,0.05)]"
           : rankStyle
           ? `${rankStyle.bg} ${rankStyle.glow}`
-          : "bg-[rgba(8,11,22,0.3)]"
+          : "bg-[rgba(5,5,6,0.3)]"
       }`}
     >
       {/* Rank */}
@@ -66,7 +66,7 @@ const LeaderboardRow = ({
         <div className="flex items-center gap-2">
           <Address address={entry.address} size="xs" />
           {isUser && (
-            <span className="px-1.5 py-0.5 bg-[#8B5CF6] rounded text-[9px] font-bold text-white">
+            <span className="px-1.5 py-0.5 bg-[#E62058] rounded text-[9px] font-bold text-white">
               YOU
             </span>
           )}
@@ -81,7 +81,7 @@ const LeaderboardRow = ({
           </div>
         </div>
         <div className="hidden sm:block">
-          <div className="font-mono text-sm tabular-nums text-[#22C55E]">
+          <div className="font-mono text-sm tabular-nums text-[#10B981]">
             +{entry.earnings} FLR
           </div>
         </div>
@@ -300,11 +300,11 @@ export const Leaderboard = ({ fullPage = false }: { fullPage?: boolean }) => {
         <div className="flex gap-4 text-xs">
           <div>
             <span className="text-slate-500">Duels: </span>
-            <span className="font-mono text-[#8B5CF6] tabular-nums">{totalDuels}</span>
+            <span className="font-mono text-[#E62058] tabular-nums">{totalDuels}</span>
           </div>
           <div>
             <span className="text-slate-500">Settled: </span>
-            <span className="font-mono text-[#06B6D4] tabular-nums">{settledDuels}</span>
+            <span className="font-mono text-[#6C93EC] tabular-nums">{settledDuels}</span>
           </div>
           <div>
             <span className="text-slate-500">Volume: </span>
@@ -317,7 +317,7 @@ export const Leaderboard = ({ fullPage = false }: { fullPage?: boolean }) => {
       <div className="p-4 space-y-2">
         {isLoading ? (
           <div className="text-center py-8">
-            <div className="inline-block animate-spin rounded-full h-8 w-8 border-b-2 border-[#8B5CF6]"></div>
+            <div className="inline-block animate-spin rounded-full h-8 w-8 border-b-2 border-[#E62058]"></div>
             <p className="text-slate-500 text-sm mt-2">Loading leaderboard...</p>
           </div>
         ) : entries.length === 0 ? (
@@ -344,11 +344,11 @@ export const Leaderboard = ({ fullPage = false }: { fullPage?: boolean }) => {
         <div className="px-6 py-4 border-t border-[rgba(148,163,184,0.08)]">
           <div className="grid grid-cols-3 gap-4">
             <div className="text-center">
-              <div className="text-2xl font-bold font-mono text-[#8B5CF6] tabular-nums">{totalDuels}</div>
+              <div className="text-2xl font-bold font-mono text-[#E62058] tabular-nums">{totalDuels}</div>
               <div className="text-xs text-slate-500">Total Duels</div>
             </div>
             <div className="text-center">
-              <div className="text-2xl font-bold font-mono text-[#22C55E] tabular-nums">{settledDuels}</div>
+              <div className="text-2xl font-bold font-mono text-[#10B981] tabular-nums">{settledDuels}</div>
               <div className="text-xs text-slate-500">Settled</div>
             </div>
             <div className="text-center">

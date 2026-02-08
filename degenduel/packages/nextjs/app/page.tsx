@@ -12,6 +12,9 @@ import { AIHintCard } from "~~/components/degenduel/AIHintCard";
 import { DuelCard } from "~~/components/degenduel/DuelCard";
 import { Leaderboard } from "~~/components/degenduel/Leaderboard";
 import { fireWinConfetti, fireBonusConfetti } from "~~/components/degenduel/WinConfetti";
+import { HeroSection } from "~~/components/landing/HeroSection";
+import { HowItWorks } from "~~/components/landing/HowItWorks";
+import { TechShowcase } from "~~/components/landing/TechShowcase";
 import { notification } from "~~/utils/scaffold-eth";
 
 const Dashboard = () => {
@@ -137,7 +140,14 @@ const Dashboard = () => {
   void activeDuelsList; // referenced in JSX below
 
   return (
-    <div className="min-h-screen">
+    <>
+      {/* Landing Page Sections */}
+      <HeroSection />
+      <HowItWorks />
+      <TechShowcase />
+
+      {/* The Arena — App Dashboard */}
+      <section id="arena" className="min-h-screen">
       {/* Price Ticker */}
       <PriceTicker />
 
@@ -150,7 +160,7 @@ const Dashboard = () => {
           className="flex items-center justify-between mb-6 px-2"
         >
           <div className="flex items-center gap-2">
-            <div className="w-2 h-2 rounded-full bg-[#22C55E] animate-pulse" />
+            <div className="w-2 h-2 rounded-full bg-[#10B981] animate-pulse" />
             <span className="text-xs text-slate-500 uppercase tracking-wider font-medium">
               Live Arena
             </span>
@@ -158,11 +168,11 @@ const Dashboard = () => {
           <div className="flex gap-6 text-xs">
             <div>
               <span className="text-slate-500">Duels </span>
-              <span className="font-mono text-[#8B5CF6] tabular-nums">{totalDuels}</span>
+              <span className="font-mono text-[#E62058] tabular-nums">{totalDuels}</span>
             </div>
             <div>
               <span className="text-slate-500">Settled </span>
-              <span className="font-mono text-[#06B6D4] tabular-nums">{settledDuels}</span>
+              <span className="font-mono text-[#6C93EC] tabular-nums">{settledDuels}</span>
             </div>
             <div>
               <span className="text-slate-500">Volume </span>
@@ -214,7 +224,7 @@ const Dashboard = () => {
                   <h3 className="text-sm font-bold text-slate-300 uppercase tracking-wider">
                     Active Duels
                   </h3>
-                  <span className="text-xs font-mono text-[#06B6D4] tabular-nums">
+                  <span className="text-xs font-mono text-[#6C93EC] tabular-nums">
                     {activeDuelsList.length} ongoing
                   </span>
                 </div>
@@ -230,11 +240,11 @@ const Dashboard = () => {
                         className="group relative flex items-center gap-4 rounded-xl card-glass hover-lift cursor-pointer overflow-hidden"
                         onClick={() => setActiveDuel(duel)}
                       >
-                        <div className="absolute left-0 top-0 bottom-0 w-1 bg-[#06B6D4]" />
+                        <div className="absolute left-0 top-0 bottom-0 w-1 bg-[#6C93EC]" />
                         <div className="flex items-center justify-between w-full px-5 py-4 pl-6">
                           <div className="flex items-center gap-3">
-                            <div className="w-10 h-10 rounded-lg bg-[rgba(6,182,212,0.15)] flex items-center justify-center">
-                              <span className="font-bold text-sm text-[#06B6D4]">LIVE</span>
+                            <div className="w-10 h-10 rounded-lg bg-[rgba(108,147,236,0.15)] flex items-center justify-center">
+                              <span className="font-bold text-sm text-[#6C93EC]">LIVE</span>
                             </div>
                             <div>
                               <div className="text-sm font-semibold text-slate-200">Duel #{Number(duel.id)}</div>
@@ -271,7 +281,7 @@ const Dashboard = () => {
                   <h3 className="text-sm font-bold text-slate-300 uppercase tracking-wider">
                     Open Duels
                   </h3>
-                  <span className="text-xs font-mono text-[#8B5CF6] tabular-nums">
+                  <span className="text-xs font-mono text-[#E62058] tabular-nums">
                     {openDuelsList.length} active
                   </span>
                 </div>
@@ -306,8 +316,8 @@ const Dashboard = () => {
             </div>
             <div className="p-6 space-y-4">
               <div className="flex items-start gap-3">
-                <div className="w-10 h-10 rounded-lg bg-[rgba(139,92,246,0.15)] flex items-center justify-center shrink-0">
-                  <span className="text-lg font-bold text-[#8B5CF6]">F</span>
+                <div className="w-10 h-10 rounded-lg bg-[rgba(230,32,88,0.15)] flex items-center justify-center shrink-0">
+                  <span className="text-lg font-bold text-[#E62058]">F</span>
                 </div>
                 <div>
                   <div className="text-sm font-semibold text-slate-200">FTSO v2 Price Feeds</div>
@@ -317,8 +327,8 @@ const Dashboard = () => {
                 </div>
               </div>
               <div className="flex items-start gap-3">
-                <div className="w-10 h-10 rounded-lg bg-[rgba(6,182,212,0.15)] flex items-center justify-center shrink-0">
-                  <span className="text-lg font-bold text-[#06B6D4]">D</span>
+                <div className="w-10 h-10 rounded-lg bg-[rgba(108,147,236,0.15)] flex items-center justify-center shrink-0">
+                  <span className="text-lg font-bold text-[#6C93EC]">D</span>
                 </div>
                 <div>
                   <div className="text-sm font-semibold text-slate-200">FDC Web2Json Attestation</div>
@@ -328,8 +338,8 @@ const Dashboard = () => {
                 </div>
               </div>
               <div className="flex items-start gap-3">
-                <div className="w-10 h-10 rounded-lg bg-[rgba(34,197,94,0.15)] flex items-center justify-center shrink-0">
-                  <span className="text-lg font-bold text-[#22C55E]">R</span>
+                <div className="w-10 h-10 rounded-lg bg-[rgba(16,185,129,0.15)] flex items-center justify-center shrink-0">
+                  <span className="text-lg font-bold text-[#10B981]">R</span>
                 </div>
                 <div>
                   <div className="text-sm font-semibold text-slate-200">Secure Random Number</div>
@@ -342,7 +352,8 @@ const Dashboard = () => {
           </motion.div>
         </div>
       </div>
-    </div>
+      </section>
+    </>
   );
 };
 

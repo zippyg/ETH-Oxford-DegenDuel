@@ -52,7 +52,7 @@ export const DuelCard = ({ duel, onJoin, index = 0 }: DuelCardProps) => {
       {/* Left color accent bar */}
       <div
         className={`absolute left-0 top-0 bottom-0 w-1 ${
-          creatorPrediction ? "bg-[#22C55E]" : "bg-[#EF4444]"
+          creatorPrediction ? "bg-[#10B981]" : "bg-[#EF4444]"
         }`}
       />
 
@@ -61,8 +61,8 @@ export const DuelCard = ({ duel, onJoin, index = 0 }: DuelCardProps) => {
         <div
           className={`px-2 py-0.5 rounded text-[10px] font-bold uppercase ${
             isDataDuel
-              ? "bg-[#06B6D4] text-white"
-              : "bg-[#8B5CF6] text-white"
+              ? "bg-[#6C93EC] text-white"
+              : "bg-[#E62058] text-white"
           }`}
         >
           {isDataDuel ? "DATA" : "PRICE"}
@@ -72,14 +72,14 @@ export const DuelCard = ({ duel, onJoin, index = 0 }: DuelCardProps) => {
       <div className="flex items-center justify-between w-full px-5 py-4 pl-6">
         {/* Asset + Direction */}
         <div className="flex items-center gap-3">
-          <div className="w-10 h-10 rounded-lg bg-[rgba(139,92,246,0.15)] flex items-center justify-center">
-            <span className="font-bold text-sm text-[#8B5CF6]">{symbol}</span>
+          <div className="w-10 h-10 rounded-lg bg-[rgba(230,32,88,0.15)] flex items-center justify-center">
+            <span className="font-bold text-sm text-[#E62058]">{symbol}</span>
           </div>
           <div>
             <div className="text-sm font-semibold text-slate-200">{feedName}</div>
             <div className="flex items-center gap-1 text-xs">
               {creatorPrediction ? (
-                <span className="flex items-center gap-0.5 text-[#22C55E]">
+                <span className="flex items-center gap-0.5 text-[#10B981]">
                   <ArrowUpIcon className="w-3 h-3" /> {isDataDuel ? "ABOVE" : "UP"}
                 </span>
               ) : (
@@ -105,7 +105,7 @@ export const DuelCard = ({ duel, onJoin, index = 0 }: DuelCardProps) => {
         </div>
 
         {/* Creator address */}
-        <div className="hidden md:block">
+        <div className="hidden md:block overflow-hidden max-w-[140px]">
           <Address address={duel.playerA} size="xs" />
         </div>
 
@@ -115,7 +115,7 @@ export const DuelCard = ({ duel, onJoin, index = 0 }: DuelCardProps) => {
           whileTap={{ scale: 0.95 }}
           className={`btn btn-sm border-0 font-bold text-white ${
             accepterSide === "UP"
-              ? "bg-[#22C55E] hover:bg-[#16A34A] btn-glow btn-glow-green"
+              ? "bg-[#10B981] hover:bg-[#059669] btn-glow btn-glow-green"
               : "bg-[#EF4444] hover:bg-[#DC2626] btn-glow btn-glow-red"
           }`}
           onClick={(e) => {
