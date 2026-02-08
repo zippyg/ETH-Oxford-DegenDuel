@@ -26,9 +26,9 @@ https://degenduel-zains-projects-5be3a7a8.vercel.app
 
 **Demo Video:**
 ```
-https://www.youtube.com/watch?v=PLACEHOLDER
+https://www.youtube.com/watch?v=EYm-Qh244Xk
 ```
-> Replace PLACEHOLDER with your YouTube video ID after uploading.
+> Replace EYm-Qh244Xk with your YouTube video ID after uploading.
 
 **Deployed Contract Address:**
 ```
@@ -347,7 +347,7 @@ GitHub: https://github.com/zippyg/ETH-Oxford-DegenDuel
 ## POST-SUBMISSION
 
 After all submissions are in:
-1. Replace all `PLACEHOLDER` values in README with actual YouTube video IDs
+1. Replace all `EYm-Qh244Xk` values in README with actual YouTube video IDs
 2. Commit and push to GitHub
 3. Verify all links work (repo is public, video plays, Vercel loads)
 4. Take screenshots of all submission confirmations

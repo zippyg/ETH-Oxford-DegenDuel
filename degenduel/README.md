@@ -20,11 +20,11 @@ Two players enter a duel by staking equal amounts. They make opposing prediction
 
 ## 🎥 Demo
 
-[![DegenDuel Promo](https://img.youtube.com/vi/PLACEHOLDER/maxresdefault.jpg)](https://www.youtube.com/watch?v=PLACEHOLDER)
+[![DegenDuel Promo](https://img.youtube.com/vi/EYm-Qh244Xk/maxresdefault.jpg)](https://www.youtube.com/watch?v=EYm-Qh244Xk)
 
-**📺 [Watch the demo video](https://www.youtube.com/watch?v=PLACEHOLDER)** | **🎬 [Promo reel (45s Remotion video)](https://www.youtube.com/watch?v=PLACEHOLDER)**
+**📺 [Watch the demo video](https://www.youtube.com/watch?v=EYm-Qh244Xk)** | **🎬 [Promo reel (45s Remotion video)](https://www.youtube.com/watch?v=EYm-Qh244Xk)**
 
-<!-- Replace PLACEHOLDER with your actual YouTube video IDs after uploading -->
+<!-- Replace EYm-Qh244Xk with your actual YouTube video IDs after uploading -->
 
 ---
 
@@ -120,7 +120,7 @@ Two players enter a duel by staking equal amounts. They make opposing prediction
 
 - **Network:** Flare Coston2 Testnet (Chain ID: 114)
 - **Integrations:** FTSO v2 (price feeds), FDC Web2Json (external API attestation), Secure RNG (randomness)
-- **Demo:** [Live App](https://degenduel-zains-projects-5be3a7a8.vercel.app) | [Demo Video](https://www.youtube.com/watch?v=PLACEHOLDER)
+- **Demo:** [Live App](https://degenduel-zains-projects-5be3a7a8.vercel.app) | [Demo Video](https://www.youtube.com/watch?v=EYm-Qh244Xk)
 - **Setup:** See [Quick Start](#-quick-start) below
 - **Deployed Contract:** [`0x835574875C1CB9003c1638E799f3d7c504808960`](https://coston2-explorer.flare.network/address/0x835574875C1CB9003c1638E799f3d7c504808960)
 
