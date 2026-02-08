@@ -138,11 +138,38 @@ SuiScan: https://suiscan.xyz/testnet/account/0xb5fd3b667b914bc8c39d42aff4c744f80
 3. Write submission descriptions for TAIKAI and Mintycode
 4. Submit before Sunday 12:00 noon
 
-### To Investigate: Discord Scraping
-- Log into ETH Oxford Discord
-- Check for submission requirements updates
-- Find Sui CTF Google Form link (if different from what you have)
-- Document any additional requirements
+### ✅ COMPLETED: Discord Scraping (2026-02-07 Evening)
+**Full Report:** `.claude/agent_logs/DISCORD_SCRAPE_COMPLETE_2026-02-07.md`
+
+**Critical Findings:**
+
+1. **Sui CTF Submission Form:** https://tally.so/r/PdOME1 (confirmed official)
+   - Winning order: earliest time of LAST flag captured
+   - Your last flag: 22:08 Friday (STRONG competitive position)
+   - Alternative package flags allowed (must note in "other notes")
+
+2. **General ETH Oxford Rules:**
+   - ONE project per team
+   - Can submit to ONE main track + up to TWO sponsor tracks
+   - Video required: 3 minutes (max 4 minutes)
+   - DoraHacks password: `ETH-Oxford-26` (but hackathon NOT found on DoraHacks - may not be required)
+
+3. **Flare Bounty ($10,000 Total):**
+   - Main Track: $5k + $2k + $1k = $8,000
+   - Bonus Track: $1k x2 = $2,000
+   - MUST use at least one: FTSO, FDC, Secure RNG, or FAssets
+   - ⚠️ MUST add feedback in README about building on Flare
+   - Notion guide: https://flare-network.notion.site/Flare-Hackathon-Guide-ETH-Oxford-2026-2e6d502e6fa680598c39c7103e3c4763
+   - Workshop recordings: https://youtu.be/vVovYZc2ISI (1) and https://youtu.be/1OVP-6oAWX4 (2)
+
+4. **⚠️ Technical Concern - FDC Web2Json:**
+   - User reported Web2Json attestation providers may be INACTIVE on Coston2
+   - No response from Flare team
+   - CRITICAL for DegenDuel - test thoroughly before demo!
+
+5. **Submission Platforms:**
+   - TAIKAI: https://taikai.network/en/home-dao/hackathons/ethoxford (Main track)
+   - Mintycode: https://mintycode.io/hackathon/eth-oxford (Sponsor bounties)
 
 
 
