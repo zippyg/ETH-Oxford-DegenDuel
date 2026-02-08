@@ -123,7 +123,7 @@ export const ActiveDuel = ({ duel, currentPrice, entryPrice, onSettle, isSettlin
     let series: any;
 
     const initChart = async () => {
-      const { createChart, ColorType, LineStyle } = await import("lightweight-charts");
+      const { createChart, ColorType, LineStyle, AreaSeries } = await import("lightweight-charts");
 
       if (!chartContainerRef.current) return;
 
@@ -164,7 +164,7 @@ export const ActiveDuel = ({ duel, currentPrice, entryPrice, onSettle, isSettlin
       // Determine color based on who's winning
       const isBullWinning = currentPrice && entryPrice ? currentPrice >= entryPrice : true;
 
-      series = chart.addAreaSeries({
+      series = chart.addSeries(AreaSeries, {
         topColor: isBullWinning ? "rgba(16, 185, 129, 0.4)" : "rgba(239, 68, 68, 0.4)",
         bottomColor: isBullWinning ? "rgba(16, 185, 129, 0.0)" : "rgba(239, 68, 68, 0.0)",
         lineColor: isBullWinning ? "#10B981" : "#EF4444",

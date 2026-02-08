@@ -35,11 +35,11 @@ const FIRST_VOTING_ROUND_START = 1658430000;
 const VOTING_EPOCH_DURATION = 90; // seconds
 
 // Default API: Blockchain.info BTC ticker (confirmed working)
-// Note: We return a uint256 to match the contract's expected abi.decode format
+// Note: FDC returns string values — numeric values must use `| tostring` in JQ
 const DEFAULT_API_URL = "https://blockchain.info/ticker";
-const DEFAULT_API_JQ = '{ value: .USD.last }';
+const DEFAULT_API_JQ = '{ value: (.USD.last | tostring) }';
 const DEFAULT_ABI_SIGNATURE = {
-  components: [{ internalType: "uint256", name: "value", type: "uint256" }],
+  components: [{ internalType: "string", name: "value", type: "string" }],
   name: "task",
   type: "tuple",
 };
@@ -384,12 +384,12 @@ async function main() {
     // Decode and display the attested value
     console.log("=== Attested Data ===");
     try {
-      // For our default case, the data is a tuple with a uint256 "value" field
+      // For our default case, the data is a tuple with a string "value" field
       const decoded = hre.ethers.AbiCoder.defaultAbiCoder().decode(
-        ["tuple(uint256 value)"],
+        ["tuple(string value)"],
         proof.data.responseBody.abiEncodedData
       );
-      console.log(`Attested value: ${decoded[0].value.toString()}`);
+      console.log(`Attested BTC/USD price: $${decoded[0].value}`);
       console.log();
     } catch (e) {
       console.log("(Could not decode - raw data saved in proof file)");

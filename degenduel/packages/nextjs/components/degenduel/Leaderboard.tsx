@@ -5,7 +5,7 @@ import { formatEther } from "viem";
 import { useAccount } from "wagmi";
 import { motion } from "framer-motion";
 import { Address } from "@scaffold-ui/components";
-import { useScaffoldReadContract, useScaffoldEventHistory } from "~~/hooks/scaffold-eth";
+import { useScaffoldReadContract } from "~~/hooks/scaffold-eth";
 import { TrophyIcon, FireIcon } from "@heroicons/react/24/solid";
 
 interface LeaderboardEntry {
@@ -96,6 +96,9 @@ const LeaderboardRow = ({
   );
 };
 
+// DuelStatus enum from the contract
+const DUEL_STATUS_SETTLED = 2;
+
 export const Leaderboard = ({ fullPage = false }: { fullPage?: boolean }) => {
   const { address: connectedAddress } = useAccount();
 
@@ -106,95 +109,102 @@ export const Leaderboard = ({ fullPage = false }: { fullPage?: boolean }) => {
     watch: true,
   });
 
-  // Fetch DuelSettled events to get winners and payouts
-  const { data: settledEvents, isLoading: settledLoading } = useScaffoldEventHistory({
+  // Read total number of duels to iterate through
+  const { data: nextDuelId } = useScaffoldReadContract({
     contractName: "DegenDuel",
-    eventName: "DuelSettled",
-    fromBlock: 0n,
+    functionName: "nextDuelId",
     watch: true,
   });
 
-  // Fetch DuelCreated events to get creators
-  const { data: createdEvents, isLoading: createdLoading } = useScaffoldEventHistory({
+  // Read individual duels (up to 20 for leaderboard)
+  const duelCount = nextDuelId ? Number(nextDuelId) : 0;
+  const { data: duel0 } = useScaffoldReadContract({
     contractName: "DegenDuel",
-    eventName: "DuelCreated",
-    fromBlock: 0n,
-    watch: true,
+    functionName: "getDuel",
+    args: [BigInt(0)],
+    query: { enabled: duelCount > 0 },
   });
 
-  // Fetch DuelJoined events to get player B addresses
-  const { data: joinedEvents, isLoading: joinedLoading } = useScaffoldEventHistory({
+  const { data: duel1 } = useScaffoldReadContract({
     contractName: "DegenDuel",
-    eventName: "DuelJoined",
-    fromBlock: 0n,
-    watch: true,
+    functionName: "getDuel",
+    args: [BigInt(1)],
+    query: { enabled: duelCount > 1 },
   });
+
+  const { data: duel2 } = useScaffoldReadContract({
+    contractName: "DegenDuel",
+    functionName: "getDuel",
+    args: [BigInt(2)],
+    query: { enabled: duelCount > 2 },
+  });
+
+  const { data: duel3 } = useScaffoldReadContract({
+    contractName: "DegenDuel",
+    functionName: "getDuel",
+    args: [BigInt(3)],
+    query: { enabled: duelCount > 3 },
+  });
+
+  const { data: duel4 } = useScaffoldReadContract({
+    contractName: "DegenDuel",
+    functionName: "getDuel",
+    args: [BigInt(4)],
+    query: { enabled: duelCount > 4 },
+  });
+
+  const { data: duel5 } = useScaffoldReadContract({
+    contractName: "DegenDuel",
+    functionName: "getDuel",
+    args: [BigInt(5)],
+    query: { enabled: duelCount > 5 },
+  });
+
+  const { data: duel6 } = useScaffoldReadContract({
+    contractName: "DegenDuel",
+    functionName: "getDuel",
+    args: [BigInt(6)],
+    query: { enabled: duelCount > 6 },
+  });
+
+  const { data: duel7 } = useScaffoldReadContract({
+    contractName: "DegenDuel",
+    functionName: "getDuel",
+    args: [BigInt(7)],
+    query: { enabled: duelCount > 7 },
+  });
+
+  const { data: duel8 } = useScaffoldReadContract({
+    contractName: "DegenDuel",
+    functionName: "getDuel",
+    args: [BigInt(8)],
+    query: { enabled: duelCount > 8 },
+  });
+
+  const { data: duel9 } = useScaffoldReadContract({
+    contractName: "DegenDuel",
+    functionName: "getDuel",
+    args: [BigInt(9)],
+    query: { enabled: duelCount > 9 },
+  });
+
+  const allDuels = [duel0, duel1, duel2, duel3, duel4, duel5, duel6, duel7, duel8, duel9].filter(
+    (d): d is NonNullable<typeof d> => d != null,
+  );
 
   const totalDuels = stats ? Number(stats[0]) : 0;
   const settledDuels = stats ? Number(stats[1]) : 0;
   const volume = stats ? formatEther(stats[2]) : "0";
 
-  // Only show loading if we have no data yet (prevents perpetual spinner)
-  const hasAnyData = (settledEvents && settledEvents.length > 0) ||
-                      (createdEvents && createdEvents.length > 0) ||
-                      (joinedEvents && joinedEvents.length > 0);
-  const isLoading = (settledLoading || createdLoading || joinedLoading) && !hasAnyData;
+  const isLoading = duelCount > 0 && allDuels.length === 0;
 
-  // Build leaderboard from events
+  // Build leaderboard from on-chain duel data (no event scanning needed)
   const entries: LeaderboardEntry[] = useMemo(() => {
-    if (!settledEvents && !createdEvents && !joinedEvents) return [];
+    if (allDuels.length === 0) return [];
 
-    // Build a map of duelId -> creator, playerB, winner, payout
-    const duelMap = new Map<
-      bigint,
-      {
-        creator?: string;
-        playerB?: string;
-        winner?: string;
-        payout?: bigint;
-      }
-    >();
+    const ZERO_ADDRESS = "0x0000000000000000000000000000000000000000";
 
-    // Process DuelCreated events
-    if (createdEvents) {
-      createdEvents.forEach(event => {
-        const duelId = event.args.duelId as bigint;
-        const creator = event.args.creator as string;
-        if (!duelMap.has(duelId)) {
-          duelMap.set(duelId, {});
-        }
-        duelMap.get(duelId)!.creator = creator;
-      });
-    }
-
-    // Process DuelJoined events
-    if (joinedEvents) {
-      joinedEvents.forEach(event => {
-        const duelId = event.args.duelId as bigint;
-        const playerB = event.args.joiner as string;
-        if (!duelMap.has(duelId)) {
-          duelMap.set(duelId, {});
-        }
-        duelMap.get(duelId)!.playerB = playerB;
-      });
-    }
-
-    // Process DuelSettled events
-    if (settledEvents) {
-      settledEvents.forEach(event => {
-        const duelId = event.args.duelId as bigint;
-        const winner = event.args.winner as string;
-        const payout = event.args.payout as bigint;
-        if (!duelMap.has(duelId)) {
-          duelMap.set(duelId, {});
-        }
-        const duel = duelMap.get(duelId)!;
-        duel.winner = winner;
-        duel.payout = payout;
-      });
-    }
-
-    // Build player stats map: address -> {wins, losses, totalEarnings, lastWins[]}
+    // Build player stats map: address -> {wins, losses, totalEarnings, recentResults[]}
     const playerStatsMap = new Map<
       string,
       {
@@ -206,46 +216,57 @@ export const Leaderboard = ({ fullPage = false }: { fullPage?: boolean }) => {
     >();
 
     const initPlayer = (addr: string) => {
-      if (!playerStatsMap.has(addr.toLowerCase())) {
-        playerStatsMap.set(addr.toLowerCase(), {
+      const key = addr.toLowerCase();
+      if (!playerStatsMap.has(key)) {
+        playerStatsMap.set(key, {
           wins: 0,
           losses: 0,
           totalEarnings: 0n,
           recentResults: [],
         });
       }
-      return playerStatsMap.get(addr.toLowerCase())!;
+      return playerStatsMap.get(key)!;
     };
 
-    // Process each duel
-    duelMap.forEach(duel => {
-      const { creator, playerB, winner, payout } = duel;
+    // Process each duel directly from contract state
+    allDuels.forEach(duel => {
+      // Only process settled duels (status === 2)
+      const status = Number(duel.status);
+      if (status !== DUEL_STATUS_SETTLED) return;
 
-      // Only process settled duels
-      if (!winner) return;
+      const playerA = duel.playerA as string;
+      const playerB = duel.playerB as string;
+      const winner = duel.winner as string;
+      const payout = duel.payout as bigint;
 
-      const participants: string[] = [];
-      if (creator) participants.push(creator);
-      if (playerB) participants.push(playerB);
+      if (!winner || winner === ZERO_ADDRESS) return;
 
-      participants.forEach(addr => {
-        const stats = initPlayer(addr);
-        const isWinner = addr.toLowerCase() === winner.toLowerCase();
-
-        if (isWinner) {
-          stats.wins += 1;
-          stats.totalEarnings += payout || 0n;
-          stats.recentResults.push(true);
+      // Process playerA
+      if (playerA && playerA !== ZERO_ADDRESS) {
+        const statsA = initPlayer(playerA);
+        if (playerA.toLowerCase() === winner.toLowerCase()) {
+          statsA.wins += 1;
+          statsA.totalEarnings += payout || 0n;
+          statsA.recentResults.push(true);
         } else {
-          stats.losses += 1;
-          stats.recentResults.push(false);
+          statsA.losses += 1;
+          statsA.recentResults.push(false);
         }
-      });
-    });
+      }
 
-    // Add deployer address as a known player (even if no duels)
-    const deployerAddress = "0x332a479FA9E548CFb90e7aF8504534e37E27E764";
-    initPlayer(deployerAddress);
+      // Process playerB
+      if (playerB && playerB !== ZERO_ADDRESS) {
+        const statsB = initPlayer(playerB);
+        if (playerB.toLowerCase() === winner.toLowerCase()) {
+          statsB.wins += 1;
+          statsB.totalEarnings += payout || 0n;
+          statsB.recentResults.push(true);
+        } else {
+          statsB.losses += 1;
+          statsB.recentResults.push(false);
+        }
+      }
+    });
 
     // Calculate streaks (consecutive wins from most recent games)
     const calculateStreak = (results: boolean[]): number => {
@@ -262,12 +283,12 @@ export const Leaderboard = ({ fullPage = false }: { fullPage?: boolean }) => {
 
     // Convert to leaderboard entries
     const leaderboardEntries: LeaderboardEntry[] = Array.from(playerStatsMap.entries()).map(
-      ([address, stats]) => ({
+      ([address, pStats]) => ({
         address,
-        wins: stats.wins,
-        losses: stats.losses,
-        earnings: parseFloat(formatEther(stats.totalEarnings)).toFixed(4),
-        streak: calculateStreak(stats.recentResults),
+        wins: pStats.wins,
+        losses: pStats.losses,
+        earnings: parseFloat(formatEther(pStats.totalEarnings)).toFixed(4),
+        streak: calculateStreak(pStats.recentResults),
         rank: 0, // Will be assigned after sorting
       }),
     );
@@ -286,7 +307,7 @@ export const Leaderboard = ({ fullPage = false }: { fullPage?: boolean }) => {
     });
 
     return leaderboardEntries;
-  }, [settledEvents, createdEvents, joinedEvents]);
+  }, [allDuels]);
 
   return (
     <motion.div

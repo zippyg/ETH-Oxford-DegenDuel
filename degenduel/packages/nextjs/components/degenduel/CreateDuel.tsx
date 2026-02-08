@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { parseEther } from "viem";
 import { motion } from "framer-motion";
 import { ArrowUpIcon, ArrowDownIcon } from "@heroicons/react/24/solid";
@@ -33,12 +33,44 @@ export const CreateDuel = () => {
   const [stake, setStake] = useState("");
   const [isCreating, setIsCreating] = useState(false);
   const [isWaiting, setIsWaiting] = useState(false);
+  const [createdDuelId, setCreatedDuelId] = useState<bigint | null>(null);
 
   // Data duel specific state
   const [dataSource, setDataSource] = useState("");
   const [dataThreshold, setDataThreshold] = useState("");
 
   const { writeContractAsync } = useScaffoldWriteContract("DegenDuel");
+
+  // Read nextDuelId so we know what ID the created duel will get
+  const { data: nextDuelId } = useScaffoldReadContract({
+    contractName: "DegenDuel",
+    functionName: "nextDuelId",
+    watch: true,
+  });
+
+  // Poll the created duel's on-chain state while waiting
+  const { data: createdDuelData } = useScaffoldReadContract({
+    contractName: "DegenDuel",
+    functionName: "getDuel",
+    args: [createdDuelId ?? 0n],
+    watch: true,
+    query: { enabled: isWaiting && createdDuelId !== null },
+  });
+
+  // When the duel becomes ACTIVE (status 1 = someone joined), show success and auto-reset
+  useEffect(() => {
+    if (!isWaiting || !createdDuelData) return;
+    const duelStatus = Number((createdDuelData as any).status ?? (createdDuelData as any)[2]);
+    if (duelStatus === 1) {
+      // Duel is now ACTIVE -- opponent joined!
+      notification.success("Opponent has joined your duel! The battle is ON!");
+      const timeout = setTimeout(() => {
+        setIsWaiting(false);
+        setCreatedDuelId(null);
+      }, 3000);
+      return () => clearTimeout(timeout);
+    }
+  }, [isWaiting, createdDuelData]);
 
   const { data: priceData } = useScaffoldReadContract({
     contractName: "DegenDuel",
@@ -66,6 +98,9 @@ export const CreateDuel = () => {
       }
 
       setIsCreating(true);
+
+      // Capture the duel ID before the tx (nextDuelId is what the contract will assign)
+      const duelIdToTrack = nextDuelId !== undefined ? BigInt(nextDuelId as bigint) : null;
 
       if (duelMode === "PRICE") {
         // Use current price as threshold (they're betting on direction from now)
@@ -108,6 +143,10 @@ export const CreateDuel = () => {
         });
       }
 
+      // Store the duel ID so we can poll its on-chain status
+      if (duelIdToTrack !== null) {
+        setCreatedDuelId(duelIdToTrack);
+      }
       setIsWaiting(true);
       setStake("");
       setPrediction(null);
@@ -132,6 +171,12 @@ export const CreateDuel = () => {
     }
   };
 
+  // Check if the created duel is now ACTIVE (opponent joined)
+  const createdDuelStatus = createdDuelData
+    ? Number((createdDuelData as any).status ?? (createdDuelData as any)[2])
+    : 0;
+  const isDuelActive = isWaiting && createdDuelStatus === 1;
+
   // Waiting for opponent state
   if (isWaiting) {
     return (
@@ -140,16 +185,39 @@ export const CreateDuel = () => {
         animate={{ opacity: 1 }}
         className="rounded-2xl card-glass p-6 flex flex-col items-center justify-center min-h-[300px]"
       >
-        <motion.div
-          animate={{ rotate: 360 }}
-          transition={{ repeat: Infinity, duration: 2, ease: "linear" }}
-          className="w-12 h-12 rounded-full border-2 border-[#E62058] border-t-transparent mb-4"
-        />
-        <h3 className="text-lg font-bold text-[#E62058] mb-2">Duel Created!</h3>
-        <p className="text-slate-400 text-sm text-center">Waiting for an opponent to accept your challenge...</p>
+        {isDuelActive ? (
+          <>
+            <motion.div
+              initial={{ scale: 0 }}
+              animate={{ scale: 1 }}
+              transition={{ type: "spring", stiffness: 200, damping: 10 }}
+              className="w-12 h-12 rounded-full bg-[#10B981] flex items-center justify-center mb-4"
+            >
+              <svg className="w-7 h-7 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={3}>
+                <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
+              </svg>
+            </motion.div>
+            <h3 className="text-lg font-bold text-[#10B981] mb-2">Duel Active!</h3>
+            <p className="text-slate-400 text-sm text-center">Opponent has joined -- the battle is on!</p>
+            <p className="text-slate-500 text-xs mt-2">Returning to create form...</p>
+          </>
+        ) : (
+          <>
+            <motion.div
+              animate={{ rotate: 360 }}
+              transition={{ repeat: Infinity, duration: 2, ease: "linear" }}
+              className="w-12 h-12 rounded-full border-2 border-[#E62058] border-t-transparent mb-4"
+            />
+            <h3 className="text-lg font-bold text-[#E62058] mb-2">Duel Created!</h3>
+            <p className="text-slate-400 text-sm text-center">Waiting for an opponent to accept your challenge...</p>
+            {createdDuelId !== null && (
+              <p className="text-slate-500 text-xs mt-1 font-mono">Duel #{Number(createdDuelId)}</p>
+            )}
+          </>
+        )}
         <button
           className="mt-4 btn btn-sm btn-ghost text-slate-500"
-          onClick={() => setIsWaiting(false)}
+          onClick={() => { setIsWaiting(false); setCreatedDuelId(null); }}
         >
           Create Another
         </button>
