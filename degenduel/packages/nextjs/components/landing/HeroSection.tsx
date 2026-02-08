@@ -1,12 +1,9 @@
 "use client";
 
+import Link from "next/link";
 import { motion } from "framer-motion";
 
 export const HeroSection = () => {
-  const handleLaunchApp = () => {
-    document.getElementById("arena")?.scrollIntoView({ behavior: "smooth" });
-  };
-
   return (
     <section
       id="hero"
@@ -17,12 +14,19 @@ export const HeroSection = () => {
         backgroundSize: "24px 24px",
       }}
     >
+      {/* Ambient glow effects */}
+      <div className="absolute inset-0 pointer-events-none">
+        <div className="absolute top-1/4 left-1/2 -translate-x-1/2 w-[600px] h-[400px] rounded-full opacity-20"
+          style={{ background: "radial-gradient(circle, rgba(230, 32, 88, 0.15) 0%, transparent 70%)" }}
+        />
+      </div>
+
       <div className="container mx-auto px-6 text-center z-10">
         {/* Main Headline */}
         <motion.h1
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, ease: "easeOut" }}
+          initial={{ opacity: 0, scale: 0.9, filter: "blur(10px)" }}
+          animate={{ opacity: 1, scale: 1, filter: "blur(0px)" }}
+          transition={{ duration: 1, ease: "easeOut" }}
           className="text-6xl md:text-8xl font-mono font-bold mb-6"
           style={{
             background: "linear-gradient(135deg, #E62058, #F59E0B)",
@@ -36,9 +40,9 @@ export const HeroSection = () => {
 
         {/* Subtitle */}
         <motion.p
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ duration: 0.8, delay: 0.2, ease: "easeOut" }}
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8, delay: 0.3, ease: "easeOut" }}
           className="text-lg md:text-xl mb-4 max-w-3xl mx-auto"
           style={{ color: "#888888" }}
         >
@@ -47,12 +51,14 @@ export const HeroSection = () => {
 
         {/* Small Tag */}
         <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ duration: 0.8, delay: 0.3, ease: "easeOut" }}
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6, delay: 0.5, ease: "easeOut" }}
           className="flex items-center justify-center gap-2 mb-12"
         >
-          <span
+          <motion.span
+            animate={{ opacity: [0.5, 1, 0.5] }}
+            transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
             className="inline-block w-2 h-2 rounded-full"
             style={{ backgroundColor: "#E62058" }}
           />
@@ -63,48 +69,48 @@ export const HeroSection = () => {
 
         {/* CTA Buttons */}
         <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ duration: 0.8, delay: 0.4, ease: "easeOut" }}
+          initial={{ opacity: 0, y: 30 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8, delay: 0.6, ease: "easeOut" }}
           className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-20"
         >
-          <button
-            onClick={handleLaunchApp}
-            className="px-8 py-4 rounded-lg font-mono uppercase tracking-wider font-bold text-white transition-all duration-300 hover:shadow-[0_0_30px_rgba(230,32,88,0.4)]"
+          <Link
+            href="/arena"
+            className="relative px-8 py-4 rounded-lg font-mono uppercase tracking-wider font-bold text-white transition-all duration-300 hover:shadow-[0_0_30px_rgba(230,32,88,0.4)] animate-pulse-glow"
             style={{ backgroundColor: "#E62058" }}
           >
             Launch App
-          </button>
+          </Link>
           <a
             href="https://youtube.com/"
             target="_blank"
             rel="noopener noreferrer"
-            className="px-8 py-4 rounded-lg font-mono uppercase tracking-wider font-bold border transition-all duration-300"
+            className="px-8 py-4 rounded-lg font-mono uppercase tracking-wider font-bold border transition-all duration-300 hover:bg-[rgba(230,32,88,0.08)]"
             style={{
               borderColor: "rgba(230, 32, 88, 0.5)",
               color: "#E62058",
             }}
           >
-            <span className="mr-2">▶</span>Watch Demo
+            <span className="mr-2">&#9654;</span>Watch Demo
           </a>
         </motion.div>
 
         {/* Scroll Indicator */}
         <motion.div
           initial={{ opacity: 0 }}
-          animate={{ opacity: 1, y: [0, 8, 0] }}
+          animate={{ opacity: 0.6, y: [0, 8, 0] }}
           transition={{
-            opacity: { duration: 0.8, delay: 1.0 },
+            opacity: { duration: 0.8, delay: 1.2 },
             y: {
-              duration: 1.5,
+              duration: 2,
               repeat: Infinity,
               ease: "easeInOut",
             },
           }}
           className="absolute bottom-12 left-1/2 transform -translate-x-1/2"
-          style={{ color: "#E62058" }}
+          style={{ color: "rgba(230, 32, 88, 0.5)" }}
         >
-          <div className="text-3xl">▼</div>
+          <div className="text-2xl">&#9660;</div>
         </motion.div>
       </div>
     </section>

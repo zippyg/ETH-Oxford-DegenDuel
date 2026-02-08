@@ -1,43 +1,50 @@
 "use client";
 
 import { motion } from "framer-motion";
+import Image from "next/image";
 
 const technologies = [
   {
-    icon: { bg: "#E62058", text: "F", textColor: "#FFFFFF" },
+    logo: "/logos/flare.svg",
     title: "FTSO v2",
     description:
       "Decentralized price feeds from 100+ validators. Free to read. Updates every block.",
+    accentColor: "#E62058",
   },
   {
-    icon: { bg: "#6C93EC", text: "D", textColor: "#FFFFFF" },
+    logo: "/logos/flare.svg",
     title: "FDC Web2Json",
     description:
       "Any API becomes an oracle. Validators fetch, verify, and produce Merkle proofs.",
+    accentColor: "#6C93EC",
   },
   {
-    icon: { bg: "#10B981", text: "R", textColor: "#FFFFFF" },
+    logo: "/logos/flare.svg",
     title: "Secure RNG",
     description:
       "Verifiable on-chain randomness. Powers the 10% bonus multiplier.",
+    accentColor: "#10B981",
   },
   {
-    icon: { bg: "#4F46E5", text: "E", textColor: "#FFFFFF" },
+    logo: "/logos/effect-ts.png",
     title: "Effect-TS",
     description:
       "12 effect types in production. Type-safe functional programming for the entire backend.",
+    accentColor: "#4F46E5",
   },
   {
-    icon: { bg: "#6C93EC", text: "✦", textColor: "#FFFFFF" },
+    logo: "/logos/flock.png",
     title: "FLock AI",
     description:
       "Decentralized AI strategy hints. Powered by qwen3-30b on FLock's network.",
+    accentColor: "#6C93EC",
   },
   {
-    icon: { bg: "#F59E0B", text: "Ξ", textColor: "#000000" },
+    logo: "/logos/eth-oxford.svg",
     title: "ETH Oxford 2026",
     description:
       "Built in 24 hours at Europe's premier Ethereum hackathon.",
+    accentColor: "#F59E0B",
   },
 ];
 
@@ -64,25 +71,26 @@ export const TechShowcase = () => {
               key={tech.title}
               initial={{ opacity: 0, y: 30 }}
               whileInView={{ opacity: 1, y: 0 }}
+              whileHover={{ scale: 1.03, y: -4 }}
               viewport={{ once: true, amount: 0.3 }}
               transition={{ duration: 0.6, delay: index * 0.08 }}
-              className="rounded-xl p-6 border"
+              className="rounded-xl p-6 border hover:shadow-[0_0_20px_rgba(230,32,88,0.15)] transition-shadow duration-300"
               style={{
                 backgroundColor: "rgba(10, 10, 11, 0.8)",
                 borderColor: "rgba(230, 32, 88, 0.08)",
               }}
             >
-              {/* Icon */}
-              <div className="mb-4 h-10 flex items-start">
-                <div
-                  className="w-10 h-10 rounded-full flex items-center justify-center font-bold text-lg"
-                  style={{
-                    backgroundColor: tech.icon.bg,
-                    color: tech.icon.textColor,
-                  }}
-                >
-                  {tech.icon.text}
-                </div>
+              {/* Logo */}
+              <div
+                className="mb-4 h-12 w-12 relative rounded-lg overflow-hidden"
+                style={{ backgroundColor: `${tech.accentColor}15` }}
+              >
+                <Image
+                  src={tech.logo}
+                  alt={tech.title}
+                  fill
+                  className="object-contain p-2"
+                />
               </div>
 
               {/* Title */}

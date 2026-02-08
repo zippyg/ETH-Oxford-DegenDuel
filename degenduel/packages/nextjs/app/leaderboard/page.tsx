@@ -19,7 +19,7 @@ const LeaderboardPage = () => {
         >
           <div className="flex items-center justify-center gap-3 mb-2">
             <TrophyIcon className="w-8 h-8 text-[#F59E0B]" />
-            <h1 className="text-4xl font-black text-gradient text-glow">LEADERBOARD</h1>
+            <h1 className="text-4xl font-black text-[#E62058]">LEADERBOARD</h1>
             <TrophyIcon className="w-8 h-8 text-[#F59E0B]" />
           </div>
           <p className="text-slate-500 text-sm">

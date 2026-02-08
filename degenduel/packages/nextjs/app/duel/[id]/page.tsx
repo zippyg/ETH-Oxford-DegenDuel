@@ -130,7 +130,7 @@ const DuelDetailPage = () => {
           transition={{ duration: 0.4 }}
           className="flex items-center justify-between mb-8"
         >
-          <h1 className="text-4xl font-black text-gradient text-glow">DUEL #{id}</h1>
+          <h1 className="text-4xl font-black text-[#E62058]">DUEL #{id}</h1>
           <div
             className="px-3 py-1 rounded-lg text-xs font-bold uppercase"
             style={{ color: statusConfig.color, backgroundColor: statusConfig.bg }}
@@ -149,7 +149,7 @@ const DuelDetailPage = () => {
           >
             <div className="text-center">
               <div className="text-slate-500 text-xs uppercase mb-2">Current Price</div>
-              <div className="text-4xl font-black font-mono tabular-nums text-gradient">
+              <div className="text-4xl font-black font-mono tabular-nums text-[#E8E8E8]">
                 ${currentPrice}
               </div>
               <div className="text-slate-400 text-sm mt-1">{feedName}</div>
@@ -230,7 +230,7 @@ const DuelDetailPage = () => {
           transition={{ duration: 0.5, delay: 0.3 }}
           className="rounded-2xl card-glass-dense p-6 mb-6"
         >
-          <h2 className="text-xl font-bold text-gradient mb-4">Duel Details</h2>
+          <h2 className="text-xl font-bold text-[#E62058] mb-4">Duel Details</h2>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div>
               <div className="text-slate-500 text-xs uppercase mb-1">Type</div>
@@ -281,7 +281,7 @@ const DuelDetailPage = () => {
             transition={{ duration: 0.5, delay: 0.4 }}
             className="rounded-2xl card-glass-dense p-8 text-center"
           >
-            <h2 className="text-2xl font-black text-gradient mb-4">DUEL SETTLED</h2>
+            <h2 className="text-2xl font-black text-[#E62058] mb-4">DUEL SETTLED</h2>
             {winner && winner !== "0x0000000000000000000000000000000000000000" ? (
               <>
                 <div className="mb-4">

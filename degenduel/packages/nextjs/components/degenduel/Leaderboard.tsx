@@ -42,7 +42,7 @@ const LeaderboardRow = ({
       transition={{ delay: index * 0.05 }}
       className={`flex items-center gap-3 p-3 rounded-xl transition-all hover-lift ${
         isUser
-          ? "border border-[#E62058]/30 border-glow-purple bg-[rgba(230,32,88,0.05)]"
+          ? "border border-[#E62058]/30 border-glow-crimson bg-[rgba(230,32,88,0.05)]"
           : rankStyle
           ? `${rankStyle.bg} ${rankStyle.glow}`
           : "bg-[rgba(5,5,6,0.3)]"

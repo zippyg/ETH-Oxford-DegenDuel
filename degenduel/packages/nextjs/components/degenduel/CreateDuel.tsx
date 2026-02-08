@@ -5,6 +5,7 @@ import { parseEther } from "viem";
 import { motion } from "framer-motion";
 import { ArrowUpIcon, ArrowDownIcon } from "@heroicons/react/24/solid";
 import { useScaffoldReadContract, useScaffoldWriteContract } from "~~/hooks/scaffold-eth";
+import { notification } from "~~/utils/scaffold-eth";
 
 const FEED_IDS = {
   "FLR/USD": "0x01464c522f55534400000000000000000000000000",
@@ -114,6 +115,18 @@ export const CreateDuel = () => {
       setDataThreshold("");
     } catch (error: any) {
       console.error("Error creating duel:", error);
+
+      const errorMsg = error?.message || error?.toString() || "";
+
+      if (errorMsg.includes("insufficient funds") || errorMsg.includes("exceeds the balance")) {
+        notification.error("Insufficient FLR balance. Get testnet FLR from the Coston2 faucet.");
+      } else if (errorMsg.includes("User rejected") || errorMsg.includes("user rejected") || errorMsg.includes("User denied")) {
+        notification.error("Transaction cancelled.");
+      } else if (errorMsg.includes("execution reverted")) {
+        notification.error("Transaction reverted. The duel may have invalid parameters.");
+      } else {
+        notification.error("Failed to create duel. Please try again.");
+      }
     } finally {
       setIsCreating(false);
     }
@@ -125,14 +138,14 @@ export const CreateDuel = () => {
       <motion.div
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
-        className="rounded-2xl gradient-border p-6 flex flex-col items-center justify-center min-h-[300px] animate-pulse-glow"
+        className="rounded-2xl card-glass p-6 flex flex-col items-center justify-center min-h-[300px]"
       >
         <motion.div
           animate={{ rotate: 360 }}
           transition={{ repeat: Infinity, duration: 2, ease: "linear" }}
           className="w-12 h-12 rounded-full border-2 border-[#E62058] border-t-transparent mb-4"
         />
-        <h3 className="text-lg font-bold text-gradient mb-2">Duel Created!</h3>
+        <h3 className="text-lg font-bold text-[#E62058] mb-2">Duel Created!</h3>
         <p className="text-slate-400 text-sm text-center">Waiting for an opponent to accept your challenge...</p>
         <button
           className="mt-4 btn btn-sm btn-ghost text-slate-500"
@@ -149,11 +162,11 @@ export const CreateDuel = () => {
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.4, delay: 0.1 }}
-      className="rounded-2xl gradient-border overflow-hidden"
+      className="rounded-2xl card-glass overflow-hidden"
     >
       <div className="p-6">
         {/* Header */}
-        <h2 className="text-xl font-bold text-gradient mb-1">CREATE A DUEL</h2>
+        <h2 className="text-xl font-bold text-[#E62058] mb-1">CREATE A DUEL</h2>
         <p className="text-xs text-slate-500 mb-5">
           {duelMode === "PRICE"
             ? "Pick an asset, predict the direction, stake your FLR"
@@ -168,7 +181,7 @@ export const CreateDuel = () => {
             onClick={() => setDuelMode("PRICE")}
             className={`flex-1 px-4 py-2 rounded-lg font-bold text-sm transition-all ${
               duelMode === "PRICE"
-                ? "bg-[#E62058] text-white border-glow-purple"
+                ? "bg-[#E62058] text-white border-glow-crimson"
                 : "bg-[rgba(230,32,88,0.1)] text-slate-400 hover:text-white hover:bg-[rgba(230,32,88,0.2)]"
             }`}
           >
@@ -200,7 +213,7 @@ export const CreateDuel = () => {
                   onClick={() => setSelectedFeed(asset.feed)}
                   className={`px-4 py-2 rounded-lg font-bold text-sm transition-all ${
                     selectedFeed === asset.feed
-                      ? "bg-[#E62058] text-white border-glow-purple"
+                      ? "bg-[#E62058] text-white border-glow-crimson"
                       : "bg-[rgba(230,32,88,0.1)] text-slate-400 hover:text-white hover:bg-[rgba(230,32,88,0.2)]"
                   }`}
                 >
@@ -286,7 +299,7 @@ export const CreateDuel = () => {
               onChange={e => setStake(e.target.value)}
               step="0.01"
               min="0.01"
-              className="w-full py-3 px-4 pr-16 rounded-xl bg-[rgba(5,5,6,0.6)] border border-[rgba(148,163,184,0.1)] text-slate-100 font-mono text-lg placeholder:text-slate-600 focus:outline-none focus:border-[#E62058] focus:border-glow-purple transition-all"
+              className="w-full py-3 px-4 pr-16 rounded-xl bg-[rgba(5,5,6,0.6)] border border-[rgba(148,163,184,0.1)] text-slate-100 font-mono text-lg placeholder:text-slate-600 focus:outline-none focus:border-[#E62058] focus:border-glow-crimson transition-all"
             />
             <div className="absolute right-3 top-1/2 -translate-y-1/2 text-sm font-bold text-[#F59E0B]">
               FLR

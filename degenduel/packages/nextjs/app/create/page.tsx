@@ -16,7 +16,7 @@ const CreatePage = () => {
           transition={{ duration: 0.4 }}
           className="text-center mb-8"
         >
-          <h1 className="text-4xl font-black text-gradient text-glow mb-2">CREATE A DUEL</h1>
+          <h1 className="text-4xl font-black text-[#E62058] mb-2">CREATE A DUEL</h1>
           <p className="text-slate-500 text-sm">
             Pick your asset. Choose your side. Stake your FLR. Settled in 90 seconds by Flare FTSO.
           </p>

@@ -18,7 +18,7 @@ type HeaderMenuLink = {
 export const menuLinks: HeaderMenuLink[] = [
   {
     label: "Duels",
-    href: "/",
+    href: "/arena",
   },
   {
     label: "Create",

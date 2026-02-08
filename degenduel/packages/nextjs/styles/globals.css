@@ -78,10 +78,6 @@ html {
     background-clip: text;
   }
 
-  .border-glow-purple {
-    box-shadow: 0 0 15px rgba(230, 32, 88, 0.3), inset 0 0 15px rgba(230, 32, 88, 0.05);
-  }
-
   .border-glow-green {
     box-shadow: 0 0 15px rgba(16, 185, 129, 0.3);
   }

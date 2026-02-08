@@ -235,7 +235,7 @@ export const ActiveDuel = ({ duel, currentPrice, entryPrice, onSettle, isSettlin
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
-        className="rounded-2xl gradient-border-animated p-8 flex flex-col items-center justify-center min-h-[400px]"
+        className="rounded-2xl card-glass p-8 flex flex-col items-center justify-center min-h-[400px]"
       >
         <motion.div
           animate={{ scale: [1, 1.05, 1] }}
@@ -253,7 +253,7 @@ export const ActiveDuel = ({ duel, currentPrice, entryPrice, onSettle, isSettlin
             <path d="M 6 12 L 14 18 L 22 16 L 32 30 L 42 40" stroke="url(#empty-grad)" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" fill="none" opacity="0.5" />
           </svg>
         </motion.div>
-        <h3 className="text-2xl font-bold text-gradient mb-2">No Active Duel</h3>
+        <h3 className="text-2xl font-bold text-[#E62058] mb-2">No Active Duel</h3>
         <p className="text-slate-500 text-center">Create a duel or accept an open challenge to see the arena come alive.</p>
         <motion.div
           animate={{ opacity: [0.3, 0.7, 0.3] }}
@@ -352,7 +352,7 @@ export const ActiveDuel = ({ duel, currentPrice, entryPrice, onSettle, isSettlin
             label="Player B (Challenger)"
           />
         ) : (
-          <div className="flex-1 rounded-xl border border-dashed border-[#E62058]/30 p-4 flex items-center justify-center animate-pulse-glow">
+          <div className="flex-1 rounded-xl border border-dashed border-[#E62058]/20 p-4 flex items-center justify-center">
             <span className="text-sm text-[#E62058] font-mono">Waiting for challenger...</span>
           </div>
         )}

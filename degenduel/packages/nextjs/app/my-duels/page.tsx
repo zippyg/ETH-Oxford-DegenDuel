@@ -77,7 +77,7 @@ const DuelCard = ({ duel, userAddress }: { duel: Duel; userAddress: string }) =>
           <div>
             <div className="text-slate-500 text-xs uppercase mb-1">Duel #{duel.id.toString()}</div>
             <div className="flex items-center gap-2">
-              <span className="text-lg font-bold text-gradient">{feedName}</span>
+              <span className="text-lg font-bold text-[#E62058]">{feedName}</span>
               <span
                 className="px-2 py-0.5 rounded text-[10px] font-bold uppercase"
                 style={{ color: statusConfig.color, backgroundColor: statusConfig.bg }}
@@ -188,7 +188,7 @@ const MyDuelsPage = () => {
         >
           <div className="flex items-center justify-center gap-3 mb-2">
             <TrophyIcon className="w-8 h-8 text-[#E62058]" />
-            <h1 className="text-4xl font-black text-gradient text-glow">MY DUELS</h1>
+            <h1 className="text-4xl font-black text-[#E62058]">MY DUELS</h1>
             <TrophyIcon className="w-8 h-8 text-[#E62058]" />
           </div>
           <p className="text-slate-500 text-sm">
@@ -205,7 +205,7 @@ const MyDuelsPage = () => {
         >
           <div className="rounded-2xl card-glass-dense p-6 text-center">
             <div className="text-slate-500 text-xs uppercase mb-2">Total Duels</div>
-            <div className="text-3xl font-black text-gradient">{duels.length}</div>
+            <div className="text-3xl font-black text-[#E62058]">{duels.length}</div>
           </div>
           <div className="rounded-2xl card-glass-dense p-6 text-center">
             <div className="text-slate-500 text-xs uppercase mb-2">Wins</div>
