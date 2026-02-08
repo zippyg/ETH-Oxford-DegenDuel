@@ -19,7 +19,7 @@ export class ConfigService extends Context.Tag("ConfigService")<
 
 export const ConfigServiceLive = Layer.succeed(ConfigService, {
   chainId: 114,
-  rpcUrl: "https://coston2-api.flare.network/ext/C/rpc",
+  rpcUrl: "https://coston2.enosys.global/ext/C/rpc",
   wsUrl: "wss://coston2-api.flare.network/ext/C/ws",
   contractAddress: "0x835574875C1CB9003c1638E799f3d7c504808960",
   verifierUrl: "https://fdc-verifiers-testnet.flare.network/verifier/web2/Web2Json/prepareRequest",

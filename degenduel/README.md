@@ -573,7 +573,7 @@ This project is licensed under the **MIT License** - see the [LICENSE](LICENSE) 
 ## 🏆 Built For
 
 **ETH Oxford 2026 Hackathon**
-- **Main Track:** Decentralised Gaming and Social Media
+- **Main Track:** Prediction Markets + DeFi
 - **Sponsor Tracks:** Flare Network, Rabot (Effectful Programming)
 
 ---

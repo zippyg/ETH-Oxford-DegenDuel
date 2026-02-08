@@ -17,5 +17,35 @@ export const wagmiConfig = createConfig({
   chains: enabledChains,
   connectors: wagmiConnectors(),
   ssr: true,
-  client: ({ chain }) => { const mainnetFallbackWithDefaultRPC = [http("https://mainnet.rpc.buidlguidl.com")]; let rpcFallbacks = [...(chain.id === mainnet.id ? mainnetFallbackWithDefaultRPC : []), http()]; const rpcOverrideUrl = (scaffoldConfig.rpcOverrides as ScaffoldConfig["rpcOverrides"])?.[chain.id]; if (rpcOverrideUrl) { rpcFallbacks = [http(rpcOverrideUrl), ...rpcFallbacks]; } else { const alchemyHttpUrl = getAlchemyHttpUrl(chain.id); if (alchemyHttpUrl) { const isUsingDefaultKey = scaffoldConfig.alchemyApiKey === DEFAULT_ALCHEMY_API_KEY; rpcFallbacks = isUsingDefaultKey ? [...rpcFallbacks, http(alchemyHttpUrl)] : [http(alchemyHttpUrl), ...rpcFallbacks]; } } return createClient({ chain, transport: fallback(rpcFallbacks), ...(chain.id !== (hardhat as Chain).id ? { pollingInterval: scaffoldConfig.pollingInterval } : {}), }); }
+  client: ({ chain }) => {
+    // Coston2: use both RPCs with retries for flaky testnet
+    if (chain.id === 114) {
+      return createClient({
+        chain,
+        transport: fallback([
+          http("https://coston2-api.flare.network/ext/C/rpc", { retryCount: 3, retryDelay: 500, timeout: 10_000 }),
+          http("https://coston2.enosys.global/ext/C/rpc", { retryCount: 3, retryDelay: 500, timeout: 10_000 }),
+        ]),
+        pollingInterval: scaffoldConfig.pollingInterval,
+      });
+    }
+
+    const mainnetFallbackWithDefaultRPC = [http("https://mainnet.rpc.buidlguidl.com")];
+    let rpcFallbacks = [...(chain.id === mainnet.id ? mainnetFallbackWithDefaultRPC : []), http()];
+    const rpcOverrideUrl = (scaffoldConfig.rpcOverrides as ScaffoldConfig["rpcOverrides"])?.[chain.id];
+    if (rpcOverrideUrl) {
+      rpcFallbacks = [http(rpcOverrideUrl), ...rpcFallbacks];
+    } else {
+      const alchemyHttpUrl = getAlchemyHttpUrl(chain.id);
+      if (alchemyHttpUrl) {
+        const isUsingDefaultKey = scaffoldConfig.alchemyApiKey === DEFAULT_ALCHEMY_API_KEY;
+        rpcFallbacks = isUsingDefaultKey ? [...rpcFallbacks, http(alchemyHttpUrl)] : [http(alchemyHttpUrl), ...rpcFallbacks];
+      }
+    }
+    return createClient({
+      chain,
+      transport: fallback(rpcFallbacks),
+      ...(chain.id !== (hardhat as Chain).id ? { pollingInterval: scaffoldConfig.pollingInterval } : {}),
+    });
+  }
 });

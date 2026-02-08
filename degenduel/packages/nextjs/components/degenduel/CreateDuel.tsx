@@ -121,13 +121,26 @@ export const CreateDuel = () => {
     watch: true,
   });
 
-  const currentPrice =
-    priceData && Array.isArray(priceData) && priceData.length >= 2
-      ? (Number(priceData[0]) / Math.pow(10, Math.abs(Number(priceData[1])))).toFixed(4)
-      : "---";
+  // Keep last known good price so RPC blips don't blank the display
+  const [lastGoodPrice, setLastGoodPrice] = useState<{ display: string; decimals: number; raw: bigint } | null>(null);
 
-  const priceDecimals =
-    priceData && Array.isArray(priceData) && priceData.length >= 2 ? Number(priceData[1]) : -5;
+  useEffect(() => {
+    if (priceData && Array.isArray(priceData) && priceData.length >= 2) {
+      setLastGoodPrice({
+        display: (Number(priceData[0]) / Math.pow(10, Math.abs(Number(priceData[1])))).toFixed(4),
+        decimals: Number(priceData[1]),
+        raw: priceData[0] as bigint,
+      });
+    }
+  }, [priceData]);
+
+  // Reset cached price when switching assets
+  useEffect(() => {
+    setLastGoodPrice(null);
+  }, [selectedFeed]);
+
+  const currentPrice = lastGoodPrice?.display ?? "---";
+  const priceDecimals = lastGoodPrice?.decimals ?? -5;
 
   const handleCreate = async () => {
     try {
@@ -146,9 +159,7 @@ export const CreateDuel = () => {
 
       if (duelMode === "PRICE") {
         // Use current price as threshold (they're betting on direction from now)
-        const thresholdScaled = priceData
-          ? (priceData[0] as bigint)
-          : BigInt(0);
+        const thresholdScaled = lastGoodPrice?.raw ?? BigInt(0);
 
         // Deadline 90 seconds from now
         const deadlineTimestamp = BigInt(Math.floor(Date.now() / 1000) + 90);

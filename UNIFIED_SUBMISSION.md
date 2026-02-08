@@ -9,7 +9,7 @@ All text below is finalized and ready to paste into DoraHacks, TAIKAI, and Minty
 
 **Project Name:** DegenDuel
 
-**Tagline:**
+**Tagline:** 
 ```
 PvP prediction duels with trustless settlement via Flare's enshrined data protocols
 ```

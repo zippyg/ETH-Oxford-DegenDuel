@@ -333,3 +333,126 @@ If anything breaks during recording:
 > Data Duels take this further. FDC Web2Json lets players bet on ANY data source — weather, sports, anything with a JSON API. The attestation flow goes through 100 independent validators. Prepare request, submit to FdcHub, wait for consensus, retrieve the Merkle proof, verify on-chain. Five steps, fully automated.
 >
 > That's DegenDuel. All three Flare enshrined protocols working together — FTSO for prices, FDC for real-world data attestation, Secure RNG for provably fair bonuses. This application is architecturally impossible on any other chain. Effect-TS orchestrates the entire off-chain pipeline. Open source, deployed on Coston2, playable right now. Built in 36 hours at ETH Oxford.
+
+---
+
+## SILENT SCREEN RECORDING — STAGE DIRECTIONS (APP ONLY, NO CODE)
+
+The voiceover is recorded separately and merged in post. This is just what to do on screen. No VS Code, no terminal — judges can check the GitHub repo for code.
+
+### BEFORE YOU HIT RECORD
+
+- Both Chrome profiles open, MetaMask on Coston2, wallets funded
+- App running on `localhost:3000` (or use Vercel production URL)
+- Player A connected on **landing page**
+- Player B browser open to **arena page**, wallet connected
+- 1920x1080, bookmark bar hidden, Do Not Disturb ON
+- Slow deliberate mouse movements, click buttons dead center, wait for animations
+
+---
+
+### [0:00 - 0:12] HERO HOLD
+- Start on landing page hero section
+- **Do nothing.** No mouse, no scroll. Hold still for 12 seconds.
+
+### [0:12 - 0:28] LANDING PAGE SCROLL
+- **0:12** — Begin smooth scroll down
+- **0:14** — Pause 1.5s on ProblemSection
+- **0:17** — Resume scroll
+- **0:19** — Pause 1.5s on HowItWorks (3-step flow)
+- **0:22** — Resume scroll
+- **0:24** — Pause 2s on TechShowcase (logos section)
+- **0:27** — Scroll to FinalCTA, click **"Enter Arena"**
+
+### [0:28 - 0:40] ARENA LOADS
+- **0:28** — Arena page loads, let framer-motion animations play in
+- **0:32** — Slowly hover mouse over the **price ticker** at the top
+- **0:36** — Move mouse to **stats bar** (Duels / Settled / Volume)
+- **0:40** — Rest mouse near CreateDuel form
+
+### [0:40 - 1:10] CREATE A DUEL (Player A)
+- **0:40** — Mouse to PRICE mode toggle (should already be selected)
+- **0:42** — Click **FLR** asset pill
+- **0:44** — Pause 2s — let "Current Price" update on screen
+- **0:46** — Click **UP** prediction button
+- **0:48** — Click stake input, type **0.5**
+- **0:50** — Click **CHALLENGE**
+- **0:52** — MetaMask popup appears
+- **0:53** — Click **Confirm**
+- **0:54** — **STOP** (jump cut the tx wait in editing)
+- **0:56** — Resume when toast: "Duel created!"
+- **0:58** — ActiveDuel panel populates: "WAITING FOR OPPONENT"
+- **1:00** — Move mouse to ActiveDuel panel, hover over duel details
+- **1:10** — Hold
+
+### [1:10 - 1:35] PLAYER B JOINS
+- **1:10** — **Switch to Player B's browser** (different Chrome profile)
+- **1:12** — Scroll to "Open Duels" — Player A's duel visible
+- **1:15** — Pause 2s on the DuelCard
+- **1:17** — Click **"Accept Duel"** / **"BET DOWN"**
+- **1:19** — MetaMask popup, click **Confirm**
+- **1:20** — **STOP** (jump cut)
+- **1:22** — Resume when toast: "Duel joined!"
+- **1:24** — ActiveDuel updates to "ACTIVE", countdown starts at 90
+- **1:26** — Hover mouse over countdown timer
+- **1:35** — Hold on active duel view
+
+### [1:35 - 1:55] THE COUNTDOWN
+- **1:35** — Let countdown tick 5 real seconds (88... 87... 86...)
+- **1:40** — **STOP** (insert "90 SECONDS LATER" title card in editing)
+- **1:45** — **RESUME** when countdown is at ~5. Let it tick: 5... 4... 3... 2... 1... 0
+- **1:55** — Status changes to "READY TO SETTLE"
+
+### [1:55 - 2:25] SETTLEMENT
+- **1:55** — Mouse to **"Settle Duel"** button
+- **1:57** — Click it
+- **1:59** — MetaMask popup, click **Confirm**
+- **2:00** — **STOP** (jump cut)
+- **2:03** — Resume when confetti / settlement animation plays
+- **2:05** — "SETTLED" — winner shown, payout displayed
+- **2:08** — Hold 5s on results (starting price, ending price, winner, payout)
+- **2:13** — If "2X BONUS!" badge shows, hover over it
+- **2:15** — Scroll down to **EffectPrices** component + **Leaderboard**
+- **2:25** — Hold on leaderboard with updated stats
+
+### [2:25 - 2:50] STAY ON ARENA — EFFECT PRICES + LEADERBOARD
+- **2:25** — Scroll back to **EffectPrices** component, hold 3s (shows live prices, "Powered by Effect-TS" label)
+- **2:28** — Slowly scroll through leaderboard entries, hold 3s
+- **2:31** — Scroll back up to the settled duel result, hold 3s
+- **2:34** — Hover over the price ticker again — prices still updating live
+- **2:37** — Scroll to show the full arena: ActiveDuel + CreateDuel + Open Duels all visible
+- **2:40** — Hover over the protocol stats bar (Duels / Settled / Volume — numbers should reflect the duel you just ran)
+- **2:46** — Rest mouse near CreateDuel form
+
+### [2:50 - 3:10] DATA DUELS — SHOW THE TOGGLE
+- **2:50** — On CreateDuel form, **click the DATA mode toggle** (switch from PRICE to DATA)
+- **2:53** — Pause 3s — let the form update to show data duel fields (URL input, description, etc.)
+- **2:56** — Slowly hover over the data duel form fields to draw attention
+- **2:59** — Hover over "API URL" or "Data Source" input field
+- **3:02** — Switch back to **PRICE** mode toggle (shows it's a two-mode system)
+- **3:05** — Pause on the full CreateDuel form for 5s
+
+### [3:10 - 3:30] CLOSE
+- **3:10** — Scroll up for full arena view — settled duel, price ticker, stats bar all visible
+- **3:15** — **STOP** (insert end card in editing: DegenDuel logo, "Built on Flare | ETH Oxford 2026", GitHub URL, Vercel URL — hold 15s)
+
+---
+
+## JUMP CUTS TO MAKE IN EDITING
+
+1. **0:54** — Cut the "Create Duel" tx wait
+2. **1:20** — Cut the "Join Duel" tx wait
+3. **1:40 → countdown at 5** — Insert "90 SECONDS LATER" title card
+4. **2:00** — Cut the "Settle" tx wait
+5. **3:15** — Insert static end card (15 seconds)
+
+---
+
+## TIPS
+
+- **Mouse speed:** Slow and deliberate. No jittery cursor.
+- **Button clicks:** Dead center on the button. Looks professional.
+- **Animations:** Wait for framer-motion stagger to finish before moving on.
+- **Two browsers:** Player A and Player B should have visibly different wallet addresses in the top right.
+- **If anything breaks:** Record extra takes. You can splice the best parts in editing.
+- **If RNG bonus doesn't trigger:** Record multiple settlements until one triggers, use that take. Or skip it — the voiceover mentions it either way.

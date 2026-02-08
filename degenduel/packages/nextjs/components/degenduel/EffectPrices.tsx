@@ -97,7 +97,10 @@ export const EffectPrices = () => {
       setLastUpdate(Date.now());
       setError(null);
     } catch (err) {
-      setError(err instanceof Error ? err.message : "Unknown error");
+      // Only show error if we have NO data yet — otherwise keep stale data and silently retry
+      if (!dataRef.current) {
+        setError(err instanceof Error ? err.message : "Unknown error");
+      }
     } finally {
       setLoading(false);
     }

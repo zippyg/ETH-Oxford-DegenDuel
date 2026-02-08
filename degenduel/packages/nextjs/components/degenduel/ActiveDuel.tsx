@@ -125,7 +125,15 @@ export const ActiveDuel = ({ duel, currentPrice, entryPrice, onSettle, onCancel,
     let series: any;
 
     const initChart = async () => {
-      const { createChart, ColorType, LineStyle, AreaSeries } = await import("lightweight-charts");
+      let mod;
+      try {
+        mod = await import("lightweight-charts");
+      } catch {
+        // Chunk load failed — retry once after a short delay
+        await new Promise(r => setTimeout(r, 1000));
+        try { mod = await import("lightweight-charts"); } catch { return; }
+      }
+      const { createChart, ColorType, LineStyle, AreaSeries } = mod;
 
       if (!chartContainerRef.current) return;
 
